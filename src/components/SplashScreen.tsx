@@ -1,0 +1,34 @@
+import { useEffect, useState } from "react";
+import churchLogo from "@/assets/church-logo.png";
+
+const SplashScreen = () => {
+  const [isVisible, setIsVisible] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsVisible(false);
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (!isVisible) return null;
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-blue-600 animate-splash-fade">
+      <div className="text-center animate-logo-scale">
+        <div className="mb-6 flex justify-center">
+          <div className="rounded-full bg-white p-8 shadow-blue">
+            <img src={churchLogo} alt="PIWC Logo" className="h-24 w-24 object-contain" />
+          </div>
+        </div>
+        <h1 className="text-4xl font-bold text-white mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>
+          PIWC Asokwa
+        </h1>
+        <p className="text-lg text-white/90">Pentecost International Worship Centre</p>
+      </div>
+    </div>
+  );
+};
+
+export default SplashScreen;
