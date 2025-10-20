@@ -25,40 +25,39 @@ const Navbar = () => {
     { name: "Contact", path: "/contact" },
   ];
 
-  const getLinkClassName = (isActive: boolean, isContact: boolean = false) => {
-    const baseClasses = "px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 relative";
-    const activeClasses = "text-primary bg-secondary";
-    const hoverClasses = "hover:text-primary hover:bg-secondary/50";
+  const getLinkClassName = (isActive: boolean) => {
+    const baseClasses =
+      "px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 relative text-gray-700";
+    const activeClasses = "text-blue-600 font-semibold";
+    const hoverClasses = "hover:text-blue-500";
 
-    if (isContact) {
-      return `${baseClasses} contact-link`;
-    }
-
-    return `${baseClasses} ${isActive ? activeClasses : ''} ${hoverClasses}`;
+    return `${baseClasses} ${isActive ? activeClasses : ""} ${hoverClasses}`;
   };
 
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
-        isScrolled ? "bg-white shadow-md py-2" : "bg-white/95 backdrop-blur-sm py-4"
+        isScrolled ? "bg-white shadow-md py-2" : "bg-white py-4"
       }`}
     >
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between">
-          <NavLink to="/" className="flex items-center gap-3 group">
-            <div className="transition-transform group-hover:scale-110">
-              <img src={churchLogo} alt="PIWC Logo" className="h-12 w-12 object-contain rounded-full logo-spin" />
-            </div>
-            <div className="flex flex-col items-center">
-              <div className="flex items-center">
-                  <div className="nav-gradient-line-left"></div>
-                  <div className="nav-title-container">
-                      <span className="nav-title-piwc">PIWC</span>
-                      <span className="nav-title-asokwa">ASOKWA</span>
-                  </div>
-                  <div className="nav-gradient-line-right"></div>
+          <NavLink to="/" className="flex items-center group">
+            <img
+              src={churchLogo}
+              alt="PIWC Logo"
+              className="logo-icon h-14 w-14 object-contain logo-spin"
+            />
+            <div className="logo-text-container">
+              <div className="main-title-lockup">
+                <span className="piwc-text">PIWC</span>
+                <div className="asokwa-lockup">
+                  <div className="asokwa-bar"></div>
+                  <span className="asokwa-text">ASOKWA</span>
+                  <div className="asokwa-bar"></div>
+                </div>
               </div>
-              <div className="nav-subtitle">THE CHURCH OF PENTECOST</div>
+              <div className="subtitle-text">THE CHURCH OF PENTECOST</div>
             </div>
           </NavLink>
 
@@ -67,7 +66,7 @@ const Navbar = () => {
               <NavLink
                 key={item.path}
                 to={item.path}
-                className={({ isActive }) => getLinkClassName(isActive, item.name === "Contact")}
+                className={({ isActive }) => getLinkClassName(isActive)}
               >
                 {item.name}
               </NavLink>
@@ -77,7 +76,7 @@ const Navbar = () => {
           <Button
             variant="ghost"
             size="icon"
-            className="lg:hidden"
+            className="lg:hidden text-gray-800 hover:bg-gray-100"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
             {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
@@ -85,14 +84,14 @@ const Navbar = () => {
         </div>
 
         {isMobileMenuOpen && (
-          <div className="lg:hidden mt-4 pb-4 border-t border-border pt-4 animate-fade-in">
+          <div className="lg:hidden mt-4 pb-4 border-t border-gray-200 pt-4 animate-fade-in">
             <div className="flex flex-col gap-2">
               {navItems.map((item) => (
                 <NavLink
                   key={item.path}
                   to={item.path}
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className={({ isActive }) => getLinkClassName(isActive, item.name === "Contact")}
+                  className={({ isActive }) => getLinkClassName(isActive)}
                 >
                   {item.name}
                 </NavLink>
@@ -101,102 +100,110 @@ const Navbar = () => {
           </div>
         )}
       </div>
+
+      
       <style>{`
-            .nav-title-piwc {
-                font-family: 'Poppins', sans-serif;
-                font-weight: 900;
-                font-size: 1.8rem;
-                background-image: linear-gradient(90deg, #007bff, #0056d6, #002f91);
-                -webkit-background-clip: text;
-                background-clip: text;
-                color: transparent;
-                text-transform: uppercase;
-            }
+        .logo-text-container, .piwc-text, .asokwa-text, .subtitle-text {
+          font-family: 'Poppins', sans-serif;
+        }
 
-            .nav-title-asokwa {
-                font-family: 'Poppins', sans-serif;
-                font-weight: 700;
-                font-size: 0.9rem;
-                text-transform: uppercase;
-                color: white;
-                background-image: linear-gradient(90deg, #007bff, #0056d6, #002f91);
-                border-radius: 9999px;
-                padding: 4px 16px;
-                margin: 0 8px;
-            }
+        .logo-text-container {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          line-height: 1;
+          margin-left: 4px; /* Adjust this value to control space */
+          align-items: flex-start; /* Align items to the start (left) */
+        }
 
-            .nav-gradient-line-left {
-                height: 2px;
-                width: 20px;
-                background: linear-gradient(to left, #007bff, #0056d6, #002f91);
-            }
-            .nav-gradient-line-right {
-                height: 2px;
-                width: 20px;
-                background: linear-gradient(to right, #007bff, #0056d6, #002f91);
-            }
+        .main-title-lockup {
+          display: flex;
+          align-items: center;
+          position: relative;
+        }
 
-            .nav-subtitle {
-                font-family: 'Poppins', sans-serif;
-                font-size: 0.6rem;
-                font-weight: 600;
-                text-transform: uppercase;
-                background-image: linear-gradient(90deg, #007bff, #0056d6, #002f91);
-                -webkit-background-clip: text;
-                background-clip: text;
-                color: transparent;
-                margin-top: 2px;
-                letter-spacing: 0.5px;
-            }
+        .piwc-text {
+          font-size: 2.4rem;
+          font-weight: 800;
+          text-transform: uppercase;
+          background-image: linear-gradient(90deg, #007bff, #0056d6, #002f91);
+          -webkit-background-clip: text;
+          background-clip: text;
+          color: transparent;
+          margin-right: 0;
+          display: flex;
+          align-items: center;
+        }
 
-            .nav-title-container {
-                display: flex;
-                align-items: center;
-            }
+        /* ASOKWA capsule at mouth of C */
+        .asokwa-lockup {
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          align-items: center;
+          margin-left: -4px; /* sits inside the open C */
+        }
 
-             @keyframes logo-spin {
-               from {
-                 transform: rotate(0deg);
-               }
-               to {
-                 transform: rotate(360deg);
-               }
-             }
-             @media (prefers-reduced-motion: no-preference) {
-               .logo-spin {
-                 animation: logo-spin infinite 20s linear;
-               }
-             }
-             .contact-link {
-               background-image: linear-gradient(90deg, #0066ff, #3399ff, #00ccff);
-               -webkit-background-clip: text;
-               background-clip: text;
-               color: transparent;
-               text-shadow: 0 0 10px rgba(0, 102, 255, 0.3);
-               transition: transform 0.3s ease-in-out;
-             }
-             .contact-link:hover {
-               transform: scale(1.05);
-             }
-             .contact-link.active::after {
-               content: '';
-               position: absolute;
-               bottom: -2px;
-               left: 0;
-               right: 0;
-               height: 2px;
-               background-image: linear-gradient(90deg, #0066ff, #3399ff, #00ccff);
-               animation: underline-animation 0.5s ease-out;
-             }
-             @keyframes underline-animation {
-               from {
-                 width: 0;
-               }
-               to {
-                 width: 100%;
-               }
-             }
-           `}</style>
+        .asokwa-bar {
+          height: 4px; /* Make bars thicker */
+          width: 80%;
+          background-image: linear-gradient(90deg, #007bff, #0056d6, #002f91);
+          border-radius: 9px;
+        }
+
+        .asokwa-text {
+          font-size: 1rem;
+          font-weight: 700;
+          text-transform: uppercase;
+          padding: 3px 10px;
+          border-radius: 999px;
+          background-image: linear-gradient(90deg, #007bff, #0056d6, #002f91);
+          color: white;
+          letter-spacing: 1px;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          line-height: 1;
+
+         
+          margin: 2px 0;
+        }
+
+        .subtitle-text {
+          font-size: 0.81rem;
+          font-weight: 600;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+          margin-top: -1px;
+          background-image: linear-gradient(90deg, #007bff, #0056d6, #002f91);
+          -webkit-background-clip: text;
+          background-clip: text;
+          color: transparent;
+          white-space: nowrap;
+          margin-left: 2px; /* Indent subtitle slightly */
+        }
+
+        .logo-icon {
+          height: 60px;
+          width: 60px;
+          object-fit: contain;
+        }
+
+        @keyframes logo-spin {
+          from {
+            transform: rotate(0deg);
+          }
+          to {
+            transform: rotate(360deg);
+          }
+        }
+
+        @media (prefers-reduced-motion: no-preference) {
+          .logo-spin {
+            animation: logo-spin infinite 20s linear;
+          }
+        }
+      `}</style>
     </nav>
   );
 };
