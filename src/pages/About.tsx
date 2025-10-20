@@ -153,7 +153,7 @@ const About = () => {
                 </p>
             </div>
             <div className="fade-up order-1 lg:order-2 group relative h-64 overflow-hidden rounded-lg">
-                <img src="https://placehold.co/600x400/0066ff/FFFFFF/png" alt="Our Vision" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"/>
+                <img src="https://vhovhjnupqdfmdjfbtrr.supabase.co/storage/v1/object/public/images/vision.jpg" alt="Our Vision" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"/>
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </div>
           </div>
