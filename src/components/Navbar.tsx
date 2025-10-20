@@ -22,16 +22,17 @@ const Navbar = () => {
     { name: "Events", path: "/events" },
     { name: "Gallery", path: "/gallery" },
     { name: "Ministries", path: "/ministries" },
-    { name: "Contact", path: "/contact" },
+    { name: "Contact Us", path: "/contact", special: true },
   ];
 
-  const getLinkClassName = (isActive: boolean) => {
+  const getLinkClassName = (isActive: boolean, isSpecial: boolean = false) => {
     const baseClasses =
       "px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 relative text-gray-700";
     const activeClasses = "text-blue-600 font-semibold";
     const hoverClasses = "hover:text-blue-500";
+    const specialClasses = "font-bold contact-us-gradient";
 
-    return `${baseClasses} ${isActive ? activeClasses : ""} ${hoverClasses}`;
+    return `${baseClasses} ${isActive ? activeClasses : ""} ${hoverClasses} ${isSpecial ? specialClasses : ""}`;
   };
 
   return (
@@ -66,7 +67,7 @@ const Navbar = () => {
               <NavLink
                 key={item.path}
                 to={item.path}
-                className={({ isActive }) => getLinkClassName(isActive)}
+                className={({ isActive }) => getLinkClassName(isActive, item.special)}
               >
                 {item.name}
               </NavLink>
@@ -91,7 +92,7 @@ const Navbar = () => {
                   key={item.path}
                   to={item.path}
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className={({ isActive }) => getLinkClassName(isActive)}
+                  className={({ isActive }) => getLinkClassName(isActive, item.special)}
                 >
                   {item.name}
                 </NavLink>
@@ -187,6 +188,13 @@ const Navbar = () => {
           height: 60px;
           width: 60px;
           object-fit: contain;
+        }
+
+        .contact-us-gradient {
+            background-image: linear-gradient(90deg, #007bff, #0056d6, #002f91);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
 
         @keyframes logo-spin {
