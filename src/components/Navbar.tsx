@@ -105,37 +105,34 @@ const Navbar = () => {
             .nav-title-piwc {
                 font-family: 'Poppins', sans-serif;
                 font-weight: 900;
-                font-size: 1.7rem;
+                font-size: 1.8rem;
                 background-image: linear-gradient(90deg, #007bff, #0056d6, #002f91);
                 -webkit-background-clip: text;
                 background-clip: text;
                 color: transparent;
-                -webkit-text-stroke: 0.5px #002f91;
-                text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+                text-transform: uppercase;
             }
 
             .nav-title-asokwa {
                 font-family: 'Poppins', sans-serif;
                 font-weight: 700;
-                color: #0056d6;
-                border: 1.5px solid;
-                border-image-source: linear-gradient(90deg, #007bff, #0056d6, #002f91);
-                border-image-slice: 1;
+                font-size: 0.9rem;
+                text-transform: uppercase;
+                color: white;
+                background-image: linear-gradient(90deg, #007bff, #0056d6, #002f91);
                 border-radius: 9999px;
-                padding: 2px 10px;
+                padding: 4px 16px;
                 margin: 0 8px;
-                font-size: 1rem;
-                box-shadow: inset 0 0 4px rgba(0, 123, 255, 0.2);
             }
 
             .nav-gradient-line-left {
                 height: 2px;
-                width: 16px;
+                width: 20px;
                 background: linear-gradient(to left, #007bff, #0056d6, #002f91);
             }
             .nav-gradient-line-right {
                 height: 2px;
-                width: 16px;
+                width: 20px;
                 background: linear-gradient(to right, #007bff, #0056d6, #002f91);
             }
 
