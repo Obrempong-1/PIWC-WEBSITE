@@ -49,11 +49,16 @@ const Navbar = () => {
             <div className="transition-transform group-hover:scale-110">
               <img src={churchLogo} alt="PIWC Logo" className="h-12 w-12 object-contain rounded-full logo-spin" />
             </div>
-            <div>
-              <h1 className="text-xl font-bold text-primary" style={{ fontFamily: "'Playfair Display', serif" }}>
-                PIWC Asokwa
-              </h1>
-              <p className="text-xs text-muted-foreground hidden sm:block">The Church of Pentecost</p>
+            <div className="flex flex-col items-center">
+              <div className="flex items-center">
+                  <div className="nav-gradient-line-left"></div>
+                  <div className="nav-title-container">
+                      <span className="nav-title-piwc">PIWC</span>
+                      <span className="nav-title-asokwa">ASOKWA</span>
+                  </div>
+                  <div className="nav-gradient-line-right"></div>
+              </div>
+              <div className="nav-subtitle">THE CHURCH OF PENTECOST</div>
             </div>
           </NavLink>
 
@@ -97,49 +102,104 @@ const Navbar = () => {
         )}
       </div>
       <style>{`
-        @keyframes logo-spin {
-          from {
-            transform: rotate(0deg);
-          }
-          to {
-            transform: rotate(360deg);
-          }
-        }
-        @media (prefers-reduced-motion: no-preference) {
-          .logo-spin {
-            animation: logo-spin infinite 20s linear;
-          }
-        }
-        .contact-link {
-          background-image: linear-gradient(90deg, #0066ff, #3399ff, #00ccff);
-          -webkit-background-clip: text;
-          background-clip: text;
-          color: transparent;
-          text-shadow: 0 0 10px rgba(0, 102, 255, 0.3);
-          transition: transform 0.3s ease-in-out;
-        }
-        .contact-link:hover {
-          transform: scale(1.05);
-        }
-        .contact-link.active::after {
-          content: '';
-          position: absolute;
-          bottom: -2px;
-          left: 0;
-          right: 0;
-          height: 2px;
-          background-image: linear-gradient(90deg, #0066ff, #3399ff, #00ccff);
-          animation: underline-animation 0.5s ease-out;
-        }
-        @keyframes underline-animation {
-          from {
-            width: 0;
-          }
-          to {
-            width: 100%;
-          }
-        }
-      `}</style>
+            .nav-title-piwc {
+                font-family: 'Poppins', sans-serif;
+                font-weight: 900;
+                font-size: 1.7rem;
+                background-image: linear-gradient(90deg, #007bff, #0056d6, #002f91);
+                -webkit-background-clip: text;
+                background-clip: text;
+                color: transparent;
+                -webkit-text-stroke: 0.5px #002f91;
+                text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            }
+
+            .nav-title-asokwa {
+                font-family: 'Poppins', sans-serif;
+                font-weight: 700;
+                color: #0056d6;
+                border: 1.5px solid;
+                border-image-source: linear-gradient(90deg, #007bff, #0056d6, #002f91);
+                border-image-slice: 1;
+                border-radius: 9999px;
+                padding: 2px 10px;
+                margin: 0 8px;
+                font-size: 1rem;
+                box-shadow: inset 0 0 4px rgba(0, 123, 255, 0.2);
+            }
+
+            .nav-gradient-line-left {
+                height: 2px;
+                width: 16px;
+                background: linear-gradient(to left, #007bff, #0056d6, #002f91);
+            }
+            .nav-gradient-line-right {
+                height: 2px;
+                width: 16px;
+                background: linear-gradient(to right, #007bff, #0056d6, #002f91);
+            }
+
+            .nav-subtitle {
+                font-family: 'Poppins', sans-serif;
+                font-size: 0.6rem;
+                font-weight: 600;
+                text-transform: uppercase;
+                background-image: linear-gradient(90deg, #007bff, #0056d6, #002f91);
+                -webkit-background-clip: text;
+                background-clip: text;
+                color: transparent;
+                margin-top: 2px;
+                letter-spacing: 0.5px;
+            }
+
+            .nav-title-container {
+                display: flex;
+                align-items: center;
+            }
+
+             @keyframes logo-spin {
+               from {
+                 transform: rotate(0deg);
+               }
+               to {
+                 transform: rotate(360deg);
+               }
+             }
+             @media (prefers-reduced-motion: no-preference) {
+               .logo-spin {
+                 animation: logo-spin infinite 20s linear;
+               }
+             }
+             .contact-link {
+               background-image: linear-gradient(90deg, #0066ff, #3399ff, #00ccff);
+               -webkit-background-clip: text;
+               background-clip: text;
+               color: transparent;
+               text-shadow: 0 0 10px rgba(0, 102, 255, 0.3);
+               transition: transform 0.3s ease-in-out;
+             }
+             .contact-link:hover {
+               transform: scale(1.05);
+             }
+             .contact-link.active::after {
+               content: '';
+               position: absolute;
+               bottom: -2px;
+               left: 0;
+               right: 0;
+               height: 2px;
+               background-image: linear-gradient(90deg, #0066ff, #3399ff, #00ccff);
+               animation: underline-animation 0.5s ease-out;
+             }
+             @keyframes underline-animation {
+               from {
+                 width: 0;
+               }
+               to {
+                 width: 100%;
+               }
+             }
+           `}</style>
     </nav>
   );
 };
