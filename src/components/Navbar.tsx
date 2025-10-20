@@ -47,7 +47,7 @@ const Navbar = () => {
         <div className="flex items-center justify-between">
           <NavLink to="/" className="flex items-center gap-3 group">
             <div className="transition-transform group-hover:scale-110">
-              <img src={churchLogo} alt="PIWC Logo" className="h-12 w-12 object-contain" />
+              <img src={churchLogo} alt="PIWC Logo" className="h-12 w-12 object-contain rounded-full logo-spin" />
             </div>
             <div>
               <h1 className="text-xl font-bold text-primary" style={{ fontFamily: "'Playfair Display', serif" }}>
@@ -97,6 +97,19 @@ const Navbar = () => {
         )}
       </div>
       <style>{`
+        @keyframes logo-spin {
+          from {
+            transform: rotate(0deg);
+          }
+          to {
+            transform: rotate(360deg);
+          }
+        }
+        @media (prefers-reduced-motion: no-preference) {
+          .logo-spin {
+            animation: logo-spin infinite 20s linear;
+          }
+        }
         .contact-link {
           background-image: linear-gradient(90deg, #0066ff, #3399ff, #00ccff);
           -webkit-background-clip: text;
