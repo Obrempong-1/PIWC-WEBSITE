@@ -28,6 +28,7 @@ import AnnouncementDetail from "./pages/AnnouncementDetail";
 import NoticeDetail from "./pages/NoticeDetail";
 import LeaderDetail from "./pages/LeaderDetail";
 import { AnimatePresence } from "framer-motion";
+import ScrollToTop from "./components/ScrollToTop";
 
 const queryClient = new QueryClient();
 
@@ -35,6 +36,7 @@ const AppRoutes = () => {
   const location = useLocation();
   return (
     <AnimatePresence mode="wait">
+      <ScrollToTop />
       <Routes location={location} key={location.pathname}>
         <Route path="/auth" element={<Auth />} />
         <Route

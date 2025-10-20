@@ -38,6 +38,7 @@ interface Notice {
   content: string | null;
   created_at: string;
   image_url: string | null;
+  video_url: string | null;
 }
 
 const Index = () => {
@@ -203,24 +204,28 @@ const Index = () => {
                   whileInView="visible"
                   viewport={{ once: true, amount: 0.3 }}
                 >
-                  <Card className="frosted-glass overflow-hidden h-full">
-                    <CardContent className="p-0">
-                      {notice.image_url && (
-                        <img src={notice.image_url} alt={notice.title} className="w-full h-48 object-cover" />
-                      )}
-                      <div className="p-6">
-                        <div className="flex items-center text-sm text-primary/80 font-semibold mb-2">
-                          <ClipboardList className="h-4 w-4 mr-2" />
-                          <span>{new Date(notice.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+                  <Link to={`/notices/${notice.id}`}>
+                    <Card className="frosted-glass overflow-hidden h-full">
+                      <CardContent className="p-0">
+                        {notice.video_url ? (
+                          <video src={notice.video_url} controls className="w-full h-48 object-cover" />
+                        ) : notice.image_url && (
+                          <img src={notice.image_url} alt={notice.title} className="w-full h-48 object-cover" />
+                        )}
+                        <div className="p-6">
+                          <div className="flex items-center text-sm text-primary/80 font-semibold mb-2">
+                            <ClipboardList className="h-4 w-4 mr-2" />
+                            <span>{new Date(notice.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+                          </div>
+                          <h3 className="text-xl font-semibold text-primary mb-3">{notice.title}</h3>
+                          <p
+                            className="text-muted-foreground line-clamp-3"
+                            dangerouslySetInnerHTML={{ __html: notice.content || "" }}
+                          />
                         </div>
-                        <h3 className="text-xl font-semibold text-primary mb-3">{notice.title}</h3>
-                        <p
-                          className="text-muted-foreground line-clamp-3"
-                          dangerouslySetInnerHTML={{ __html: notice.content || "" }}
-                        />
-                      </div>
-                    </CardContent>
-                  </Card>
+                      </CardContent>
+                    </Card>
+                  </Link>
                 </motion.div>
               ))}
             </div>
