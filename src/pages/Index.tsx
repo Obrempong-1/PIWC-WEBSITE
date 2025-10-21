@@ -30,6 +30,7 @@ interface Announcement {
   description: string | null;
   created_at: string;
   image_url: string | null;
+  video_url: string | null;
 }
 
 interface Notice {
@@ -444,24 +445,32 @@ const Index = () => {
                   whileInView="visible"
                   viewport={{ once: true, amount: 0.3 }}
                 >
-                  <Card className="frosted-glass overflow-hidden h-full">
-                    <CardContent className="p-0">
-                      {announcement.image_url && (
-                        <img src={announcement.image_url} alt={announcement.title} className="w-full h-48 object-cover" />
-                      )}
-                      <div className="p-6">
-                        <div className="flex items-center text-sm text-primary/80 font-semibold mb-2">
-                          <Megaphone className="h-4 w-4 mr-2" />
-                          <span>{new Date(announcement.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+                  <Link to={`/announcements/${announcement.id}`}>
+                    <Card className="frosted-glass overflow-hidden h-full">
+                      <CardContent className="p-0">
+                        {announcement.video_url ? (
+                          <video src={announcement.video_url} controls className="w-full h-48 object-cover" />
+                        ) : announcement.image_url ? (
+                          <img src={announcement.image_url} alt={announcement.title} className="w-full h-48 object-cover" />
+                        ) : (
+                          <div className="w-full h-48 bg-primary/10 flex items-center justify-center">
+                            <Megaphone className="h-20 w-20 text-primary/30" />
+                          </div>
+                        )}
+                        <div className="p-6">
+                          <div className="flex items-center text-sm text-primary/80 font-semibold mb-2">
+                            <Megaphone className="h-4 w-4 mr-2" />
+                            <span>{new Date(announcement.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+                          </div>
+                          <h3 className="text-xl font-semibold text-primary mb-3">{announcement.title}</h3>
+                          <p
+                            className="text-muted-foreground line-clamp-3"
+                            dangerouslySetInnerHTML={{ __html: announcement.description || "" }}
+                          />
                         </div>
-                        <h3 className="text-xl font-semibold text-primary mb-3">{announcement.title}</h3>
-                        <p
-                          className="text-muted-foreground line-clamp-3"
-                          dangerouslySetInnerHTML={{ __html: announcement.description || "" }}
-                        />
-                      </div>
-                    </CardContent>
-                  </Card>
+                      </CardContent>
+                    </Card>
+                  </Link>
                 </motion.div>
               ))}
             </div>
@@ -472,7 +481,7 @@ const Index = () => {
           )}
           <motion.div variants={sectionVariants} className="text-center mt-12">
             <Button asChild variant="outline" size="lg" className="button-glow">
-              <Link to="/events">View All Announcements</Link>
+              <Link to="/events#announcements">View All Announcements</Link>
             </Button>
           </motion.div>
         </div>
