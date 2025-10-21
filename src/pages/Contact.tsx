@@ -61,17 +61,17 @@ const Contact = () => {
     {
       icon: Phone,
       title: "Phone",
-      details: ["+233 XX XXX XXXX", "+233 XX XXX XXXX"],
+      details: ["+233 XX XXX XXXX"],
     },
     {
       icon: Mail,
       title: "Email",
-      details: ["info@piwcasokwa.org", "admin@piwcasokwa.org"],
+      details: ["info@piwcasokwa.org",],
     },
     {
       icon: Clock,
       title: "Service Times",
-      details: ["Sunday: 8:00 AM", "Wednesday: 6:00 PM", "Friday: 6:00 PM"],
+      details: ["Sunday: 8:00 AM", "Wednesday: 5:30 PM", "Friday: 5:30 PM"],
     },
   ];
 
@@ -84,8 +84,9 @@ const Contact = () => {
 
   const latitude = 6.6770;
   const longitude = -1.5994;
-  const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`;
-  const mapEmbedUrl = `https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3962.5607954472924!2d-1.6184707!3d6.6858757!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xfdb9673b4b7b753%3A0x7a2c8c8f8f8f8f8f!2sPIWC%20Asokwa!5e0!3m2!1sen!2sgh!4v1234567890`;
+  const googleMapsUrl = `https://www.google.com/maps/@${latitude},${longitude},18z?entry=ttu`;
+  const mapEmbedUrl = `https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3962.5607954472924!2d${longitude}!3d${latitude}!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xfdb9673b4b7b753%3A0x7a2c8c8f8f8f8f8f!2sPIWC%20Asokwa!5e1!3m2!1sen!2sgh!4v1234567890`;
+
 
   return (
     <div className="min-h-screen pt-24">
@@ -202,7 +203,7 @@ const Contact = () => {
                   </h2>
                   <div className="aspect-video bg-muted rounded-lg overflow-hidden mb-6">
                     <iframe
-                      src={mapEmbedUrl.replace("!1m12!1m3!1d3962.5607954472924!2d-1.6184707!3d6.6858757", `!1m12!1m3!1d3962.5607954472924!2d${longitude}!3d${latitude}`)}
+                      src={mapEmbedUrl}
                       width="100%"
                       height="100%"
                       style={{ border: 0 }}
