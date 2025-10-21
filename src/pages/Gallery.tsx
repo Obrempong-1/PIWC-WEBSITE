@@ -4,6 +4,8 @@ import { X, PlayCircle } from 'lucide-react';
 import { Carousel, CarouselContent, CarouselItem, CarouselApi } from '@/components/ui/carousel';
 import { Tables } from '@/integrations/supabase/types';
 import { ServiceItem } from '@/components/ui/ServiceItem';
+import Loading from '@/components/Loading';
+import LazyImage from '@/components/ui/LazyImage';
 
 type Gallery = Tables<'galleries'> & { gallery_sections: { name: string } };
 type GallerySection = Tables<'gallery_sections'>;
@@ -73,7 +75,7 @@ const GalleryPage = () => {
   };
 
   if (loading) {
-    return <div className="flex justify-center items-center min-h-screen">Loading gallery...</div>;
+    return <Loading message="Loading gallery..." />;
   }
 
   return (
@@ -161,13 +163,19 @@ const GalleryPage = () => {
                     );
 
                     return allImages.map(({ item, url, index }, imgIndex) => (
-                      <div
-                        key={`${item.id}-${imgIndex}`}
-                        className="group relative overflow-hidden rounded-xl cursor-pointer fade-up break-inside-avoid shadow-md hover:shadow-2xl transition-all duration-300"
-                        style={{ transitionDelay: `${imgIndex * 50}ms` }}
-                        onClick={() => openModal(item, index)}
-                      >
-                        <img src={url} alt={`${item.title} image`} className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-110"/>
+                        <div
+                            key={`${item.id}-${imgIndex}`}
+                            className="group relative overflow-hidden rounded-xl cursor-pointer fade-up break-inside-avoid shadow-md hover:shadow-2xl transition-all duration-300"
+                            style={{ transitionDelay: `${imgIndex * 50}ms` }}
+                            onClick={() => openModal(item, index)}
+                        >
+                        <LazyImage 
+                          src={url} 
+                          alt={`${item.title} image`} 
+                          className="w-full h-auto"
+                          imageClassName="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-110"
+                          placeholderClassName="w-full h-auto bg-gray-300 animate-pulse rounded-xl"
+                        />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
                         <div className="absolute bottom-0 left-0 right-0 p-4">
                           <h3 className="text-lg font-bold text-white opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">{item.title}</h3>

@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Tables } from '@/integrations/supabase/types';
 import { Carousel, CarouselContent, CarouselItem, CarouselApi } from '@/components/ui/carousel';
+import LazyImage from '@/components/ui/LazyImage';
 
 type ServiceItemProps = {
   item: Tables<'galleries'>;
@@ -60,16 +61,19 @@ export const ServiceItem = ({ item, isReversed, openModal }: ServiceItemProps) =
             {(item.image_urls || []).map((url, imgIndex) => (
               <CarouselItem key={imgIndex} onClick={() => openModal(item, imgIndex)} className="cursor-pointer">
                 <div className="aspect-w-16 aspect-h-9 w-full h-full relative bg-black rounded-xl shadow-lg overflow-hidden">
-                    <img 
+                    <LazyImage
                         src={url}
                         alt=""
-                        aria-hidden="true"
-                        className="absolute inset-0 w-full h-full object-cover filter blur-md scale-110"
+                        className="absolute inset-0 w-full h-full"
+                        imageClassName="w-full h-full object-cover filter blur-md scale-110"
+                        placeholderClassName="w-full h-full bg-gray-300 animate-pulse"
                     />
-                    <img 
+                    <LazyImage
                         src={url}
                         alt={`${item.title} ${imgIndex + 1}`}
-                        className="relative w-full h-full object-contain z-10"
+                        className="relative w-full h-full z-10"
+                        imageClassName="w-full h-full object-contain"
+                        placeholderClassName="w-full h-full bg-gray-400 animate-pulse"
                     />
                 </div>
               </CarouselItem>

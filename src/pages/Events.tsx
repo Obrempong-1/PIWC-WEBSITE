@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Calendar, Clock, MapPin, Megaphone } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import Loading from "@/components/Loading";
 
 interface Event {
   id: string;
@@ -76,7 +77,7 @@ const Events = () => {
             Announcements
           </h2>
           {loading ? (
-            <div className="text-center">Loading announcements...</div>
+            <Loading message="Loading announcements..." />
           ) : announcements.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {announcements.map((announcement) => (
@@ -111,7 +112,7 @@ const Events = () => {
             All Events
           </h2>
           {loading ? (
-            <div className="text-center">Loading events...</div>
+            <Loading message="Loading events..." />
           ) : events.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {events.map((event) => (

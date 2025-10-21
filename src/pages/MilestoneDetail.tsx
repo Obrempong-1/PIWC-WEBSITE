@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Database } from "@/integrations/supabase/types";
+import Loading from "@/components/Loading";
 
 const MilestoneDetail = () => {
   const { id } = useParams();
@@ -30,7 +31,7 @@ const MilestoneDetail = () => {
   }, [id]);
 
   if (loading) {
-    return <div className="min-h-screen pt-24 flex justify-center items-center">Loading...</div>;
+    return <Loading message="Loading milestone..." />;
   }
 
   if (!milestone) {

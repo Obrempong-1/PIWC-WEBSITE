@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { Tables } from '@/integrations/supabase/types';
+import Loading from '@/components/Loading';
 
 type Leader = Tables<'leaders'>;
 
@@ -32,7 +33,7 @@ const LeaderDetail = () => {
   }, [id]);
 
   if (loading) {
-    return <div className='flex justify-center items-center min-h-screen'>Loading...</div>;
+    return <Loading message="Loading leader's profile..." />;
   }
 
   if (!leader) {

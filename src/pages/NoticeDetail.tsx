@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Loading from "@/components/Loading";
 
 interface Notice {
   id: string;
@@ -42,7 +43,7 @@ const NoticeDetail = () => {
   };
 
   if (loading) {
-    return <div className="flex justify-center items-center min-h-screen">Loading...</div>;
+    return <Loading message="Loading notice..." />;
   }
 
   if (!notice) {

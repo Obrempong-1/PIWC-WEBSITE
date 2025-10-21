@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import MinistryDialog from "@/components/MinistryDialog";
 import * as LucideIcons from "lucide-react";
 import { type LucideIcon } from "lucide-react";
+import Loading from "@/components/Loading";
 
 interface Ministry {
   id: string;
@@ -69,11 +70,10 @@ const Ministries = () => {
   };
 
   if (loading) {
-    return <div className="flex justify-center items-center min-h-screen">Loading ministries...</div>;
+    return <Loading message="Loading ministries..." />;
   }
 
   const getIconComponent = (iconName: string | null): LucideIcon => {
-    
     if (iconName && Object.prototype.hasOwnProperty.call(LucideIcons, iconName)) {
       const potentialIcon = (LucideIcons as { [key: string]: unknown })[iconName];
 
