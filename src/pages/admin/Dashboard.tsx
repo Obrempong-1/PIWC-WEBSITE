@@ -12,6 +12,7 @@ import {
   LogOut,
   Megaphone,
   FileText,
+  Milestone
 } from "lucide-react";
 
 const Dashboard = () => {
@@ -59,6 +60,12 @@ const Dashboard = () => {
       description: "Manage notice board items",
       icon: FileText,
       href: "/admin/notice-board",
+    },
+    {
+      title: "Milestones",
+      description: "Manage milestones for the about page",
+      icon: Milestone,
+      href: "/admin/milestones",
     },
   ];
 

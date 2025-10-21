@@ -55,12 +55,22 @@ export const ServiceItem = ({ item, isReversed, openModal }: ServiceItemProps) =
     >
       <div
         className={`relative rounded-2xl overflow-hidden shadow-2xl transform transition-all duration-500 hover:scale-105 hover:shadow-blue-200 ${isReversed ? 'md:order-last' : ''}`}>
-        <Carousel setApi={setApi} className="w-full group bg-gray-900" opts={{ loop: true }}>
+        <Carousel setApi={setApi} className="w-full group" opts={{ loop: true }}>
           <CarouselContent>
             {(item.image_urls || []).map((url, imgIndex) => (
               <CarouselItem key={imgIndex} onClick={() => openModal(item, imgIndex)} className="cursor-pointer">
-                <div className="aspect-w-16 aspect-h-9 w-full h-full flex items-center justify-center">
-                  <img src={url} alt={`${item.title} ${imgIndex + 1}`} className="w-auto h-auto max-w-full max-h-full object-contain" />
+                <div className="aspect-w-16 aspect-h-9 w-full h-full relative bg-black rounded-xl shadow-lg overflow-hidden">
+                    <img 
+                        src={url}
+                        alt=""
+                        aria-hidden="true"
+                        className="absolute inset-0 w-full h-full object-cover filter blur-md scale-110"
+                    />
+                    <img 
+                        src={url}
+                        alt={`${item.title} ${imgIndex + 1}`}
+                        className="relative w-full h-full object-contain z-10"
+                    />
                 </div>
               </CarouselItem>
             ))}

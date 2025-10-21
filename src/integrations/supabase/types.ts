@@ -302,6 +302,33 @@ export type Database = {
         }
         Relationships: []
       }
+      milestones: {
+        Row: {
+          id: string
+          created_at: string
+          year: string
+          event: string
+          description: string
+          image_url: string
+        }
+        Insert: {
+          id?: string
+          created_at?: string
+          year: string
+          event: string
+          description: string
+          image_url: string
+        }
+        Update: {
+          id?: string
+          created_at?: string
+          year?: string
+          event?: string
+          description?: string
+          image_url?: string
+        }
+        Relationships: []
+      }
       ministries: {
         Row: {
           age_group: string | null

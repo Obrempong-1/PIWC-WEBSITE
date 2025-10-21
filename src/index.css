@@ -75,7 +75,7 @@
   }
 }
 
-/* Frosted Glass Effect */
+
 .frosted-glass {
   background: rgba(255, 255, 255, 0.75);
   backdrop-filter: blur(10px);
@@ -88,7 +88,7 @@
   backdrop-filter: blur(12px);
 }
 
-/* Animated Gradient Text */
+
 @keyframes gradient-animation {
   0% {
     background-position: 0% 50%;
@@ -102,13 +102,11 @@
 }
 
 .gradient-text {
-  background: linear-gradient(90deg, #0066ff, #3399ff, #00ccff);
-  background-size: 200% 200%;
+  background: linear-gradient(90deg, #007bff, #0056d6, #002f91);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   text-fill-color: transparent;
-  animation: gradient-animation 10s ease-in-out infinite;
 }
 
 
@@ -137,11 +135,11 @@
 }
 
 
-/* Base styles for animated underline */
+
 .animated-underline {
   position: relative;
   display: inline-block;
-  padding-bottom: 4px; /* Space for the underline */
+  padding-bottom: 4px; 
 }
 
 .animated-underline::after {

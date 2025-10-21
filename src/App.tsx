@@ -23,11 +23,13 @@ import EventsManagement from "./pages/admin/EventsManagement";
 import GalleryManagement from "./pages/admin/GalleryManagement";
 import WelcomeSectionManagement from "./pages/admin/WelcomeSectionManagement";
 import NoticeBoardManagement from "./pages/admin/NoticeBoardManagement";
+import MilestoneManager from "./pages/admin/MilestoneManager";
 import Notices from "./pages/Notices";
 import AnnouncementDetail from "./pages/AnnouncementDetail";
 import NoticeDetail from "./pages/NoticeDetail";
 import LeaderDetail from "./pages/LeaderDetail";
 import EventDetail from "./pages/EventDetail";
+import MilestoneDetail from "./pages/MilestoneDetail";
 import { AnimatePresence } from "framer-motion";
 import ScrollToTop from "./components/ScrollToTop";
 
@@ -104,6 +106,14 @@ const AppRoutes = () => {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/admin/milestones"
+          element={
+            <ProtectedRoute requireAdmin>
+              <MilestoneManager />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/" element={<Layout><Index /></Layout>} />
         <Route path="/about" element={<Layout><About /></Layout>} />
         <Route path="/events" element={<Layout><Events /></Layout>} />
@@ -115,6 +125,7 @@ const AppRoutes = () => {
         <Route path="/notices/:id" element={<Layout><NoticeDetail /></Layout>} />
         <Route path="/announcements/:id" element={<Layout><AnnouncementDetail /></Layout>} />
         <Route path="/leader/:id" element={<Layout><LeaderDetail /></Layout>} />
+        <Route path="/milestone/:id" element={<Layout><MilestoneDetail /></Layout>} />
         <Route path="*" element={<Layout><NotFound /></Layout>} />
       </Routes>
     </AnimatePresence>

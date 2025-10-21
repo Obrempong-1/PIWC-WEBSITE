@@ -22,6 +22,7 @@ interface Announcement {
   description: string;
   created_at: string;
   image_url: string | null;
+  video_url: string | null;
 }
 
 const Events = () => {
@@ -70,7 +71,42 @@ const Events = () => {
       </header>
 
       <main className="container mx-auto px-4 py-20">
-        <section id="upcoming-events" className="mb-20">
+        <section id="announcements" className="mb-20">
+          <h2 className="text-4xl font-bold text-center mb-12 gradient-text" style={{ fontFamily: "'Playfair Display', serif" }}>
+            Announcements
+          </h2>
+          {loading ? (
+            <div className="text-center">Loading announcements...</div>
+          ) : announcements.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {announcements.map((announcement) => (
+                <Link to={`/announcements/${announcement.id}`} key={announcement.id}>
+                  <Card className="frosted-glass overflow-hidden group h-full">
+                    <CardContent className="p-0">
+                        {announcement.video_url ? (
+                          <video src={announcement.video_url} controls className="w-full h-48 object-cover" />
+                        ) : announcement.image_url && (
+                          <img src={announcement.image_url} alt={announcement.title} className="w-full h-48 object-cover" />
+                        )}
+                        <div className="p-6">
+                          <div className="flex items-center text-sm text-primary/80 font-semibold mb-2">
+                            <Megaphone className="h-4 w-4 mr-2" />
+                            <span>{new Date(announcement.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+                          </div>
+                          <h3 className="text-xl font-semibold text-primary mb-3">{announcement.title}</h3>
+                          <p className="text-muted-foreground line-clamp-3">{announcement.description}</p>
+                        </div>
+                    </CardContent>
+                  </Card>
+                </Link>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center text-muted-foreground py-8">No announcements available at the moment.</div>
+          )}
+        </section>
+
+        <section id="upcoming-events">
           <h2 className="text-4xl font-bold text-center mb-12 gradient-text" style={{ fontFamily: "'Playfair Display', serif" }}>
             All Events
           </h2>
@@ -116,43 +152,6 @@ const Events = () => {
             </div>
           ) : (
             <div className="text-center text-muted-foreground py-8">No events to display. Please check back later.</div>
-          )}
-        </section>
-
-        <section id="announcements">
-          <h2 className="text-4xl font-bold text-center mb-12 gradient-text" style={{ fontFamily: "'Playfair Display', serif" }}>
-            Announcements
-          </h2>
-          {loading ? (
-            <div className="text-center">Loading announcements...</div>
-          ) : announcements.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {announcements.map((announcement) => (
-                <Link to={`/announcements/${announcement.id}`} key={announcement.id}>
-                  <Card className="frosted-glass overflow-hidden group h-full">
-                    {announcement.image_url && (
-                        <div className="overflow-hidden">
-                            <img 
-                                src={announcement.image_url} 
-                                alt={announcement.title} 
-                                className="w-full h-auto object-contain group-hover:scale-105 transition-transform duration-300"
-                            />
-                        </div>
-                    )}
-                    <CardContent className="p-6">
-                      <div className="flex items-center text-sm text-primary/80 font-semibold mb-2">
-                        <Megaphone className="h-4 w-4 mr-2" />
-                        <span>{new Date(announcement.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
-                      </div>
-                      <h3 className="text-xl font-semibold text-primary mb-3">{announcement.title}</h3>
-                      <p className="text-muted-foreground">{announcement.description}</p>
-                    </CardContent>
-                  </Card>
-                </Link>
-              ))}
-            </div>
-          ) : (
-            <div className="text-center text-muted-foreground py-8">No announcements available at the moment.</div>
           )}
         </section>
       </main>

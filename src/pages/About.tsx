@@ -1,9 +1,11 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState, useRef } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Users, BookOpen, ShieldCheck, UserCheck, Cross, HandHeart, Droplets, Wind, Church, HandCoins, Heart } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import ImageModal from "@/components/ImageModal";
+import MilestoneCard from "@/components/ui/MilestoneCard";
+import { Database } from "@/integrations/supabase/types";
 
 interface Leader {
   id: string;
@@ -14,10 +16,12 @@ interface Leader {
 
 const About = () => {
   const [leaders, setLeaders] = useState<Leader[]>([]);
+  const [milestones, setMilestones] = useState<Database['public']['Tables']['milestones']['Row'][]>([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalImageUrl, setModalImageUrl] = useState("");
   const [modalAltText, setModalAltText] = useState("");
+  const location = useLocation();
 
   const openModal = (imageUrl: string, altText: string) => {
     setModalImageUrl(imageUrl);
@@ -45,17 +49,32 @@ const About = () => {
       { threshold: 0.1 }
     );
 
-    const elementsToAnimate = document.querySelectorAll(".fade-up");
-    elementsToAnimate.forEach((el) => observer.observe(el));
-
-    return () => {
-      elementsToAnimate.forEach((el) => observer.unobserve(el));
-    };
+    if (!loading) {
+        const elementsToAnimate = document.querySelectorAll(".fade-up");
+        elementsToAnimate.forEach((el) => observer.observe(el));
+    
+        return () => {
+          elementsToAnimate.forEach((el) => observer.unobserve(el));
+        };
+    }
   }, [loading]);
 
   useEffect(() => {
-    fetchLeaders();
-  }, []);
+    Promise.all([
+        fetchLeaders(),
+        fetchMilestones(),
+    ]).then(() => {
+      setLoading(false);
+      if (location.hash === '#leaders') {
+        setTimeout(() => {
+          const element = document.getElementById('leaders');
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+          }
+        }, 500); 
+      }
+    });
+  }, [location.hash]);
 
   const fetchLeaders = async () => {
     const { data, error } = await supabase
@@ -67,7 +86,17 @@ const About = () => {
     if (!error && data) {
       setLeaders(data);
     }
-    setLoading(false);
+  };
+
+  const fetchMilestones = async () => {
+    const { data, error } = await supabase
+      .from("milestones")
+      .select("*")
+      .order("year");
+
+    if (!error && data) {
+        setMilestones(data);
+    }
   };
 
   const tenets = [
@@ -133,25 +162,16 @@ const About = () => {
     }
 ];
 
-  const milestones = [
-    { year: "1995", event: "Church Establishment", description: "PIWC Asokwa was founded with just 20 members" },
-    { year: "2000", event: "First Building Dedication", description: "Dedicated our first permanent church structure" },
-    { year: "2010", event: "500 Members Milestone", description: "Reached 500 active members in our congregation" },
-    { year: "2015", event: "Community Outreach Launch", description: "Started major community development programs" },
-    { year: "2020", event: "Digital Ministry", description: "Launched online services reaching global audience" },
-    { year: "2024", event: "Expansion Project", description: "Completed new facility to accommodate growing membership" },
-  ];
-
   return (
     <div className="min-h-screen pt-24">
       <section className="relative py-20">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center fade-up">
             <h1 className="text-5xl lg:text-6xl font-bold mb-6 gradient-text" style={{ fontFamily: "'Playfair Display', serif" }}>
-              About PIWC Asokwa
+              About Pentecost International Worship Centre - Asokwa
             </h1>
             <p className="text-xl text-foreground/90">
-              Building a community of faith, hope, and love since our establishment
+            Growing together in faith, hope, and love as a Christlike family that shines His light in every sphere of life.
             </p>
           </div>
         </div>
@@ -223,50 +243,62 @@ const About = () => {
         </div>
     </section>
 
-      <section className="py-20 bg-primary/5">
+    <section className="py-20 bg-primary/5">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-16 fade-up">
-            <h2 className="text-3xl lg:text-4xl font-bold mb-4 gradient-text" style={{ fontFamily: "'Playfair Display', serif" }}>
-              Our Journey Through Time
-            </h2>
-            <p className="text-muted-foreground">Milestones of faith, growth, and God's faithfulness</p>
-          </div>
-          <div className="max-w-4xl mx-auto space-y-12">
-            {milestones.map((milestone, index) => (
-              <div
-                key={index}
-                className={`flex gap-8 items-center fade-up ${
-                  index % 2 === 0 ? "" : "flex-row-reverse"
-                }`}
-              >
-                <div className="flex-1">
-                  <Card className="frosted-glass">
-                    <CardContent className="pt-6">
-                      <h3 className="text-2xl font-bold text-primary mb-2">{milestone.event}</h3>
-                      <p className="text-muted-foreground">{milestone.description}</p>
-                    </CardContent>
-                  </Card>
-                </div>
-                <div className="flex flex-col items-center">
-                  <div className="w-4 h-4 rounded-full bg-primary/20" />
-                  <div className="w-1 h-24 bg-primary/10" />
-                </div>
-                <div className="flex-1">
-                  <div className="text-4xl font-bold text-primary/10">{milestone.year}</div>
-                </div>
-              </div>
-            ))}
-          </div>
+            <div className="text-center mb-16 fade-up">
+                <h2 className="text-3xl lg:text-4xl font-bold mb-4 gradient-text" style={{ fontFamily: "'Playfair Display', serif" }}>
+                    Our Journey Through Time
+                </h2>
+                <p className="text-muted-foreground">Milestones of faith, growth, and God's faithfulness</p>
+            </div>
+            <div className="max-w-5xl mx-auto relative">
+                <div className="absolute left-1/2 -translate-x-1/2 h-full w-1 bg-primary/10 rounded-full"></div>
+                {milestones.map((milestone, index) => (
+                    <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-x-8 mb-12" key={milestone.id}>
+                        {index % 2 === 0 ? (
+                            <>
+                                <div className="text-right fade-up pr-8">
+                                    <h3 className="text-2xl font-bold text-primary mb-2">{milestone.year} - {milestone.event}</h3>
+                                    <div className="text-muted-foreground" dangerouslySetInnerHTML={{ __html: milestone.description.substring(0, 150) + '...' }} />
+                                </div>
+                                <div className="relative h-full flex items-center justify-center">
+                                    <div className="w-5 h-5 rounded-full bg-primary/30 border-4 border-primary/10"></div>
+                                </div>
+                                <div className="fade-up pl-8">
+                                    <Link to={`/milestone/${milestone.id}`}>
+                                        <MilestoneCard milestone={milestone} />
+                                    </Link>
+                                </div>
+                            </>
+                        ) : (
+                            <>
+                                <div className="fade-up pr-8">
+                                    <Link to={`/milestone/${milestone.id}`}>
+                                        <MilestoneCard milestone={milestone} />
+                                    </Link>
+                                </div>
+                                <div className="relative h-full flex items-center justify-center">
+                                    <div className="w-5 h-5 rounded-full bg-primary/30 border-4 border-primary/10"></div>
+                                </div>
+                                <div className="text-left fade-up pl-8">
+                                    <h3 className="text-2xl font-bold text-primary mb-2">{milestone.year} - {milestone.event}</h3>
+                                    <div className="text-muted-foreground" dangerouslySetInnerHTML={{ __html: milestone.description.substring(0, 150) + '...' }} />
+                                </div>
+                            </>
+                        )}
+                    </div>
+                ))}
+            </div>
         </div>
-      </section>
+    </section>
 
-      <section className="py-20">
+      <section id="leaders" className="py-20">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16 fade-up">
             <h2 className="text-3xl lg:text-4xl font-bold mb-4 gradient-text" style={{ fontFamily: "'Playfair Display', serif" }}>
-              Our Leadership Team
+              PIWC ASOKWA PRESBITORY
             </h2>
-            <p className="text-muted-foreground">Dedicated servants leading with wisdom and grace</p>
+            <p className="text-muted-foreground">The highest decision making body of the church.</p>
           </div>
           {loading ? (
             <div className="text-center">Loading leadership team...</div>

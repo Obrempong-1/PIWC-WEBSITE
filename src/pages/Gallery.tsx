@@ -105,10 +105,10 @@ const GalleryPage = () => {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto zoom-in">
             <h1 className="text-6xl lg:text-7xl font-extrabold mb-6 gradient-text" style={{ fontFamily: "'Playfair Display', serif" }}>
-              Our Living Gallery
+              PIWC ASOKWA GALLERY
             </h1>
             <p className="text-xl text-gray-600">
-              Explore vibrant moments of worship, joyful fellowship, and the tangible faithfulness of God in our church family.
+            Capturing the joy of worship, the unity of fellowship, and the undeniable faithfulness of God at PIWC ASOKWA
             </p>
           </div>
         </div>

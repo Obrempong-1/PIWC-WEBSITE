@@ -41,11 +41,19 @@ interface Notice {
   video_url: string | null;
 }
 
+interface Leader {
+    id: string;
+    name: string;
+    role: string;
+    image_url: string | null;
+}
+
 const Index = () => {
   const [events, setEvents] = useState<Event[]>([]);
   const [welcomeSection, setWelcomeSection] = useState<WelcomeSection | null>(null);
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
   const [notices, setNotices] = useState<Notice[]>([]);
+  const [leaders, setLeaders] = useState<Leader[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -53,14 +61,10 @@ const Index = () => {
   }, []);
 
   const fetchData = async () => {
-    const [eventsRes, welcomeSectionRes, announcementsRes, noticesRes] = await Promise.all([
+    const [eventsRes, welcomeSectionRes, announcementsRes, noticesRes, leadersRes] = await Promise.all([
       supabase
         .from("events")
-        .select("*, event_videos(video_url)")
-        .eq("published", true)
-        .neq("category", "Weekly Service")
-        .gte("start_date", new Date().toISOString())
-        .order("start_date", { ascending: true })
+        .select("*")
         .limit(3),
       supabase
         .from("welcome_section")
@@ -79,6 +83,12 @@ const Index = () => {
         .eq("published", true)
         .order("created_at", { ascending: false })
         .limit(3),
+        supabase
+        .from("leaders")
+        .select("*")
+        .eq("published", true)
+        .order("display_order")
+        .limit(3),
     ]);
 
     if (eventsRes.data) {
@@ -92,6 +102,9 @@ const Index = () => {
     }
     if (noticesRes.data) {
       setNotices(noticesRes.data as unknown as Notice[]);
+    }
+    if (leadersRes.data) {
+        setLeaders(leadersRes.data as unknown as Leader[]);
     }
     setLoading(false);
   };
@@ -192,6 +205,60 @@ const Index = () => {
         whileInView="visible"
         viewport={{ once: true, amount: 0.2 }}
       >
+         <div className="container mx-auto px-4">
+          <div className="text-center mb-16 fade-up">
+            <h2 className="text-3xl lg:text-4xl font-bold mb-4 gradient-text" style={{ fontFamily: "'Playfair Display', serif" }}>
+              PIWC ASOKWA PRESBITORY
+            </h2>
+            <p className="text-muted-foreground">The highest decision making body of the church.</p>
+          </div>
+          {loading ? (
+            <div className="text-center">Loading leadership team...</div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+              {leaders.map((leader, index) => (
+                <Link to={`/leader/${leader.id}`} key={leader.id}>
+                  <Card
+                    className="frosted-glass overflow-hidden group fade-up h-full"
+                    style={{ transitionDelay: `${index * 150}ms` }}
+                  >
+                    <div className="relative h-64 overflow-hidden">
+                      {leader.image_url ? (
+                        <img
+                          src={leader.image_url}
+                          alt={leader.name}
+                          className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110"
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-primary/10 flex items-center justify-center">
+                          <Users className="h-20 w-20 text-primary/30" />
+                        </div>
+                      )}
+                    </div>
+                    <CardContent className="pt-4 text-center">
+                      <h3 className="text-lg font-semibold text-primary mb-1">{leader.name}</h3>
+                      <p className="text-sm text-primary/70 font-medium">{leader.role}</p>
+                    </CardContent>
+                  </Card>
+                </Link>
+              ))}
+            </div>
+          )}
+          <div className="text-center mt-12">
+            <Link to="/about#leaders">
+              <Button size="lg" className="button-glow">View All Leaders</Button>
+            </Link>
+          </div>
+        </div>
+      </motion.section>
+
+      <motion.section
+        className="py-20 bg-primary/5"
+        variants={sectionVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+      >
         <div className="container mx-auto px-4">
           <motion.div variants={sectionVariants} className="text-center mb-16">
             <AnimatedGradientText text="Notice Board" className="text-3xl lg:text-4xl font-bold mb-4" style={{ fontFamily: "'Playfair Display', serif" }} />
@@ -257,8 +324,8 @@ const Index = () => {
       >
         <div className="container mx-auto px-4">
           <motion.div variants={sectionVariants} className="text-center mb-16">
-            <AnimatedGradientText text="What We Offer" className="text-3xl lg:text-4xl font-bold mb-4" style={{ fontFamily: "'Playfair Display', serif" }} />
-            <p className="text-muted-foreground">Experience the fullness of Christian life and community</p>
+            <AnimatedGradientText text="A Place to Worship, Grow, and Serve" className="text-3xl lg:text-4xl font-bold mb-4" style={{ fontFamily: "'Playfair Display', serif" }} />
+            <p className="text-muted-foreground">Experience the fullness of Christian life, grow in your faith, and find a place to serve in our vibrant community</p>
           </motion.div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {features.map((feature, index) => (
@@ -425,7 +492,7 @@ const Index = () => {
               Experience the presence of God and connect with our loving community. 
               All are welcome to worship with us!
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col sm:flew-row gap-4 justify-center">
               <Button asChild size="lg" className="button-glow">
                 <Link to="/contact">Get Directions</Link>
               </Button>

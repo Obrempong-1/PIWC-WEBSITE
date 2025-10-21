@@ -39,11 +39,17 @@ const MinistryDialog = ({ open, onOpenChange, ministry }: MinistryDialogProps) =
         </DialogHeader>
         
         <div className="space-y-6">
-          <div className="aspect-video rounded-lg overflow-hidden">
+          <div className="aspect-video rounded-lg overflow-hidden relative bg-black">
+            <img 
+              src={ministry.image} 
+              alt="" 
+              aria-hidden="true" 
+              className="absolute inset-0 w-full h-full object-cover filter blur-md scale-110"
+            />
             <img 
               src={ministry.image} 
               alt={ministry.title}
-              className="w-full h-full object-contain"
+              className="relative w-full h-full object-contain z-10"
             />
           </div>
 

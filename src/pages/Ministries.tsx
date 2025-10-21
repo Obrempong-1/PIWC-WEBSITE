@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import MinistryDialog from "@/components/MinistryDialog";
 import * as LucideIcons from "lucide-react";
+import { type LucideIcon } from "lucide-react";
 
 interface Ministry {
   id: string;
@@ -71,11 +72,19 @@ const Ministries = () => {
     return <div className="flex justify-center items-center min-h-screen">Loading ministries...</div>;
   }
 
-  const getIconComponent = (iconName: string | null) => {
-    if (iconName && (LucideIcons as any)[iconName]) {
-      return (LucideIcons as any)[iconName];
+  const getIconComponent = (iconName: string | null): LucideIcon => {
+    
+    if (iconName && Object.prototype.hasOwnProperty.call(LucideIcons, iconName)) {
+      const potentialIcon = (LucideIcons as { [key: string]: unknown })[iconName];
+
+      
+      if (typeof potentialIcon === 'object' && potentialIcon !== null) {
+        return potentialIcon as LucideIcon;
+      }
     }
-    return LucideIcons.Church; // Default icon
+
+    
+    return LucideIcons.Church;
   };
 
   return (
@@ -104,11 +113,17 @@ const Ministries = () => {
                 onClick={() => handleMinistryClick(ministry)}
               >
                 {ministry.image_url && (
-                  <div className="aspect-video overflow-hidden rounded-t-lg">
+                  <div className="aspect-video overflow-hidden rounded-t-lg relative bg-black">
+                    <img 
+                      src={ministry.image_url} 
+                      alt="" 
+                      aria-hidden="true" 
+                      className="absolute inset-0 w-full h-full object-cover filter blur-md scale-110"
+                    />
                     <img 
                       src={ministry.image_url} 
                       alt={ministry.title}
-                      className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
+                      className="relative w-full h-full object-contain z-10 transition-transform duration-500 hover:scale-110"
                     />
                   </div>
                 )}
