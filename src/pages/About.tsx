@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Users, BookOpen, ShieldCheck, UserCheck, Cross, HandHeart, Droplets, Wind, Church, HandCoins, Heart } from "lucide-react";
@@ -251,7 +251,9 @@ const About = () => {
                 </h2>
                 <p className="text-muted-foreground">Milestones of faith, growth, and God's faithfulness</p>
             </div>
-            <div className="max-w-5xl mx-auto relative">
+
+            {/* Desktop Timeline */}
+            <div className="max-w-5xl mx-auto relative hidden md:block">
                 <div className="absolute left-1/2 -translate-x-1/2 h-full w-1 bg-primary/10 rounded-full"></div>
                 {milestones.map((milestone, index) => (
                     <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-x-8 mb-12" key={milestone.id}>
@@ -286,6 +288,27 @@ const About = () => {
                                 </div>
                             </>
                         )}
+                    </div>
+                ))}
+            </div>
+
+            {/* Mobile Timeline */}
+            <div className="md:hidden">
+                {milestones.map((milestone) => (
+                    <div className="flex gap-4 mb-12" key={milestone.id}>
+                        <div className="flex flex-col items-center">
+                            <div className="w-5 h-5 rounded-full bg-primary/30 border-4 border-primary/10"></div>
+                            <div className="flex-grow w-px bg-primary/20"></div>
+                        </div>
+                        <div className="flex-1">
+                            <div className="mb-4">
+                                <h3 className="text-2xl font-bold text-primary">{milestone.year}</h3>
+                                <p className="text-muted-foreground">{milestone.event}</p>
+                            </div>
+                            <Link to={`/milestone/${milestone.id}`}>
+                                <MilestoneCard milestone={milestone} />
+                            </Link>
+                        </div>
                     </div>
                 ))}
             </div>

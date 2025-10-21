@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Card } from '@/components/ui/card';
 import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface Milestone {
   id: string;
@@ -17,19 +18,58 @@ interface MilestoneCardProps {
 
 const MilestoneCard = ({ milestone }: MilestoneCardProps) => {
   const [isFlipped, setIsFlipped] = useState(false);
+  const isMobile = useIsMobile();
+  const intervalRef = useRef<number | undefined>();
+
+  const stopAutoRotation = () => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = undefined;
+    }
+  };
+
+  const startAutoRotation = () => {
+      stopAutoRotation(); 
+      intervalRef.current = window.setInterval(() => {
+        setIsFlipped(prev => !prev);
+      }, 3000); // 3 secondsss
+  }
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setIsFlipped(prev => !prev);
-    }, 3000); // Flip every 3 seconds
-
-    return () => clearInterval(interval);
+    startAutoRotation();
+    return () => stopAutoRotation();
   }, []);
+
+  const handleInteraction = () => {
+    if (isMobile) {
+      stopAutoRotation();
+      setIsFlipped(prev => !prev);
+    }
+  };
+
+  const handleMouseEnter = () => {
+    if (!isMobile) {
+      stopAutoRotation();
+      setIsFlipped(true);
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (!isMobile) {
+      setIsFlipped(false);
+      startAutoRotation();
+    }
+  };
 
   const plainTextDescription = milestone.description.replace(/<[^>]+>/g, '').substring(0, 100) + '...';
 
   return (
-    <Link to={`/milestone/${milestone.id}`} className="w-full aspect-[4/3] [perspective:1000px] block group">
+    <div 
+      className="w-full h-[500px] sm:h-auto sm:aspect-[4/3] [perspective:1000px] block group"
+      onClick={handleInteraction}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
       <div
         className={`relative w-full h-full [transform-style:preserve-3d] transition-transform duration-700 ${isFlipped ? '[transform:rotateY(180deg)]' : ''}`}>
         <div className="absolute w-full h-full [backface-visibility:hidden]">
@@ -43,7 +83,7 @@ const MilestoneCard = ({ milestone }: MilestoneCardProps) => {
                 <img 
                     src={milestone.image_url}
                     alt={milestone.event}
-                    className="relative w-full h-full object-contain z-10"
+                    className="absolute inset-0 w-full h-full object-contain z-10"
                 />
                 <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4 rounded-b-xl z-20">
                     <div className="text-white text-xs font-semibold flex items-center">
@@ -56,13 +96,13 @@ const MilestoneCard = ({ milestone }: MilestoneCardProps) => {
             <Card className="w-full h-full flex flex-col justify-center items-center bg-primary/90 text-primary-foreground p-6 rounded-xl shadow-lg">
                 <h3 className="text-xl font-bold mb-2 text-center">{milestone.year} - {milestone.event}</h3>
                 <p className="text-center text-sm">{plainTextDescription}</p>
-                <div className="mt-4 text-xs font-semibold flex items-center">
+                <Link to={`/milestone/${milestone.id}`} className="mt-4 text-xs font-semibold flex items-center">
                     Read More <ArrowRight className="h-4 w-4 ml-1 transition-transform group-hover:translate-x-1" />
-                </div>
+                </Link>
             </Card>
         </div>
       </div>
-    </Link>
+    </div>
   );
 };
 
