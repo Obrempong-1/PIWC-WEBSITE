@@ -5,7 +5,7 @@ import { Carousel, CarouselContent, CarouselItem, CarouselApi } from '@/componen
 type ServiceItemProps = {
   item: Tables<'galleries'>;
   isReversed: boolean;
-  openModal: (item: Tables<'galleries'>) => void;
+  openModal: (item: Tables<'galleries'>, initialIndex: number) => void;
 };
 
 export const ServiceItem = ({ item, isReversed, openModal }: ServiceItemProps) => {
@@ -17,8 +17,11 @@ export const ServiceItem = ({ item, isReversed, openModal }: ServiceItemProps) =
   useEffect(() => {
     if (!api) return;
     setCurrent(api.selectedScrollSnap());
-    api.on('select', () => setCurrent(api.selectedScrollSnap()));
-  }, [api]);
+    api.on('select', () => {
+      if (isHovered) return;
+      setCurrent(api.selectedScrollSnap());
+    });
+  }, [api, isHovered]);
 
   useEffect(() => {
     const startTimer = () => {
@@ -55,8 +58,8 @@ export const ServiceItem = ({ item, isReversed, openModal }: ServiceItemProps) =
         <Carousel setApi={setApi} className="w-full group bg-gray-900" opts={{ loop: true }}>
           <CarouselContent>
             {(item.image_urls || []).map((url, imgIndex) => (
-              <CarouselItem key={imgIndex} onClick={() => openModal(item)} className="cursor-pointer">
-                <div className="w-full h-full flex items-center justify-center">
+              <CarouselItem key={imgIndex} onClick={() => openModal(item, imgIndex)} className="cursor-pointer">
+                <div className="aspect-w-16 aspect-h-9 w-full h-full flex items-center justify-center">
                   <img src={url} alt={`${item.title} ${imgIndex + 1}`} className="w-auto h-auto max-w-full max-h-full object-contain" />
                 </div>
               </CarouselItem>
