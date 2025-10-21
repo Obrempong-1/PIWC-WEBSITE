@@ -8,14 +8,6 @@ import { Tables } from "@/integrations/supabase/types";
 type Gallery = Tables<"galleries"> & { gallery_sections: { name: string } };
 type GallerySection = Tables<"gallery_sections">;
 
-
-const getYouTubeVideoId = (url: string | null): string | null => {
-  if (!url) return null;
-  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
-  const match = url.match(regExp);
-  return (match && match[2].length === 11) ? match[2] : null;
-};
-
 const Gallery = () => {
   const [galleries, setGalleries] = useState<Gallery[]>([]);
   const [sections, setSections] = useState<GallerySection[]>([]);
@@ -65,6 +57,10 @@ const Gallery = () => {
     setLoading(false);
   };
 
+  const openModal = (item: Gallery) => {
+    setSelectedItem(item);
+  };
+
   if (loading) {
     return <div className="flex justify-center items-center min-h-screen">Loading gallery...</div>;
   }
@@ -89,49 +85,45 @@ const Gallery = () => {
         if (sectionItems.length === 0) return null;
 
         const isVideoSection = section.name.toLowerCase().includes('video');
-        const isCarouselSection = section.name.toLowerCase().includes('service');
+        const isServiceSection = section.name.toLowerCase().includes('service');
         
         return (
           <section key={section.id} className={`py-10 ${sectionIndex % 2 !== 0 ? 'bg-primary/5' : ''}`}>
             <div className="container mx-auto px-4">
               <h2 className="text-3xl font-bold mb-8 text-center text-blue-600">{section.name}</h2>
               
-              {isCarouselSection ? (
-                <Carousel className="max-w-4xl mx-auto" opts={{ loop: true }}>
-                  <CarouselContent>
-                    {sectionItems.map((item) => (
-                      <CarouselItem key={item.id} onClick={() => setSelectedItem(item)} className="cursor-pointer">
-                        <Card>
-                          <CardContent className="p-0 relative aspect-video">
-                            <img src={item.image_urls![0]} alt={item.title} className="w-full h-full object-contain rounded-lg"/>
-                            <div className="absolute bottom-0 left-0 right-0 p-4 bg-black/50 text-white">
-                              <h3 className="text-xl font-bold">{item.title}</h3>
-                              <p className="text-sm">{item.description}</p>
-                            </div>
-                          </CardContent>
-                        </Card>
-                      </CarouselItem>
-                    ))}
-                  </CarouselContent>
-                  <CarouselPrevious />
-                  <CarouselNext />
-                </Carousel>
+              {isServiceSection ? (
+                 <div className="max-w-5xl mx-auto space-y-16">
+                 {sectionItems.map((item, index) => (
+                   <div key={item.id} className={`grid grid-cols-1 md:grid-cols-2 gap-8 items-center fade-up`}>
+                     <div className={`rounded-lg overflow-hidden ${index % 2 !== 0 ? 'md:order-last' : ''}`}>
+                       <Carousel className="w-full" opts={{ loop: true }}>
+                         <CarouselContent>
+                           {(item.image_urls || []).map((url, imgIndex) => (
+                             <CarouselItem key={imgIndex} onClick={() => openModal(item)} className="cursor-pointer">
+                               <img src={url} alt={`${item.title} ${imgIndex + 1}`} className="w-full h-full object-cover aspect-square"/>
+                             </CarouselItem>
+                           ))}
+                         </CarouselContent>
+                         {(item.image_urls || []).length > 1 && <><CarouselPrevious /><CarouselNext /></>}
+                       </Carousel>
+                     </div>
+                     <div className={`flex flex-col justify-center ${index % 2 !== 0 ? 'md:order-first' : ''}`}>
+                       <h3 className="text-2xl font-bold mb-2">{item.title}</h3>
+                       <p className="text-muted-foreground text-lg">{item.description}</p>
+                     </div>
+                   </div>
+                 ))}
+               </div>
               ) : isVideoSection ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
                   {sectionItems.map((item) => {
-                    const videoId = getYouTubeVideoId(item.video_url);
-                    if (!videoId) return null;
+                    if (!item.video_url) return null;
 
                     return (
-                      <div key={item.id} className="frosted-glass rounded-lg overflow-hidden fade-up">
-                        <div className="aspect-video">
-                          <iframe
-                            src={`https://www.youtube.com/embed/${videoId}`}
-                            frameBorder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowFullScreen
-                            className="w-full h-full"
-                          ></iframe>
+                      <div key={item.id} className="frosted-glass rounded-lg overflow-hidden fade-up cursor-pointer" onClick={() => openModal(item)}>
+                        <div className="aspect-video bg-black">
+                          <video src={item.video_url} className="w-full h-full object-contain" />
                         </div>
                         <div className="p-4">
                           <h3 className="text-lg font-semibold">{item.title}</h3>
@@ -142,25 +134,31 @@ const Gallery = () => {
                   })}
                 </div>
               ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-w-7xl mx-auto">
-                  {sectionItems.map((item, index) => (
-                    <div
-                      key={item.id}
-                      className="group relative aspect-square overflow-hidden frosted-glass cursor-pointer fade-up"
-                      style={{ transitionDelay: `${index * 50}ms` }}
-                      onClick={() => setSelectedItem(item)}
-                    >
-                      <img
-                        src={item.image_urls![0]}
-                        alt={item.title}
-                        className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                      <div className="absolute inset-0 flex flex-col justify-end p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <h3 className="text-lg font-bold text-white">{item.title}</h3>
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 max-w-7xl mx-auto">
+                  {(() => {
+                    const allImages = sectionItems.flatMap(item =>
+                      (item.image_urls || []).map(url => ({ item, url }))
+                    );
+
+                    return allImages.map(({ item, url }, index) => (
+                      <div
+                        key={`${item.id}-${index}`}
+                        className="group relative aspect-square overflow-hidden frosted-glass cursor-pointer fade-up"
+                        style={{ transitionDelay: `${index * 30}ms` }}
+                        onClick={() => openModal(item)}
+                      >
+                        <img
+                          src={url}
+                          alt={`${item.title} image`}
+                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                        <div className="absolute bottom-0 left-0 right-0 p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                          <h3 className="text-sm font-bold text-white truncate">{item.title}</h3>
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    ));
+                  })()}
                 </div>
               )}
             </div>
@@ -180,10 +178,12 @@ const Gallery = () => {
             <X className="h-6 w-6 text-white" />
           </button>
           <div className="relative max-w-4xl w-full">
-            {selectedItem.image_urls && selectedItem.image_urls.length > 0 && (
+            {selectedItem.video_url ? (
+                <video src={selectedItem.video_url} className="w-full max-h-[80vh] object-contain rounded-lg" controls autoPlay />
+              ) : (
               <Carousel opts={{ loop: true }}>
                 <CarouselContent>
-                  {selectedItem.image_urls.map((url, index) => (
+                  {(selectedItem.image_urls || []).map((url, index) => (
                     <CarouselItem key={index}>
                       <img
                         src={url}
@@ -193,7 +193,7 @@ const Gallery = () => {
                     </CarouselItem>
                   ))}
                 </CarouselContent>
-                {(selectedItem.image_urls.length > 1) && (
+                {(selectedItem.image_urls || []).length > 1 && (
                   <>
                     <CarouselPrevious className="-left-10" />
                     <CarouselNext className="-right-10" />
