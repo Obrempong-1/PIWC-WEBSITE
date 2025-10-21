@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import { motion, Variants } from "framer-motion";
 import AnimatedGradientText from "@/components/AnimatedGradientText";
 import FloatingIcons from "@/components/FloatingIcons";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface Event {
   id: string;
@@ -214,7 +215,17 @@ const Index = () => {
             <p className="text-muted-foreground">The highest decision making body of the church.</p>
           </div>
           {loading ? (
-            <div className="text-center">Loading leadership team...</div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+                {[...Array(3)].map((_, index) => (
+                    <div key={index} className="frosted-glass overflow-hidden group h-full">
+                        <Skeleton className="h-64 w-full" />
+                        <div className="pt-4 text-center">
+                            <Skeleton className="h-6 w-3/4 mx-auto mb-2" />
+                            <Skeleton className="h-4 w-1/2 mx-auto" />
+                        </div>
+                    </div>
+                ))}
+            </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
               {leaders.map((leader, index) => (
@@ -274,7 +285,19 @@ const Index = () => {
             <p className="text-muted-foreground">Important notices for the congregation</p>
           </motion.div>
           {loading ? (
-            <div className="text-center py-8">Loading notices...</div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                {[...Array(3)].map((_, index) => (
+                    <div key={index} className="frosted-glass overflow-hidden h-full">
+                        <Skeleton className="h-48 w-full" />
+                        <div className="p-6">
+                            <Skeleton className="h-4 w-1/2 mb-4" />
+                            <Skeleton className="h-6 w-3/4 mb-2" />
+                            <Skeleton className="h-4 w-full" />
+                            <Skeleton className="h-4 w-full mt-2" />
+                        </div>
+                    </div>
+                ))}
+            </div>
           ) : notices.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
               {notices.map((notice, index) => (
@@ -378,7 +401,18 @@ const Index = () => {
             <p className="text-muted-foreground">Stay updated with our latest events and programs</p>
           </motion.div>
           {loading ? (
-            <div className="text-center py-8">Loading events...</div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                {[...Array(3)].map((_, index) => (
+                    <div key={index} className="frosted-glass overflow-hidden h-full">
+                        <Skeleton className="h-48 w-full" />
+                        <div className="p-6">
+                            <Skeleton className="h-4 w-1/2 mb-4" />
+                            <Skeleton className="h-6 w-3/4 mb-2" />
+                            <Skeleton className="h-4 w-full" />
+                        </div>
+                    </div>
+                ))}
+            </div>
           ) : events.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
               {events.map((event, index) => (
@@ -441,7 +475,19 @@ const Index = () => {
             <p className="text-muted-foreground">Stay informed with the latest church announcements</p>
           </motion.div>
           {loading ? (
-            <div className="text-center py-8">Loading announcements...</div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                {[...Array(3)].map((_, index) => (
+                    <div key={index} className="frosted-glass overflow-hidden h-full">
+                        <Skeleton className="h-48 w-full" />
+                        <div className="p-6">
+                            <Skeleton className="h-4 w-1/2 mb-4" />
+                            <Skeleton className="h-6 w-3/4 mb-2" />
+                            <Skeleton className="h-4 w-full" />
+                            <Skeleton className="h-4 w-full mt-2" />
+                        </div>
+                    </div>
+                ))}
+            </div>
           ) : announcements.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
               {announcements.map((announcement, index) => (

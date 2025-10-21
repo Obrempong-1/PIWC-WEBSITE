@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import ImageModal from "@/components/ImageModal";
 import MilestoneCard from "@/components/ui/MilestoneCard";
 import { Database } from "@/integrations/supabase/types";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface Leader {
   id: string;
@@ -252,66 +253,97 @@ const About = () => {
                 <p className="text-muted-foreground">Milestones of faith, growth, and God's faithfulness</p>
             </div>
 
-            {/* Desktop Timeline */}
-            <div className="max-w-5xl mx-auto relative hidden md:block">
-                <div className="absolute left-1/2 -translate-x-1/2 h-full w-1 bg-primary/10 rounded-full"></div>
-                {milestones.map((milestone, index) => (
-                    <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-x-8 mb-12" key={milestone.id}>
-                        {index % 2 === 0 ? (
-                            <>
-                                <div className="text-right fade-up pr-8">
-                                    <h3 className="text-2xl font-bold text-primary mb-2">{milestone.year} - {milestone.event}</h3>
-                                    <div className="text-muted-foreground" dangerouslySetInnerHTML={{ __html: milestone.description.substring(0, 150) + '...' }} />
-                                </div>
-                                <div className="relative h-full flex items-center justify-center">
-                                    <div className="w-5 h-5 rounded-full bg-primary/30 border-4 border-primary/10"></div>
-                                </div>
-                                <div className="fade-up pl-8">
-                                    <Link to={`/milestone/${milestone.id}`}>
-                                        <MilestoneCard milestone={milestone} />
-                                    </Link>
-                                </div>
-                            </>
-                        ) : (
-                            <>
-                                <div className="fade-up pr-8">
-                                    <Link to={`/milestone/${milestone.id}`}>
-                                        <MilestoneCard milestone={milestone} />
-                                    </Link>
-                                </div>
-                                <div className="relative h-full flex items-center justify-center">
-                                    <div className="w-5 h-5 rounded-full bg-primary/30 border-4 border-primary/10"></div>
-                                </div>
-                                <div className="text-left fade-up pl-8">
-                                    <h3 className="text-2xl font-bold text-primary mb-2">{milestone.year} - {milestone.event}</h3>
-                                    <div className="text-muted-foreground" dangerouslySetInnerHTML={{ __html: milestone.description.substring(0, 150) + '...' }} />
-                                </div>
-                            </>
-                        )}
-                    </div>
+            {loading ? (
+              <div className="max-w-5xl mx-auto relative">
+                {[...Array(3)].map((_, index) => (
+                  <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-x-8 mb-12" key={index}>
+                    {index % 2 === 0 ? (
+                      <>
+                        <div className="text-right pr-8">
+                          <Skeleton className="h-8 w-48 mb-4" />
+                          <Skeleton className="h-4 w-full" />
+                          <Skeleton className="h-4 w-3/4 mt-2" />
+                        </div>
+                        <Skeleton className="w-5 h-5 rounded-full" />
+                        <Skeleton className="h-48 w-full" />
+                      </>
+                    ) : (
+                      <>
+                        <Skeleton className="h-48 w-full" />
+                        <Skeleton className="w-5 h-5 rounded-full" />
+                        <div className="text-left pl-8">
+                          <Skeleton className="h-8 w-48 mb-4" />
+                          <Skeleton className="h-4 w-full" />
+                          <Skeleton className="h-4 w-3/4 mt-2" />
+                        </div>
+                      </>
+                    )}
+                  </div>
                 ))}
-            </div>
+              </div>
+            ) : (
+              <>
+                <div className="max-w-5xl mx-auto relative hidden md:block">
+                    <div className="absolute left-1/2 -translate-x-1/2 h-full w-1 bg-primary/10 rounded-full"></div>
+                    {milestones.map((milestone, index) => (
+                        <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-x-8 mb-12" key={milestone.id}>
+                            {index % 2 === 0 ? (
+                                <>
+                                    <div className="text-right fade-up pr-8">
+                                        <h3 className="text-2xl font-bold text-primary mb-2">{milestone.year} - {milestone.event}</h3>
+                                        <div className="text-muted-foreground" dangerouslySetInnerHTML={{ __html: milestone.description.substring(0, 150) + '...' }} />
+                                    </div>
+                                    <div className="relative h-full flex items-center justify-center">
+                                        <div className="w-5 h-5 rounded-full bg-primary/30 border-4 border-primary/10"></div>
+                                    </div>
+                                    <div className="fade-up pl-8">
+                                        <Link to={`/milestone/${milestone.id}`}>
+                                            <MilestoneCard milestone={milestone} />
+                                        </Link>
+                                    </div>
+                                </> 
+                            ) : (
+                                <>
+                                    <div className="fade-up pr-8">
+                                        <Link to={`/milestone/${milestone.id}`}>
+                                            <MilestoneCard milestone={milestone} />
+                                        </Link>
+                                    </div>
+                                    <div className="relative h-full flex items-center justify-center">
+                                        <div className="w-5 h-5 rounded-full bg-primary/30 border-4 border-primary/10"></div>
+                                    </div>
+                                    <div className="text-left fade-up pl-8">
+                                        <h3 className="text-2xl font-bold text-primary mb-2">{milestone.year} - {milestone.event}</h3>
+                                        <div className="text-muted-foreground" dangerouslySetInnerHTML={{ __html: milestone.description.substring(0, 150) + '...' }} />
+                                    </div>
+                                </>
+                            )}
+                        </div>
+                    ))}
+                </div>
 
-            {/* Mobile Timeline */}
-            <div className="md:hidden">
-                {milestones.map((milestone) => (
-                    <div className="flex gap-4 mb-12" key={milestone.id}>
-                        <div className="flex flex-col items-center">
-                            <div className="w-5 h-5 rounded-full bg-primary/30 border-4 border-primary/10"></div>
-                            <div className="flex-grow w-px bg-primary/20"></div>
-                        </div>
-                        <div className="flex-1">
-                            <div className="mb-4">
-                                <h3 className="text-2xl font-bold text-primary">{milestone.year}</h3>
-                                <p className="text-muted-foreground">{milestone.event}</p>
+                
+                <div className="md:hidden">
+                    {milestones.map((milestone) => (
+                        <div className="flex gap-4 mb-12" key={milestone.id}>
+                            <div className="flex flex-col items-center">
+                                <div className="w-5 h-5 rounded-full bg-primary/30 border-4 border-primary/10"></div>
+                                <div className="flex-grow w-px bg-primary/20"></div>
                             </div>
-                            <Link to={`/milestone/${milestone.id}`}>
-                                <MilestoneCard milestone={milestone} />
-                            </Link>
+                            <div className="flex-1">
+                                <div className="mb-4">
+                                    <h3 className="text-2xl font-bold text-primary">{milestone.year}</h3>
+                                    <p className="text-muted-foreground">{milestone.event}</p>
+                                </div>
+                                <Link to={`/milestone/${milestone.id}`}>
+                                    <MilestoneCard milestone={milestone} />
+                                </Link>
+                            </div>
                         </div>
-                    </div>
-                ))}
-            </div>
+                    ))}
+                </div>
+              </>
+            )}
         </div>
     </section>
 
@@ -324,7 +356,17 @@ const About = () => {
             <p className="text-muted-foreground">The highest decision making body of the church.</p>
           </div>
           {loading ? (
-            <div className="text-center">Loading leadership team...</div>
+             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+             {[...Array(4)].map((_, index) => (
+               <div key={index} className="frosted-glass overflow-hidden group h-full">
+                 <Skeleton className="h-64 w-full" />
+                 <div className="pt-4 text-center">
+                   <Skeleton className="h-6 w-3/4 mx-auto mb-2" />
+                   <Skeleton className="h-4 w-1/2 mx-auto" />
+                 </div>
+               </div>
+             ))}
+           </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
               {leaders.map((leader, index) => (
@@ -333,13 +375,21 @@ const About = () => {
                     className="frosted-glass overflow-hidden group fade-up h-full"
                     style={{ transitionDelay: `${index * 150}ms` }}
                   >
-                    <div className="relative h-64 overflow-hidden">
+                    <div className="relative h-64 overflow-hidden bg-black">
                       {leader.image_url ? (
-                        <img
-                          src={leader.image_url}
-                          alt={leader.name}
-                          className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110"
-                        />
+                        <>
+                          <img
+                            src={leader.image_url}
+                            alt=""
+                            aria-hidden="true"
+                            className="absolute inset-0 w-full h-full object-cover filter blur-md scale-110"
+                          />
+                          <img
+                            src={leader.image_url}
+                            alt={leader.name}
+                            className="relative w-full h-full object-contain z-10 transition-transform duration-500 group-hover:scale-110"
+                          />
+                        </>
                       ) : (
                         <div className="w-full h-full bg-primary/10 flex items-center justify-center">
                           <Users className="h-20 w-20 text-primary/30" />
