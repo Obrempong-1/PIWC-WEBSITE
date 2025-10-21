@@ -40,7 +40,7 @@ const Events = () => {
         .select("*")
         .eq("published", true)
         .neq("category", "Weekly Service")
-        .order("start_date", { ascending: true }),
+        .order("start_date", { ascending: false }),
       supabase
         .from("announcements")
         .select("*")
@@ -71,48 +71,50 @@ const Events = () => {
       <main className="container mx-auto px-4 py-20">
         <section id="upcoming-events" className="mb-20">
           <h2 className="text-4xl font-bold text-center mb-12 gradient-text" style={{ fontFamily: "'Playfair Display', serif" }}>
-            Upcoming Events
+            All Events
           </h2>
           {loading ? (
             <div className="text-center">Loading events...</div>
           ) : events.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {events.map((event) => (
-                <Card key={event.id} className="frosted-glass overflow-hidden group">
-                    {event.image_url && (
-                        <div className="overflow-hidden">
-                            <img 
-                                src={event.image_url} 
-                                alt={event.title} 
-                                className="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-300"
-                            />
-                        </div>
-                    )}
-                  <CardContent className="p-6">
-                    <div className="flex items-center text-sm text-primary/90 mb-3 space-x-4">
-                        <div className="flex items-center space-x-2">
-                            <Calendar className="h-4 w-4"/> 
-                            <span>
-                                {event.start_date && new Date(event.start_date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
-                            </span>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                            <Clock className="h-4 w-4"/>
-                            <span>{event.event_time}</span>
-                        </div>
-                    </div>
-                    <h3 className="text-2xl font-bold text-primary mb-3">{event.title}</h3>
-                    <p className="text-muted-foreground mb-4 line-clamp-3">{event.description}</p>
-                    <div className="flex items-center text-sm text-muted-foreground space-x-2">
-                        <MapPin className="h-4 w-4"/>
-                        <span>{event.location}</span>
-                    </div>
-                  </CardContent>
-                </Card>
+                <Link to={`/events/${event.id}`} key={event.id}>
+                  <Card className="frosted-glass overflow-hidden group h-full">
+                      {event.image_url && (
+                          <div className="overflow-hidden">
+                              <img 
+                                  src={event.image_url} 
+                                  alt={event.title} 
+                                  className="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-300"
+                              />
+                          </div>
+                      )}
+                    <CardContent className="p-6">
+                      <div className="flex items-center text-sm text-primary/90 mb-3 space-x-4">
+                          <div className="flex items-center space-x-2">
+                              <Calendar className="h-4 w-4"/> 
+                              <span>
+                                  {event.start_date && new Date(event.start_date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+                              </span>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                              <Clock className="h-4 w-4"/>
+                              <span>{event.event_time}</span>
+                          </div>
+                      </div>
+                      <h3 className="text-2xl font-bold text-primary mb-3">{event.title}</h3>
+                      <p className="text-muted-foreground mb-4 line-clamp-3">{event.description}</p>
+                      <div className="flex items-center text-sm text-muted-foreground space-x-2">
+                          <MapPin className="h-4 w-4"/>
+                          <span>{event.location}</span>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </Link>
               ))}
             </div>
           ) : (
-            <div className="text-center text-muted-foreground py-8">No upcoming events to display. Please check back later.</div>
+            <div className="text-center text-muted-foreground py-8">No events to display. Please check back later.</div>
           )}
         </section>
 

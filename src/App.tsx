@@ -27,6 +27,7 @@ import Notices from "./pages/Notices";
 import AnnouncementDetail from "./pages/AnnouncementDetail";
 import NoticeDetail from "./pages/NoticeDetail";
 import LeaderDetail from "./pages/LeaderDetail";
+import EventDetail from "./pages/EventDetail";
 import { AnimatePresence } from "framer-motion";
 import ScrollToTop from "./components/ScrollToTop";
 
@@ -106,6 +107,7 @@ const AppRoutes = () => {
         <Route path="/" element={<Layout><Index /></Layout>} />
         <Route path="/about" element={<Layout><About /></Layout>} />
         <Route path="/events" element={<Layout><Events /></Layout>} />
+        <Route path="/events/:id" element={<Layout><EventDetail /></Layout>} />
         <Route path="/gallery" element={<Layout><Gallery /></Layout>} />
         <Route path="/ministries" element={<Layout><Ministries /></Layout>} />
         <Route path="/contact" element={<Layout><Contact /></Layout>} />

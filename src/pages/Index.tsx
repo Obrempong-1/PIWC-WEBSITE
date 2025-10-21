@@ -58,7 +58,9 @@ const Index = () => {
         .from("events")
         .select("*, event_videos(video_url)")
         .eq("published", true)
-        .order("start_date", { ascending: false })
+        .neq("category", "Weekly Service")
+        .gte("start_date", new Date().toISOString())
+        .order("start_date", { ascending: true })
         .limit(3),
       supabase
         .from("welcome_section")
@@ -99,21 +101,25 @@ const Index = () => {
       icon: Heart,
       title: "Worship & Prayer",
       description: "Join us for spirit-filled worship services every Sunday and midweek gatherings.",
+      path: "/events",
     },
     {
       icon: Users,
       title: "Community",
       description: "Connect with fellow believers and grow together in faith and fellowship.",
+      path: "/gallery",
     },
     {
       icon: Book,
       title: "Bible Study",
       description: "Deepen your understanding of God's Word through our teaching and study programs.",
+      path: "/ministries",
     },
     {
       icon: Calendar,
       title: "Events",
       description: "Participate in life-changing events, conferences, and outreach programs.",
+      path: "/events",
     },
   ];
 
@@ -264,17 +270,19 @@ const Index = () => {
                 whileInView="visible"
                 viewport={{ once: true, amount: 0.3 }}
               >
-                <Card className="frosted-glass text-center h-full">
-                  <CardContent className="pt-8">
-                    <FloatingIcons delay={index * 0.2}>
-                      <div className="inline-flex items-center justify-center rounded-full bg-primary/10 p-4 mb-6">
-                        <feature.icon className="h-8 w-8 gradient-text" />
-                      </div>
-                    </FloatingIcons>
-                    <h3 className="text-xl font-semibold text-primary mb-3">{feature.title}</h3>
-                    <p className="text-muted-foreground">{feature.description}</p>
-                  </CardContent>
-                </Card>
+                <Link to={feature.path}>
+                  <Card className="frosted-glass text-center h-full">
+                    <CardContent className="pt-8">
+                      <FloatingIcons delay={index * 0.2}>
+                        <div className="inline-flex items-center justify-center rounded-full bg-primary/10 p-4 mb-6">
+                          <feature.icon className="h-8 w-8 gradient-text" />
+                        </div>
+                      </FloatingIcons>
+                      <h3 className="text-xl font-semibold text-primary mb-3">{feature.title}</h3>
+                      <p className="text-muted-foreground">{feature.description}</p>
+                    </CardContent>
+                  </Card>
+                </Link>
               </motion.div>
             ))}
           </div>
@@ -306,26 +314,28 @@ const Index = () => {
                   whileInView="visible"
                   viewport={{ once: true, amount: 0.3 }}
                 >
-                  <Card className="frosted-glass overflow-hidden h-full">
-                    <CardContent className="p-0">
-                      {event.image_url && (
-                        <img src={event.image_url} alt={event.title} className="w-full h-48 object-cover" />
-                      )}
-                      <div className="p-6">
-                        {event.start_date && (
-                          <div className="text-sm text-primary/80 font-semibold mb-2">
-                            {new Date(event.start_date).toLocaleDateString('en-US', {
-                              year: 'numeric',
-                              month: 'long',
-                              day: 'numeric'
-                            })}
-                          </div>
+                  <Link to="/events">
+                    <Card className="frosted-glass overflow-hidden h-full">
+                      <CardContent className="p-0">
+                        {event.image_url && (
+                          <img src={event.image_url} alt={event.title} className="w-full h-48 object-cover" />
                         )}
-                        <h3 className="text-xl font-semibold text-primary mb-3">{event.title}</h3>
-                        <p className="text-muted-foreground line-clamp-3">{event.description}</p>
-                      </div>
-                    </CardContent>
-                  </Card>
+                        <div className="p-6">
+                          {event.start_date && (
+                            <div className="text-sm text-primary/80 font-semibold mb-2">
+                              {new Date(event.start_date).toLocaleDateString('en-US', {
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric'
+                              })}
+                            </div>
+                          )}
+                          <h3 className="text-xl font-semibold text-primary mb-3">{event.title}</h3>
+                          <p className="text-muted-foreground line-clamp-3">{event.description}</p>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </Link>
                 </motion.div>
               ))}
             </div>
