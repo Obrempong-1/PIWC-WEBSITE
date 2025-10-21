@@ -93,24 +93,29 @@ const Gallery = () => {
               <h2 className="text-3xl font-bold mb-8 text-center text-blue-600">{section.name}</h2>
               
               {isServiceSection ? (
-                 <div className="max-w-5xl mx-auto space-y-16">
+                 <div className="max-w-5xl mx-auto space-y-24">
                  {sectionItems.map((item, index) => (
-                   <div key={item.id} className={`grid grid-cols-1 md:grid-cols-2 gap-8 items-center fade-up`}>
-                     <div className={`rounded-lg overflow-hidden ${index % 2 !== 0 ? 'md:order-last' : ''}`}>
-                       <Carousel className="w-full" opts={{ loop: true }}>
+                   <div key={item.id} className={`grid grid-cols-1 md:grid-cols-2 gap-12 items-center fade-up`}>
+                     <div className={`rounded-lg overflow-hidden shadow-2xl ${index % 2 !== 0 ? 'md:order-last' : ''}`}>
+                       <Carousel className="w-full group" opts={{ loop: true }}>
                          <CarouselContent>
                            {(item.image_urls || []).map((url, imgIndex) => (
                              <CarouselItem key={imgIndex} onClick={() => openModal(item)} className="cursor-pointer">
-                               <img src={url} alt={`${item.title} ${imgIndex + 1}`} className="w-full h-full object-cover aspect-square"/>
+                               <div className="aspect-w-16 aspect-h-9 bg-black">
+                                <img src={url} alt={`${item.title} ${imgIndex + 1}`} className="w-full h-full object-contain"/>
+                               </div>
                              </CarouselItem>
                            ))}
                          </CarouselContent>
-                         {(item.image_urls || []).length > 1 && <><CarouselPrevious /><CarouselNext /></>}
+                         <div className="absolute inset-0 flex items-center justify-between p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                           <CarouselPrevious className="-ml-2 bg-white/50 hover:bg-white/80" />
+                           <CarouselNext className="-mr-2 bg-white/50 hover:bg-white/80" />
+                         </div>
                        </Carousel>
                      </div>
-                     <div className={`flex flex-col justify-center ${index % 2 !== 0 ? 'md:order-first' : ''}`}>
-                       <h3 className="text-2xl font-bold mb-2">{item.title}</h3>
-                       <p className="text-muted-foreground text-lg">{item.description}</p>
+                     <div className={`flex flex-col justify-center text-center md:text-left ${index % 2 !== 0 ? 'md:order-first' : ''}`}>
+                       <h3 className="text-3xl font-bold mb-4 tracking-tight">{item.title}</h3>
+                       <p className="text-muted-foreground text-xl leading-relaxed">{item.description}</p>
                      </div>
                    </div>
                  ))}
@@ -121,20 +126,20 @@ const Gallery = () => {
                     if (!item.video_url) return null;
 
                     return (
-                      <div key={item.id} className="frosted-glass rounded-lg overflow-hidden fade-up cursor-pointer" onClick={() => openModal(item)}>
+                      <div key={item.id} className="frosted-glass rounded-lg overflow-hidden fade-up cursor-pointer transition-transform duration-300 hover:-translate-y-2" onClick={() => openModal(item)}>
                         <div className="aspect-video bg-black">
                           <video src={item.video_url} className="w-full h-full object-contain" />
                         </div>
                         <div className="p-4">
                           <h3 className="text-lg font-semibold">{item.title}</h3>
-                          {item.description && <p className="text-sm text-muted-foreground">{item.description}</p>}
+                          {item.description && <p className="text-sm text-muted-foreground line-clamp-2">{item.description}</p>}
                         </div>
                       </div>
                     )
                   })}
                 </div>
               ) : (
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 max-w-7xl mx-auto">
+                <div className="columns-2 sm:columns-3 md:columns-4 lg:columns-5 xl:columns-6 gap-4 space-y-4 max-w-7xl mx-auto">
                   {(() => {
                     const allImages = sectionItems.flatMap(item =>
                       (item.image_urls || []).map(url => ({ item, url }))
@@ -143,18 +148,18 @@ const Gallery = () => {
                     return allImages.map(({ item, url }, index) => (
                       <div
                         key={`${item.id}-${index}`}
-                        className="group relative aspect-square overflow-hidden frosted-glass cursor-pointer fade-up"
+                        className="group relative overflow-hidden rounded-lg cursor-pointer fade-up break-inside-avoid"
                         style={{ transitionDelay: `${index * 30}ms` }}
                         onClick={() => openModal(item)}
                       >
                         <img
                           src={url}
                           alt={`${item.title} image`}
-                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                          className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-110"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                        <div className="absolute bottom-0 left-0 right-0 p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                          <h3 className="text-sm font-bold text-white truncate">{item.title}</h3>
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                        <div className="absolute bottom-0 left-0 right-0 p-3 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-4 group-hover:translate-y-0">
+                          <h3 className="text-md font-bold text-white truncate">{item.title}</h3>
                         </div>
                       </div>
                     ));
@@ -177,9 +182,9 @@ const Gallery = () => {
           >
             <X className="h-6 w-6 text-white" />
           </button>
-          <div className="relative max-w-4xl w-full">
+          <div className="relative max-w-5xl w-full">
             {selectedItem.video_url ? (
-                <video src={selectedItem.video_url} className="w-full max-h-[80vh] object-contain rounded-lg" controls autoPlay />
+                <video src={selectedItem.video_url} className="w-full max-h-[90vh] object-contain rounded-lg" controls autoPlay />
               ) : (
               <Carousel opts={{ loop: true }}>
                 <CarouselContent>
@@ -188,15 +193,15 @@ const Gallery = () => {
                       <img
                         src={url}
                         alt={`${selectedItem.title} ${index + 1}`}
-                        className="max-w-full max-h-[80vh] object-contain rounded-lg mx-auto"
+                        className="max-w-full max-h-[90vh] object-contain rounded-lg mx-auto"
                       />
                     </CarouselItem>
                   ))}
                 </CarouselContent>
                 {(selectedItem.image_urls || []).length > 1 && (
                   <>
-                    <CarouselPrevious className="-left-10" />
-                    <CarouselNext className="-right-10" />
+                    <CarouselPrevious className="-left-12 text-white bg-white/20 hover:bg-white/40" />
+                    <CarouselNext className="-right-12 text-white bg-white/20 hover:bg-white/40" />
                   </>
                 )}
               </Carousel>
