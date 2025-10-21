@@ -140,7 +140,7 @@ const GalleryPage = () => {
                     return (
                       <div key={item.id} className="bg-white rounded-xl shadow-lg overflow-hidden fade-up cursor-pointer group transition-all duration-300 hover:shadow-2xl hover:-translate-y-2" style={{transitionDelay: `${i*100}ms`}} onClick={() => openModal(item)}>
                         <div className="aspect-video bg-black relative">
-                          <img src={item.image_urls?.[0]} alt={`${item.title} thumbnail`} className="w-full h-full object-cover"/>
+                          <video src={item.video_url} className="w-full h-full object-cover" muted playsInline />
                           <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                             <PlayCircle className="h-16 w-16 text-white" />
                           </div>
