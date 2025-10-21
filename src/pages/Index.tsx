@@ -223,13 +223,21 @@ const Index = () => {
                     className="frosted-glass overflow-hidden group fade-up h-full"
                     style={{ transitionDelay: `${index * 150}ms` }}
                   >
-                    <div className="relative h-64 overflow-hidden">
+                    <div className="relative h-64 overflow-hidden bg-black">
                       {leader.image_url ? (
-                        <img
-                          src={leader.image_url}
-                          alt={leader.name}
-                          className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110"
-                        />
+                        <>
+                          <img
+                            src={leader.image_url}
+                            alt=""
+                            aria-hidden="true"
+                            className="absolute inset-0 w-full h-full object-cover filter blur-md scale-110"
+                          />
+                          <img
+                            src={leader.image_url}
+                            alt={leader.name}
+                            className="relative w-full h-full object-contain z-10 transition-transform duration-500 group-hover:scale-110"
+                          />
+                        </>
                       ) : (
                         <div className="w-full h-full bg-primary/10 flex items-center justify-center">
                           <Users className="h-20 w-20 text-primary/30" />
