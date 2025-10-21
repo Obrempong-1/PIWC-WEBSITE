@@ -21,6 +21,7 @@ interface Announcement {
   title: string;
   description: string;
   created_at: string;
+  image_url: string | null;
 }
 
 const Events = () => {
@@ -85,7 +86,7 @@ const Events = () => {
                               <img 
                                   src={event.image_url} 
                                   alt={event.title} 
-                                  className="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-300"
+                                  className="w-full h-auto object-contain group-hover:scale-105 transition-transform duration-300"
                               />
                           </div>
                       )}
@@ -128,7 +129,16 @@ const Events = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {announcements.map((announcement) => (
                 <Link to={`/announcements/${announcement.id}`} key={announcement.id}>
-                  <Card className="frosted-glass overflow-hidden h-full">
+                  <Card className="frosted-glass overflow-hidden group h-full">
+                    {announcement.image_url && (
+                        <div className="overflow-hidden">
+                            <img 
+                                src={announcement.image_url} 
+                                alt={announcement.title} 
+                                className="w-full h-auto object-contain group-hover:scale-105 transition-transform duration-300"
+                            />
+                        </div>
+                    )}
                     <CardContent className="p-6">
                       <div className="flex items-center text-sm text-primary/80 font-semibold mb-2">
                         <Megaphone className="h-4 w-4 mr-2" />

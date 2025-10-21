@@ -8,7 +8,7 @@ import { Tables } from "@/integrations/supabase/types";
 type Gallery = Tables<"galleries"> & { gallery_sections: { name: string } };
 type GallerySection = Tables<"gallery_sections">;
 
-// Helper function to extract YouTube video ID from various URL formats
+
 const getYouTubeVideoId = (url: string | null): string | null => {
   if (!url) return null;
   const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
@@ -103,7 +103,7 @@ const Gallery = () => {
                       <CarouselItem key={item.id} onClick={() => setSelectedItem(item)} className="cursor-pointer">
                         <Card>
                           <CardContent className="p-0 relative aspect-video">
-                            <img src={item.image_urls![0]} alt={item.title} className="w-full h-full object-cover rounded-lg"/>
+                            <img src={item.image_urls![0]} alt={item.title} className="w-full h-full object-contain rounded-lg"/>
                             <div className="absolute bottom-0 left-0 right-0 p-4 bg-black/50 text-white">
                               <h3 className="text-xl font-bold">{item.title}</h3>
                               <p className="text-sm">{item.description}</p>
@@ -153,7 +153,7 @@ const Gallery = () => {
                       <img
                         src={item.image_urls![0]}
                         alt={item.title}
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                        className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                       <div className="absolute inset-0 flex flex-col justify-end p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">

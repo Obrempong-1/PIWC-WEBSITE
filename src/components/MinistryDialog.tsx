@@ -43,7 +43,7 @@ const MinistryDialog = ({ open, onOpenChange, ministry }: MinistryDialogProps) =
             <img 
               src={ministry.image} 
               alt={ministry.title}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-contain"
             />
           </div>
 

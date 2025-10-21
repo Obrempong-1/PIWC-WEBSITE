@@ -8,7 +8,6 @@ interface Announcement {
   id: string;
   title: string;
   description: string;
-  content: string | null;
   image_url: string | null;
   video_url: string | null;
   published: boolean;
@@ -21,25 +20,25 @@ const AnnouncementDetail = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const fetchAnnouncement = async () => {
+      if (!id) return;
+      setLoading(true);
+      const { data, error } = await supabase
+        .from("announcements")
+        .select("*")
+        .eq("id", id)
+        .single();
+
+      if (error) {
+        console.error("Error fetching announcement:", error);
+      } else {
+        setAnnouncement(data as unknown as Announcement);
+      }
+      setLoading(false);
+    };
+
     fetchAnnouncement();
   }, [id]);
-
-  const fetchAnnouncement = async () => {
-    if (!id) return;
-    setLoading(true);
-    const { data, error } = await supabase
-      .from("announcements")
-      .select("*")
-      .eq("id", id)
-      .single();
-
-    if (error) {
-      console.error("Error fetching announcement:", error);
-    } else {
-      setAnnouncement(data as Announcement);
-    }
-    setLoading(false);
-  };
 
   if (loading) {
     return <div className="flex justify-center items-center min-h-screen">Loading...</div>;
@@ -64,10 +63,10 @@ const AnnouncementDetail = () => {
         <p className="text-muted-foreground mb-6">{new Date(announcement.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
         
         {announcement.image_url && (
-          <img src={announcement.image_url} alt={announcement.title} className="w-full h-auto rounded-md mb-6" />
+          <img src={announcement.image_url} alt={announcement.title} className="w-full h-auto object-contain rounded-md mb-6" />
         )}
 
-        {announcement.content && <div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: announcement.content }}></div>}
+        {announcement.description && <div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: announcement.description }}></div>}
 
         {announcement.video_url && (
           <div className="mt-6">
