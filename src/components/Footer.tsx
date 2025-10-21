@@ -21,25 +21,32 @@ const Footer = () => {
     <footer className="bg-primary text-white">
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {/* Church Info */}
+          
           <div className="space-y-4">
-            <div className="flex items-center gap-3">
-              <div className="bg-white/10 rounded-lg p-2">
-                <img src={churchLogo} alt="PIWC Logo" className="h-10 w-10 object-contain" />
+            <Link to="/" className="flex items-center group footer-logo-container">
+              <img
+                src={churchLogo}
+                alt="PIWC Logo"
+                className="logo-icon h-14 w-14 object-contain logo-spin"
+              />
+              <div className="logo-text-container">
+                <div className="main-title-lockup">
+                  <span className="piwc-text">PIWC</span>
+                  <div className="asokwa-lockup">
+                    <div className="asokwa-bar"></div>
+                    <span className="asokwa-text">ASOKWA</span>
+                    <div className="asokwa-bar"></div>
+                  </div>
+                </div>
+                <div className="subtitle-text">THE CHURCH OF PENTECOST</div>
               </div>
-              <div>
-                <h3 className="text-lg font-bold" style={{ fontFamily: "'Playfair Display', serif" }}>
-                  PIWC Asokwa
-                </h3>
-                <p className="text-sm text-white/80">The Church of Pentecost</p>
-              </div>
-            </div>
+            </Link>
             <p className="text-sm text-white/80 leading-relaxed">
               A vibrant community of believers dedicated to worship, fellowship, and spreading the Gospel of Jesus Christ.
             </p>
           </div>
 
-          {/* Quick Links */}
+          
           <div>
             <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
             <ul className="space-y-2">
@@ -56,7 +63,7 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Contact Info */}
+          
           <div>
             <h4 className="text-lg font-semibold mb-4">Contact Us</h4>
             <ul className="space-y-3">
@@ -75,7 +82,7 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Service Times & Social */}
+          
           <div>
             <h4 className="text-lg font-semibold mb-4">Service Times</h4>
             <ul className="space-y-2 mb-6">
@@ -113,6 +120,98 @@ const Footer = () => {
           </p>
         </div>
       </div>
+      <style>{`
+        .footer-logo-container .logo-text-container, 
+        .footer-logo-container .piwc-text, 
+        .footer-logo-container .asokwa-text, 
+        .footer-logo-container .subtitle-text {
+          font-family: 'Poppins', sans-serif;
+        }
+
+        .footer-logo-container .logo-text-container {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          line-height: 1;
+          margin-left: 4px;
+          align-items: flex-start;
+        }
+
+        .footer-logo-container .main-title-lockup {
+          display: flex;
+          align-items: center;
+          position: relative;
+        }
+
+        .footer-logo-container .piwc-text {
+          font-size: 2.4rem;
+          font-weight: 800;
+          text-transform: uppercase;
+          color: white;
+          margin-right: 0;
+          display: flex;
+          align-items: center;
+        }
+
+        .footer-logo-container .asokwa-lockup {
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          align-items: center;
+          margin-left: -4px;
+        }
+
+        .footer-logo-container .asokwa-bar {
+          height: 4px;
+          width: 80%;
+          background: white;
+          border-radius: 9px;
+        }
+
+        .footer-logo-container .asokwa-text {
+          font-size: 1rem;
+          font-weight: 700;
+          text-transform: uppercase;
+          padding: 3px 10px;
+          border-radius: 999px;
+          background: rgba(255, 255, 255, 0.2);
+          color: white;
+          letter-spacing: 1px;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          line-height: 1;
+          margin: 2px 0;
+        }
+
+        .footer-logo-container .subtitle-text {
+          font-size: 0.81rem;
+          font-weight: 600;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+          margin-top: -1px;
+          color: rgba(255, 255, 255, 0.9);
+          white-space: nowrap;
+          margin-left: 2px;
+        }
+
+        .footer-logo-container .logo-icon {
+          height: 60px;
+          width: 60px;
+          object-fit: contain;
+        }
+        
+        @keyframes logo-spin {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+
+        @media (prefers-reduced-motion: no-preference) {
+          .footer-logo-container .logo-spin {
+            animation: logo-spin infinite 20s linear;
+          }
+        }
+      `}</style>
     </footer>
   );
 };
