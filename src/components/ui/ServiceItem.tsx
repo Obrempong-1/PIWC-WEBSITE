@@ -56,7 +56,7 @@ export const ServiceItem = ({ item, isReversed, openModal }: ServiceItemProps) =
           <CarouselContent>
             {(item.image_urls || []).map((url, imgIndex) => (
               <CarouselItem key={imgIndex} onClick={() => openModal(item)} className="cursor-pointer">
-                <div className="w-full h-full flex items-center justify-center">
+                <div className="aspect-w-16 aspect-h-9 w-full h-full flex items-center justify-center">
                   <img src={url} alt={`${item.title} ${imgIndex + 1}`} className="w-auto h-auto max-w-full max-h-full object-contain" />
                 </div>
               </CarouselItem>
