@@ -69,6 +69,16 @@ const GalleryManagement = () => {
     }
   };
 
+  const handleVideoFileSelect = async (files: File[]) => {
+    if (files.length > 0) {
+      const url = await uploadFile(files[0], "videos");
+      if (url) {
+        setFormData(prev => ({ ...prev, video_url: url }));
+        toast({ title: "Video uploaded successfully!" });
+      }
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -209,16 +219,21 @@ const GalleryManagement = () => {
                 multiple
               />
 
-              <Input
-                placeholder="Video URL"
-                value={formData.video_url || ''}
-                onChange={(e) => setFormData({ ...formData, video_url: e.target.value })}
+              <FileUpload 
+                label="Video"
+                onFileSelect={handleVideoFileSelect}
+                uploading={uploading}
+                uploaded={!!formData.video_url}
+                accept="video/*"
               />
 
               <div className="flex flex-wrap gap-2">
                 {(formData.image_urls || []).map((url, index) => (
                   <img key={index} src={url} alt={`Preview ${index}`} className="h-24 w-24 object-cover rounded" />
                 ))}
+                 {formData.video_url && (
+                  <video src={formData.video_url} className="h-24 w-24 object-cover rounded" controls />
+                )}
               </div>
 
               <div className="grid grid-cols-2 gap-4">
@@ -303,16 +318,19 @@ const GalleryManagement = () => {
                   <Card key={gallery.id}>
                     <CardContent className="pt-6">
                       <div className="flex gap-4 items-start">
-                        {(gallery.image_urls || []).length > 0 && (
+                        <div className="flex-shrink-0 grid grid-cols-2 gap-2">
+                        {(gallery.image_urls || []).map((url, index) => (
                           <img
-                            src={gallery.image_urls[0]}
-                            alt={gallery.title}
-                            className="w-32 h-24 object-cover rounded"
+                            key={index}
+                            src={url}
+                            alt={`${gallery.title} image ${index + 1}`}
+                            className="w-16 h-12 object-cover rounded"
                           />
-                        )}
+                        ))}
+                        </div>
                         {gallery.video_url && (
                           <div className="w-32 h-24 bg-black flex items-center justify-center rounded">
-                              <p className="text-white">Video</p>
+                              <video src={gallery.video_url} className="w-full h-full object-cover rounded" controls />
                             </div>
                         )}
                         <div className="flex-1">

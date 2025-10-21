@@ -60,12 +60,6 @@ const Dashboard = () => {
       icon: FileText,
       href: "/admin/notice-board",
     },
-    {
-      title: "Hero Carousel",
-      description: "Manage homepage hero images",
-      icon: Image,
-      href: "/admin/hero-carousel",
-    },
   ];
 
   return (
