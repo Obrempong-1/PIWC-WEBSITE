@@ -11,7 +11,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { FileUpload } from "@/components/ui/FileUpload";
-import { ArrowLeft, Save, Trash2, Calendar, Users, Heart, Book, Megaphone, ClipboardList, BookOpen, ShieldCheck, UserCheck, Cross, HandHeart, Droplets, Wind, Church, HandCoins, PlayCircle, Clock, MapPin, MoreHorizontal, GripVertical, Search, ChevronUp, ChevronDown, ChevronLeft, ChevronRight, Check, Circle, Dot, UploadCloud, File as FileIcon, CheckCircle, Loader, Edit, PanelLeft, X } from "lucide-react";
+import { ArrowLeft, Save, Trash2 } from "lucide-react";
 import { Tables } from "@/integrations/supabase/types";
 
 type Event = Tables<"events">;
@@ -20,6 +20,7 @@ const EventsManagement = () => {
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [originalImageUrl, setOriginalImageUrl] = useState<string | null>(null);
   const [formData, setFormData] = useState<Omit<Event, 'id' | 'created_at' | 'updated_at' | 'icon'>>({
     title: "",
     description: "",
@@ -33,7 +34,7 @@ const EventsManagement = () => {
     category: "event",
     published: false,
   });
-  const { uploadFile, uploading } = useFileUpload();
+  const { uploadFile, deleteFile, uploading } = useFileUpload();
   const { toast } = useToast();
 
   const fetchEvents = useCallback(async () => {
@@ -62,6 +63,20 @@ const EventsManagement = () => {
   const handleFileSelect = async (files: File[]) => {
     if (files.length > 0) {
       const file = files[0];
+
+      
+      if (editingId && originalImageUrl) {
+        const success = await deleteFile(originalImageUrl, "images");
+        if (!success) {
+          toast({
+            title: "Error Deleting Old Image",
+            description: "Could not delete the old image from storage. Please try again.",
+            variant: "destructive",
+          });
+          return;
+        }
+      }
+
       const url = await uploadFile(file, "images");
       if (url) {
         setFormData(prev => ({ ...prev, image_url: url }));
@@ -117,6 +132,7 @@ const EventsManagement = () => {
 
   const handleEdit = (event: Event) => {
     setEditingId(event.id);
+    setOriginalImageUrl(event.image_url);
     setFormData({
       title: event.title,
       description: event.description || "",
@@ -132,10 +148,23 @@ const EventsManagement = () => {
     });
   };
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = async (eventToDelete: Event) => {
     if (!confirm("Are you sure you want to delete this event?")) return;
 
-    const { error } = await supabase.from("events").delete().eq("id", id);
+    
+    if (eventToDelete.image_url && eventToDelete.media_type === 'image') {
+      const success = await deleteFile(eventToDelete.image_url, "images");
+      if (!success) {
+        toast({
+          title: "Error Deleting Image",
+          description: "The event's image could not be deleted from storage. Please try again.",
+          variant: "destructive",
+        });
+        return; 
+      }
+    }
+
+    const { error } = await supabase.from("events").delete().eq("id", eventToDelete.id);
 
     if (error) {
       toast({
@@ -151,6 +180,7 @@ const EventsManagement = () => {
 
   const resetForm = () => {
     setEditingId(null);
+    setOriginalImageUrl(null);
     setFormData({
       title: "",
       description: "",
@@ -355,7 +385,7 @@ const EventsManagement = () => {
                     <Button
                       size="sm"
                       variant="destructive"
-                      onClick={() => handleDelete(event.id)}
+                      onClick={() => handleDelete(event)}
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>
