@@ -61,7 +61,7 @@ const Navbar = () => {
               src={churchLogo}
               alt="PIWC Logo"
               className="logo-icon logo-spin"
-              imageClassName="object-contain"
+              imageClassName="object-cover"
               sizes="96px"
             />
             <div className="logo-text-container">
@@ -173,7 +173,7 @@ const Navbar = () => {
           align-items: center;
         }
 
-        
+      
         .asokwa-lockup {
           display: flex;
           flex-direction: column;
@@ -224,6 +224,9 @@ const Navbar = () => {
         .logo-icon {
           height: 60px;
           width: 60px;
+          border-radius: 50%;
+          overflow: hidden;
+          background: transparent;
         }
 
         .contact-us-gradient {
