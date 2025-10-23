@@ -13,7 +13,6 @@ export const ServiceItem = ({ item, isReversed, openModal }: ServiceItemProps) =
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     if (!api) return;
@@ -22,7 +21,6 @@ export const ServiceItem = ({ item, isReversed, openModal }: ServiceItemProps) =
       setCurrent(api.selectedScrollSnap());
     });
   }, [api]);
-
 
   return (
     <div
@@ -36,15 +34,16 @@ export const ServiceItem = ({ item, isReversed, openModal }: ServiceItemProps) =
           <CarouselContent>
             {(item.image_urls || []).map((url, imgIndex) => (
               <CarouselItem key={imgIndex} onClick={() => openModal(item, imgIndex)} className="cursor-pointer">
-                <div className="aspect-w-16 aspect-h-9 w-full h-full bg-black rounded-xl shadow-lg overflow-hidden">
-                  <LazyImage
-                    src={url}
-                    alt={`${item.title} ${imgIndex + 1}`}
-                    className="w-full h-full"
-                    imageClassName="w-full h-full object-contain"
-                    placeholderClassName="opacity-20"
-                  />
-                </div>
+                <LazyImage
+                  src={url}
+                  alt={`${item.title} ${imgIndex + 1}`}
+                  className="w-full h-full"
+                  imageClassName="object-contain"
+                  width={16}
+                  height={9}
+                  disableLqip={true}
+                  placeholderClassName="bg-black"
+                />
               </CarouselItem>
             ))}
           </CarouselContent>

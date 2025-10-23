@@ -25,7 +25,7 @@ const GalleryPage = () => {
   }, [selectedItem, carouselApi]);
 
   useEffect(() => {
-    
+    // Lock body scroll when modal is open
     const originalStyle = window.getComputedStyle(document.body).overflow;
     if (selectedItem) {
       const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;

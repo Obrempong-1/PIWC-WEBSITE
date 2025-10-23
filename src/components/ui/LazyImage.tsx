@@ -10,6 +10,7 @@ interface LazyImageProps {
   priority?: boolean;
   width?: number;
   height?: number;
+  disableLqip?: boolean;
 }
 
 const imageWidths = [320, 480, 640, 750, 828, 1080, 1200, 1920];
@@ -24,23 +25,23 @@ const getSupabaseRenderUrl = (src: string): string | null => {
 const generateImageProps = (src: string) => {
   const renderUrl = getSupabaseRenderUrl(src);
   if (!renderUrl) {
-    return { src: src };
+    return { src: src, srcSet: null };
   }
 
+  const createImageUrl = (width: number) => {
+    const url = new URL(renderUrl);
+    url.searchParams.set('width', `${width}`);
+    url.searchParams.set('quality', '60');
+    return url.href;
+  };
+
   const srcSet = imageWidths
-    .map(width => {
-      const url = new URL(renderUrl);
-      url.searchParams.set('width', `${width}`);
-      url.searchParams.set('quality', '75');
-      return `${url.href} ${width}w`;
-    })
+    .map(width => `${createImageUrl(width)} ${width}w`)
     .join(', ');
 
-  const fallbackUrl = new URL(renderUrl);
-  fallbackUrl.searchParams.set('width', '800');
-  fallbackUrl.searchParams.set('quality', '75');
+  const fallbackSrc = createImageUrl(800);
 
-  return { src: fallbackUrl.href, srcSet };
+  return { src: fallbackSrc, srcSet };
 };
 
 const LazyImage: React.FC<LazyImageProps> = ({
@@ -53,6 +54,7 @@ const LazyImage: React.FC<LazyImageProps> = ({
   priority = false,
   width,
   height,
+  disableLqip = false,
 }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isInView, setIsInView] = useState(priority);
@@ -95,10 +97,10 @@ const LazyImage: React.FC<LazyImageProps> = ({
   return (
     <div
       ref={ref}
-      className={`relative overflow-hidden ${className} ${!aspectRatio && (placeholderClassName || 'bg-gray-200')}`}
+      className={`relative overflow-hidden ${className || ''} ${placeholderClassName || 'bg-gray-200'}`}
       style={{ aspectRatio }}
     >
-      {thumbSrc && (
+      {!disableLqip && thumbSrc && (
         <img
           src={thumbSrc}
           alt=""
@@ -109,7 +111,8 @@ const LazyImage: React.FC<LazyImageProps> = ({
       
       {(isInView || priority) && (
         <img
-          {...mainImageProps}
+          src={mainImageProps.src}
+          srcSet={mainImageProps.srcSet || undefined}
           sizes={sizes || "100vw"}
           alt={alt}
           className={`relative w-full h-full transition-opacity duration-700 ease-in-out ${isLoaded ? 'opacity-100' : 'opacity-0'} ${imageClassName}`}
