@@ -41,6 +41,7 @@ export const ServiceItem = ({ item, isReversed, openModal }: ServiceItemProps) =
                   imageClassName="object-contain"
                   width={16}
                   height={9}
+                  sizes="(min-width: 768px) 50vw, 100vw"
                   disableLqip={true}
                   placeholderClassName="bg-black"
                 />

@@ -1,7 +1,8 @@
+
 @font-face {
   font-family: 'Playfair Display';
   src: url('https://fonts.gstatic.com/s/playfairdisplay/v22/nuFvD-vYSZ9vEEj_ixLilianaNBjtY-RxmVqw.woff2') format('woff2');
   font-weight: 700;
   font-style: normal;
-  font-display: optional;
+  font-display: swap;
 }

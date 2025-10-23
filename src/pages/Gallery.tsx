@@ -25,7 +25,6 @@ const GalleryPage = () => {
   }, [selectedItem, carouselApi]);
 
   useEffect(() => {
-    // Lock body scroll when modal is open
     const originalStyle = window.getComputedStyle(document.body).overflow;
     if (selectedItem) {
       const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
@@ -219,6 +218,7 @@ const GalleryPage = () => {
                          alt={`${item.title} image`} 
                          className="w-full h-auto"
                          imageClassName="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-110"
+                         sizes="(min-width: 768px) 25vw, (min-width: 640px) 33vw, 50vw"
                        />
                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
                        <div className="absolute bottom-0 left-0 right-0 p-4">
