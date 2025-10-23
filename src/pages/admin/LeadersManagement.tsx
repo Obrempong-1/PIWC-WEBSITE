@@ -122,6 +122,21 @@ const LeadersManagement = () => {
   const handleDelete = async (id: string) => {
     if (!confirm("Are you sure you want to delete this leader?")) return;
 
+    
+    const { error: updateError } = await supabase
+      .from("leaders")
+      .update({ published: false })
+      .eq("id", id);
+
+    if (updateError) {
+      toast({
+        title: "Error unpublishing leader",
+        description: `Could not unpublish leader before deleting. ${updateError.message}`,
+        variant: "destructive",
+      });
+      return;
+    }
+
     const { error } = await supabase.from("leaders").delete().eq("id", id);
 
     if (error) {
