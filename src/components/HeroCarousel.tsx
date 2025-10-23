@@ -52,6 +52,14 @@ const HeroCarousel = () => {
           {slides.map((slide, index) => (
             <CarouselItem key={slide.id}>
               <div className="relative min-h-screen">
+               
+                <img
+                  src={slide.image_url}
+                  alt=""
+                  aria-hidden="true"
+                  className="absolute inset-0 w-full h-full object-cover filter blur-xl scale-110"
+                  loading="lazy"
+                />
                 
                 
                 <img
@@ -64,11 +72,11 @@ const HeroCarousel = () => {
                 />
 
                 
-                <div className="absolute inset-0 bg-black/50" />
+                <div className="absolute inset-0" />
 
                 
                 <div className="relative z-10 container mx-auto px-4 min-h-screen flex items-center">
-                  <div className="max-w-3xl animate-fade-up transform-gpu">
+                  <div className="max-w-3xl animate-fade-up">
                     
                     <div className="p-10 lg:rounded-2xl lg:shadow-lg lg:bg-black/20 lg:backdrop-blur-md">
                       <h1 className="text-5xl lg:text-7xl font-bold text-white mb-6 font-heading text-shadow lg:[text-shadow:none]">{slide.title}</h1>
