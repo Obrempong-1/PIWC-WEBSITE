@@ -60,21 +60,14 @@ export const ServiceItem = ({ item, isReversed, openModal }: ServiceItemProps) =
           <CarouselContent>
             {(item.image_urls || []).map((url, imgIndex) => (
               <CarouselItem key={imgIndex} onClick={() => openModal(item, imgIndex)} className="cursor-pointer">
-                <div className="aspect-w-16 aspect-h-9 w-full h-full relative bg-black rounded-xl shadow-lg overflow-hidden">
-                    <LazyImage
-                        src={url}
-                        alt=""
-                        className="absolute inset-0 w-full h-full"
-                        imageClassName="w-full h-full object-cover filter blur-md scale-110"
-                        placeholderClassName="w-full h-full bg-gray-300 animate-pulse"
-                    />
-                    <LazyImage
-                        src={url}
-                        alt={`${item.title} ${imgIndex + 1}`}
-                        className="relative w-full h-full z-10"
-                        imageClassName="w-full h-full object-contain"
-                        placeholderClassName="w-full h-full bg-gray-400 animate-pulse"
-                    />
+                <div className="aspect-w-16 aspect-h-9 w-full h-full bg-black rounded-xl shadow-lg overflow-hidden">
+                  <LazyImage
+                    src={url}
+                    alt={`${item.title} ${imgIndex + 1}`}
+                    className="w-full h-full"
+                    imageClassName="w-full h-full object-contain"
+                    placeholderClassName="opacity-20"
+                  />
                 </div>
               </CarouselItem>
             ))}
@@ -95,7 +88,7 @@ export const ServiceItem = ({ item, isReversed, openModal }: ServiceItemProps) =
         </div>
       </div>
       <div className={`flex flex-col justify-center text-center md:text-left ${isReversed ? 'md:order-first' : ''}`}>
-        <h3 className="text-4xl font-extrabold mb-4 text-gray-900 tracking-tight">{item.title}</h3>
+        <h3 className="text-4xl font-extrabold mb-4 text-gray-900 tracking-tight gradient-text">{item.title}</h3>
         <p className="text-gray-600 text-xl leading-relaxed">{item.description}</p>
       </div>
     </div>

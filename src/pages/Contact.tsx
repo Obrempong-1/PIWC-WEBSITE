@@ -84,7 +84,7 @@ const Contact = () => {
 
   const latitude = 6.6770;
   const longitude = -1.5994;
-  const googleMapsUrl = `https://www.google.com/maps/@${latitude},${longitude},18z?entry=ttu`;
+  const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`;
   const mapEmbedUrl = `https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3962.5607954472924!2d${longitude}!3d${latitude}!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xfdb9673b4b7b753%3A0x7a2c8c8f8f8f8f8f!2sPIWC%20Asokwa!5e1!3m2!1sen!2sgh!4v1234567890`;
 
 

@@ -6,7 +6,6 @@ import { Calendar, Users, Heart, Book, Megaphone, ClipboardList } from "lucide-r
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { motion, Variants } from "framer-motion";
 import AnimatedGradientText from "@/components/AnimatedGradientText";
 import FloatingIcons from "@/components/FloatingIcons";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -49,6 +48,33 @@ interface Leader {
     role: string;
     image_url: string | null;
 }
+
+const features = [
+  {
+    icon: Heart,
+    title: "Worship & Prayer",
+    description: "Join us for spirit-filled worship services every Sunday and midweek gatherings.",
+    path: "/events",
+  },
+  {
+    icon: Users,
+    title: "Community",
+    description: "Connect with fellow believers and grow together in faith and fellowship.",
+    path: "/gallery",
+  },
+  {
+    icon: Book,
+    title: "Bible Study",
+    description: "Deepen your understanding of God's Word through our teaching and study programs.",
+    path: "/ministries",
+  },
+  {
+    icon: Calendar,
+    title: "Events",
+    description: "Participate in life-changing events, conferences, and outreach programs.",
+    path: "/events",
+  },
+];
 
 const Index = () => {
   const [events, setEvents] = useState<Event[]>([]);
@@ -111,71 +137,16 @@ const Index = () => {
     setLoading(false);
   };
 
-  const features = [
-    {
-      icon: Heart,
-      title: "Worship & Prayer",
-      description: "Join us for spirit-filled worship services every Sunday and midweek gatherings.",
-      path: "/events",
-    },
-    {
-      icon: Users,
-      title: "Community",
-      description: "Connect with fellow believers and grow together in faith and fellowship.",
-      path: "/gallery",
-    },
-    {
-      icon: Book,
-      title: "Bible Study",
-      description: "Deepen your understanding of God's Word through our teaching and study programs.",
-      path: "/ministries",
-    },
-    {
-      icon: Calendar,
-      title: "Events",
-      description: "Participate in life-changing events, conferences, and outreach programs.",
-      path: "/events",
-    },
-  ];
-
-  const sectionVariants: Variants = {
-    hidden: { opacity: 0, y: 50 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } },
-  };
-
-  const cardVariants: Variants = {
-    hidden: { opacity: 0, y: 50 },
-    visible: (i: number) => ({
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6, ease: "easeOut", delay: i * 0.15 },
-    }),
-  };
-
-  const videoVariants: Variants = {
-    hidden: { opacity: 0, scale: 0.8 },
-    visible: { opacity: 1, scale: 1, transition: { duration: 0.8, ease: "easeOut" } },
-  };
-
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.5 }}
-    >
+    <div>
       <HeroCarousel />
 
-      <motion.section
+      <section
         className="py-20"
-        variants={sectionVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
       >
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <motion.div variants={sectionVariants}>
+            <div>
               <AnimatedGradientText text={welcomeSection?.title || ""} className="text-4xl lg:text-5xl font-bold mb-6" style={{ fontFamily: "'Playfair Display', serif" }} />
               <p className="text-lg text-foreground/80 leading-relaxed mb-8">
                 {welcomeSection?.content}
@@ -183,34 +154,25 @@ const Index = () => {
               <Button asChild size="lg" className="button-glow">
                 <Link to="/about">Learn More About Us</Link>
               </Button>
-            </motion.div>
-            <motion.div
-              variants={videoVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.3 }}
-            >
+            </div>
+            <div>
               {welcomeSection?.video_url && (
                 <div className="rounded-lg overflow-hidden shadow-2xl">
                   <video src={welcomeSection.video_url} controls className="w-full" />
                 </div>
               )}
-            </motion.div>
+            </div>
           </div>
         </div>
-      </motion.section>
+      </section>
 
-      <motion.section
+      <section
         className="py-20 bg-primary/5"
-        variants={sectionVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
       >
          <div className="container mx-auto px-4">
-          <div className="text-center mb-16 fade-up">
+          <div className="text-center mb-16">
             <h2 className="text-3xl lg:text-4xl font-bold mb-4 gradient-text" style={{ fontFamily: "'Playfair Display', serif" }}>
-              PIWC ASOKWA PRESBITORY
+              PIWC ASOKWA PRESBYTERY
             </h2>
             <p className="text-muted-foreground">The highest decision making body of the church.</p>
           </div>
@@ -231,8 +193,7 @@ const Index = () => {
               {leaders.map((leader, index) => (
                 <Link to={`/leader/${leader.id}`} key={leader.id}>
                   <Card
-                    className="frosted-glass overflow-hidden group fade-up h-full"
-                    style={{ transitionDelay: `${index * 150}ms` }}
+                    className="frosted-glass overflow-hidden group h-full"
                   >
                     <div className="relative h-64 overflow-hidden bg-black">
                       {leader.image_url ? (
@@ -270,20 +231,18 @@ const Index = () => {
             </Link>
           </div>
         </div>
-      </motion.section>
+      </section>
 
-      <motion.section
+      <section
         className="py-20 bg-primary/5"
-        variants={sectionVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
       >
         <div className="container mx-auto px-4">
-          <motion.div variants={sectionVariants} className="text-center mb-16">
-            <AnimatedGradientText text="Notice Board" className="text-3xl lg:text-4xl font-bold mb-4" style={{ fontFamily: "'Playfair Display', serif" }} />
+          <div className="text-center mb-16">
+            <h2 className="text-3xl lg:text-4xl font-bold mb-4 gradient-text" style={{ fontFamily: "'Playfair Display', serif" }}>
+              NOTICE BOARD
+            </h2>
             <p className="text-muted-foreground">Important notices for the congregation</p>
-          </motion.div>
+          </div>
           {loading ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
                 {[...Array(3)].map((_, index) => (
@@ -301,13 +260,8 @@ const Index = () => {
           ) : notices.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
               {notices.map((notice, index) => (
-                <motion.div
+                <div
                   key={notice.id}
-                  custom={index}
-                  variants={cardVariants}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true, amount: 0.3 }}
                 >
                   <Link to={`/notices/${notice.id}`}>
                     <Card className="frosted-glass overflow-hidden h-full">
@@ -331,7 +285,7 @@ const Index = () => {
                       </CardContent>
                     </Card>
                   </Link>
-                </motion.div>
+                </div>
               ))}
             </div>
           ) : (
@@ -339,35 +293,28 @@ const Index = () => {
               No notices available at the moment.
             </div>
           )}
-          <motion.div variants={sectionVariants} className="text-center mt-12">
+          <div className="text-center mt-12">
             <Button asChild variant="outline" size="lg" className="button-glow">
               <Link to="/notices">View All Notices</Link>
             </Button>
-          </motion.div>
+          </div>
         </div>
-      </motion.section>
+      </section>
 
-      <motion.section
+      <section
         className="py-20"
-        variants={sectionVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
       >
         <div className="container mx-auto px-4">
-          <motion.div variants={sectionVariants} className="text-center mb-16">
-            <AnimatedGradientText text="A Place to Worship, Grow, and Serve" className="text-3xl lg:text-4xl font-bold mb-4" style={{ fontFamily: "'Playfair Display', serif" }} />
+          <div className="text-center mb-16">
+            <h2 className="text-3xl lg:text-4xl font-bold mb-4 gradient-text" style={{ fontFamily: "'Playfair Display', serif" }}>
+              A PLACE TO WORSHIP, SERVE, AND GROW
+            </h2>
             <p className="text-muted-foreground">Experience the fullness of Christian life, grow in your faith, and find a place to serve in our vibrant community</p>
-          </motion.div>
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {features.map((feature, index) => (
-              <motion.div
+              <div
                 key={index}
-                custom={index}
-                variants={cardVariants}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.3 }}
               >
                 <Link to={feature.path}>
                   <Card className="frosted-glass text-center h-full">
@@ -382,24 +329,22 @@ const Index = () => {
                     </CardContent>
                   </Card>
                 </Link>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
-      </motion.section>
+      </section>
 
-      <motion.section
+      <section
         className="py-20 bg-primary/5"
-        variants={sectionVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
       >
         <div className="container mx-auto px-4">
-          <motion.div variants={sectionVariants} className="text-center mb-16">
-            <AnimatedGradientText text="Recent Events" className="text-3xl lg:text-4xl font-bold mb-4" style={{ fontFamily: "'Playfair Display', serif" }} />
+          <div className="text-center mb-16">
+            <h2 className="text-3xl lg:text-4xl font-bold mb-4 gradient-text" style={{ fontFamily: "'Playfair Display', serif" }}>
+              RECENT EVENTS
+            </h2>
             <p className="text-muted-foreground">Stay updated with our latest events and programs</p>
-          </motion.div>
+          </div>
           {loading ? (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
                 {[...Array(3)].map((_, index) => (
@@ -416,13 +361,8 @@ const Index = () => {
           ) : events.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
               {events.map((event, index) => (
-                <motion.div
+                <div
                   key={event.id}
-                  custom={index}
-                  variants={cardVariants}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true, amount: 0.3 }}
                 >
                   <Link to="/events">
                     <Card className="frosted-glass overflow-hidden h-full">
@@ -446,7 +386,7 @@ const Index = () => {
                       </CardContent>
                     </Card>
                   </Link>
-                </motion.div>
+                </div>
               ))}
             </div>
           ) : (
@@ -454,26 +394,24 @@ const Index = () => {
               No recent events available at the moment.
             </div>
           )}
-          <motion.div variants={sectionVariants} className="text-center mt-12">
+          <div className="text-center mt-12">
             <Button asChild variant="outline" size="lg" className="button-glow">
               <Link to="/events">View All Events</Link>
             </Button>
-          </motion.div>
+          </div>
         </div>
-      </motion.section>
+      </section>
 
-      <motion.section
+      <section
         className="py-20"
-        variants={sectionVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
       >
         <div className="container mx-auto px-4">
-          <motion.div variants={sectionVariants} className="text-center mb-16">
-            <AnimatedGradientText text="Announcements" className="text-3xl lg:text-4xl font-bold mb-4" style={{ fontFamily: "'Playfair Display', serif" }} />
+          <div className="text-center mb-16">
+            <h2 className="text-3xl lg:text-4xl font-bold mb-4 gradient-text" style={{ fontFamily: "'Playfair Display', serif" }}>
+              ANNOUNCEMENTS
+            </h2>
             <p className="text-muted-foreground">Stay informed with the latest church announcements</p>
-          </motion.div>
+          </div>
           {loading ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
                 {[...Array(3)].map((_, index) => (
@@ -491,13 +429,8 @@ const Index = () => {
           ) : announcements.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
               {announcements.map((announcement, index) => (
-                <motion.div
+                <div
                   key={announcement.id}
-                  custom={index}
-                  variants={cardVariants}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true, amount: 0.3 }}
                 >
                   <Link to={`/announcements/${announcement.id}`}>
                     <Card className="frosted-glass overflow-hidden h-full">
@@ -525,7 +458,7 @@ const Index = () => {
                       </CardContent>
                     </Card>
                   </Link>
-                </motion.div>
+                </div>
               ))}
             </div>
           ) : (
@@ -533,27 +466,25 @@ const Index = () => {
               No announcements available at the moment.
             </div>
           )}
-          <motion.div variants={sectionVariants} className="text-center mt-12">
+          <div className="text-center mt-12">
             <Button asChild variant="outline" size="lg" className="button-glow">
               <Link to="/events#announcements">View All Announcements</Link>
             </Button>
-          </motion.div>
+          </div>
         </div>
-      </motion.section>
+      </section>
 
-      <motion.section
+      <section
         className="py-20 bg-primary/5"
-        variants={sectionVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
       >
         <div className="container mx-auto px-4 text-center">
-          <motion.div variants={sectionVariants} className="max-w-3xl mx-auto">
-            <AnimatedGradientText text="Join Us This Sunday" className="text-3xl lg:text-5xl font-bold mb-6" style={{ fontFamily: "'Playfair Display', serif" }} />
+          <div className="max-w-3xl mx-auto">
+            <h2 className="text-3xl lg:text-5xl font-bold mb-6 gradient-text" style={{ fontFamily: "'Playfair Display', serif" }}>
+              Join Us This Sunday
+            </h2>
             <p className="text-xl text-foreground/80 mb-8">
               Experience the presence of God and connect with our loving community. 
-              All are welcome to worship with us!
+              All are welcome to worship with us
             </p>
             <div className="flex flex-col sm:flew-row gap-4 justify-center">
               <Button asChild size="lg" className="button-glow">
@@ -563,10 +494,10 @@ const Index = () => {
                 <Link to="/contact">View Service Times</Link>
               </Button>
             </div>
-          </motion.div>
+          </div>
         </div>
-      </motion.section>
-    </motion.div>
+      </section>
+    </div>
   );
 };
 

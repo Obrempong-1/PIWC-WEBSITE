@@ -1,30 +1,37 @@
-import { Mail, Phone, MapPin, Facebook, Instagram, Youtube, Music2 } from "lucide-react";
+import Mail from "lucide-react/dist/esm/icons/mail";
+import Phone from "lucide-react/dist/esm/icons/phone";
+import MapPin from "lucide-react/dist/esm/icons/map-pin";
+import Facebook from "lucide-react/dist/esm/icons/facebook";
+import Instagram from "lucide-react/dist/esm/icons/instagram";
+import Youtube from "lucide-react/dist/esm/icons/youtube";
+import Music2 from "lucide-react/dist/esm/icons/music-2";
 import { Link } from "react-router-dom";
-import churchLogo from "@/assets/church-logo.png";
+import churchLogo from "@/assets/church-logo.webp";
+import LazyImage from "@/components/ui/LazyImage";
+import React from "react";
+
+const quickLinks = [
+  { name: "Home", path: "/" },
+  { name: "About Us", path: "/about" },
+  { name: "Events", path: "/events" },
+  { name: "Ministries", path: "/ministries" },
+];
+
+const socialLinks = [
+  { icon: Facebook, url: "#", label: "Facebook" },
+  { icon: Instagram, url: "#", label: "Instagram" },
+  { icon: Youtube, url: "#", label: "Youtube" },
+  { icon: Music2, url: "#", label: "TikTok" },
+];
 
 const Footer = () => {
-  const quickLinks = [
-    { name: "Home", path: "/" },
-    { name: "About Us", path: "/about" },
-    { name: "Events", path: "/events" },
-    { name: "Ministries", path: "/ministries" },
-  ];
-
-  const socialLinks = [
-    { icon: Facebook, url: "#", label: "Facebook" },
-    { icon: Instagram, url: "#", label: "Instagram" },
-    { icon: Youtube, url: "#", label: "Youtube" },
-    { icon: Music2, url: "#", label: "TikTok" },
-  ];
-
   return (
     <footer className="bg-primary text-white">
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          
           <div className="space-y-4">
             <Link to="/" className="flex items-center group footer-logo-container">
-              <img
+              <LazyImage
                 src={churchLogo}
                 alt="PIWC Logo"
                 className="logo-icon h-14 w-14 object-contain logo-spin"
@@ -82,7 +89,6 @@ const Footer = () => {
             </ul>
           </div>
 
-          
           <div>
             <h4 className="text-lg font-semibold mb-4">Service Times</h4>
             <ul className="space-y-2 mb-6">
@@ -199,6 +205,7 @@ const Footer = () => {
           height: 60px;
           width: 60px;
           object-fit: contain;
+          will-change: transform;
         }
         
         @keyframes logo-spin {
@@ -216,4 +223,4 @@ const Footer = () => {
   );
 };
 
-export default Footer;
+export default React.memo(Footer);

@@ -160,6 +160,12 @@ const About = () => {
         title: "Divine Healing",
         description: "We believe that the healing of sickness and disease is provided for God's people in the atonement. The Church is, however, not opposed to soliciting the help of qualified medical practitioners.",
         scriptures: "Isaiah 53:4-5; Matthew 8:7, 17; Mark 16:18; James 5:14-16; Luke 13:10-16"
+    },
+    {
+        icon: Heart,
+        title: "Divine Healing",
+        description: "We believe that the healing of sickness and disease is provided for God's people in the atonement. The Church is, however, not opposed to soliciting the help of qualified medical practitioners.",
+        scriptures: "Isaiah 53:4-5; Matthew 8:7, 17; Mark 16:18; James 5:14-16; Luke 13:10-16"
     }
 ];
 
@@ -186,17 +192,17 @@ const About = () => {
                   OUR VISION
                 </h3>
                 <p className="text-muted-foreground leading-relaxed text-lg">
-                  Our mission is to equip every believer to recognise and embrace their divine calling, and to deploy them into every sphere of life family, workplace, community, nation as transformative ambassadors of Christ. Rooted in the theme for this year, “Unleashed to Live a Life Worthy of Your Calling,” we are committed to fostering lives characterised by holiness, integrity, love and purpose, thereby making visible the values and principles of God’s Kingdom. We aim to strengthen each local assembly as a launch-pad for discipleship and impact, providing ministry, fellowship, mentorship and support so that members are not merely recipients of grace but active agents of change. Through empowering the youth, engaging in urban and rural missions, modelling servant-leadership and stewarding resources with wisdom, we seek to release the Church into the world in full measure. Ultimately, we envision a community where every follower of Christ lives boldly, works faithfully, serves sacrificially and influences ethically so that by 2025 and beyond we will see transformed lives and transformed societies, bringing honour to God and advancing His Kingdom on earth.
+                 Vision 2028 marks the next phase of The Church of Pentecost’s divine mandate, spanning the years 2023 to 2028. Building upon the foundation of Vision 2023, which focused on equipping believers with the Word, character, and power to influence their world, this new phase emphasizes action unleashing every member into society as true agents of transformation. The vision seeks to see the entire Church actively demonstrating the values and principles of the Kingdom of God in every sphere of life family, education, governance, business, media, and beyond. It is a call for believers not only to be equipped but to live out their faith practically, transforming their world and manifesting God’s kingdom wherever they find themselves.
                 </p>
             </div>
             <div className="fade-up order-1 lg:order-2 group relative h-96 overflow-hidden rounded-lg floating cursor-pointer" onClick={() => openModal("https://vhovhjnupqdfmdjfbtrr.supabase.co/storage/v1/object/public/images/vision.jpg", "Our Vision")}>
-                <img src="https://vhovhjnupqdfmdjfbtrr.supabase.co/storage/v1/object/public/images/vision.jpg" alt="Our Vision" className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110"/>
+                <img src="https://vhovhjnupqdfmdjfbtrr.supabase.co/storage/v1/object/public/images/vision.webp" alt="Our Vision" className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110"/>
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </div>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto items-center mt-20">
             <div className="fade-up group relative h-96 overflow-hidden rounded-lg floating cursor-pointer" onClick={() => openModal("https://vhovhjnupqdfmdjfbtrr.supabase.co/storage/v1/object/public/images/mission.png", "Our Mission")}>
-                  <img src="https://vhovhjnupqdfmdjfbtrr.supabase.co/storage/v1/object/public/images/mission.png" alt="Our Mission" className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110"/>
+                  <img src="https://vhovhjnupqdfmdjfbtrr.supabase.co/storage/v1/object/public/images/mission.jpg" alt="Our Mission" className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110"/>
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </div>
             <div className="fade-up">
@@ -297,17 +303,13 @@ const About = () => {
                                         <div className="w-5 h-5 rounded-full bg-primary/30 border-4 border-primary/10"></div>
                                     </div>
                                     <div className="fade-up pl-8">
-                                        <Link to={`/milestone/${milestone.id}`}>
-                                            <MilestoneCard milestone={milestone} />
-                                        </Link>
+                                        <MilestoneCard milestone={milestone} />
                                     </div>
                                 </> 
                             ) : (
                                 <>
                                     <div className="fade-up pr-8">
-                                        <Link to={`/milestone/${milestone.id}`}>
-                                            <MilestoneCard milestone={milestone} />
-                                        </Link>
+                                        <MilestoneCard milestone={milestone} />
                                     </div>
                                     <div className="relative h-full flex items-center justify-center">
                                         <div className="w-5 h-5 rounded-full bg-primary/30 border-4 border-primary/10"></div>
@@ -322,7 +324,7 @@ const About = () => {
                     ))}
                 </div>
 
-                
+                {/* Mobile Timeline */}
                 <div className="md:hidden">
                     {milestones.map((milestone) => (
                         <div className="flex gap-4 mb-12" key={milestone.id}>
@@ -335,9 +337,7 @@ const About = () => {
                                     <h3 className="text-2xl font-bold text-primary">{milestone.year}</h3>
                                     <p className="text-muted-foreground">{milestone.event}</p>
                                 </div>
-                                <Link to={`/milestone/${milestone.id}`}>
-                                    <MilestoneCard milestone={milestone} />
-                                </Link>
+                                <MilestoneCard milestone={milestone} />
                             </div>
                         </div>
                     ))}

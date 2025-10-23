@@ -1,45 +1,47 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense, lazy } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
-import Layout from "./components/Layout";
 import SplashScreen from "./components/SplashScreen";
 import ProtectedRoute from "./components/ProtectedRoute";
-import Index from "./pages/Index";
-import About from "./pages/About";
-import Events from "./pages/Events";
-import Gallery from "./pages/Gallery";
-import Ministries from "./pages/Ministries";
-import Contact from "./pages/Contact";
-import NotFound from "./pages/NotFound";
-import Auth from "./pages/Auth";
-import Dashboard from "./pages/admin/Dashboard";
-import AnnouncementsManagement from "./pages/admin/AnnouncementsManagement";
-import LeadersManagement from "./pages/admin/LeadersManagement";
-import MinistriesManagement from "./pages/admin/MinistriesManagement";
-import EventsManagement from "./pages/admin/EventsManagement";
-import GalleryManagement from "./pages/admin/GalleryManagement";
-import WelcomeSectionManagement from "./pages/admin/WelcomeSectionManagement";
-import NoticeBoardManagement from "./pages/admin/NoticeBoardManagement";
-import MilestoneManager from "./pages/admin/MilestoneManager";
-import Notices from "./pages/Notices";
-import AnnouncementDetail from "./pages/AnnouncementDetail";
-import NoticeDetail from "./pages/NoticeDetail";
-import LeaderDetail from "./pages/LeaderDetail";
-import EventDetail from "./pages/EventDetail";
-import MilestoneDetail from "./pages/MilestoneDetail";
-import { AnimatePresence } from "framer-motion";
+import Loading from "./components/Loading";
 import ScrollToTop from "./components/ScrollToTop";
+import LenisSmoothScroll from "./components/LenisSmoothScroll";
 
 const queryClient = new QueryClient();
 
-const AppRoutes = () => {
+// Lazy-loaded components
+const Layout = lazy(() => import("./components/Layout"));
+const Index = lazy(() => import("./pages/Index"));
+const About = lazy(() => import("./pages/About"));
+const Events = lazy(() => import("./pages/Events"));
+const Gallery = lazy(() => import("./pages/Gallery"));
+const Ministries = lazy(() => import("./pages/Ministries"));
+const Contact = lazy(() => import("./pages/Contact"));
+const NotFound = lazy(() => import("./pages/NotFound"));
+const Auth = lazy(() => import("./pages/Auth"));
+const Dashboard = lazy(() => import("./pages/admin/Dashboard"));
+const AnnouncementsManagement = lazy(() => import("./pages/admin/AnnouncementsManagement"));
+const LeadersManagement = lazy(() => import("./pages/admin/LeadersManagement"));
+const MinistriesManagement = lazy(() => import("./pages/admin/MinistriesManagement"));
+const EventsManagement = lazy(() => import("./pages/admin/EventsManagement"));
+const GalleryManagement = lazy(() => import("./pages/admin/GalleryManagement"));
+const WelcomeSectionManagement = lazy(() => import("./pages/admin/WelcomeSectionManagement"));
+const NoticeBoardManagement = lazy(() => import("./pages/admin/NoticeBoardManagement"));
+const MilestoneManager = lazy(() => import("./pages/admin/MilestoneManager"));
+const Notices = lazy(() => import("./pages/Notices"));
+const AnnouncementDetail = lazy(() => import("./pages/AnnouncementDetail"));
+const NoticeDetail = lazy(() => import("./pages/NoticeDetail"));
+const LeaderDetail = lazy(() => import("./pages/LeaderDetail"));
+const EventDetail = lazy(() => import("./pages/EventDetail"));
+const MilestoneDetail = lazy(() => import("./pages/MilestoneDetail"));
+
+const AppRoutes = ({ isLoadingVisible }: { isLoadingVisible: boolean }) => {
   const location = useLocation();
   return (
-    <AnimatePresence mode="wait">
-      <ScrollToTop />
+    <Suspense fallback={isLoadingVisible ? <Loading /> : null}>
       <Routes location={location} key={location.pathname}>
         <Route path="/auth" element={<Auth />} />
         <Route
@@ -128,7 +130,7 @@ const AppRoutes = () => {
         <Route path="/milestone/:id" element={<Layout><MilestoneDetail /></Layout>} />
         <Route path="*" element={<Layout><NotFound /></Layout>} />
       </Routes>
-    </AnimatePresence>
+    </Suspense>
   );
 };
 
@@ -149,7 +151,10 @@ const App = () => {
         <Sonner />
         {showSplash && <SplashScreen />}
         <BrowserRouter>
-          <AppRoutes />
+          <LenisSmoothScroll>
+            <ScrollToTop />
+            <AppRoutes isLoadingVisible={!showSplash} />
+          </LenisSmoothScroll>
         </BrowserRouter>
       </TooltipProvider>
     </QueryClientProvider>

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useParams, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { ArrowLeft } from "lucide-react";
@@ -21,11 +21,7 @@ const NoticeDetail = () => {
   const [notice, setNotice] = useState<Notice | null>(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetchNotice();
-  }, [id]);
-
-  const fetchNotice = async () => {
+  const fetchNotice = useCallback(async () => {
     if (!id) return;
     setLoading(true);
     const { data, error } = await supabase
@@ -40,7 +36,11 @@ const NoticeDetail = () => {
       setNotice(data as Notice);
     }
     setLoading(false);
-  };
+  }, [id]);
+
+  useEffect(() => {
+    fetchNotice();
+  }, [fetchNotice]);
 
   if (loading) {
     return <Loading message="Loading notice..." />;

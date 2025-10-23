@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,10 +8,10 @@ import { useToast } from "@/hooks/use-toast";
 import { Loader2, Save, Trash2 } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { Tables } from "@/integrations/supabase/types";
-import ReactQuill from "react-quill";
 import 'react-quill/dist/quill.snow.css';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useFileUpload } from "@/hooks/useFileUpload";
+import LazyQuill from "@/components/ui/LazyQuill";
 
 type Notice = Tables<"notice_board">;
 
@@ -34,11 +34,7 @@ const NoticeBoardManagement = () => {
   const [mediaFile, setMediaFile] = useState<File | null>(null);
   const { uploadFile, uploading } = useFileUpload();
 
-  useEffect(() => {
-    fetchNotices();
-  }, []);
-
-  const fetchNotices = async () => {
+  const fetchNotices = useCallback(async () => {
     setLoading(true);
     const { data, error } = await supabase
       .from("notice_board")
@@ -51,7 +47,11 @@ const NoticeBoardManagement = () => {
       setNotices(data || []);
     }
     setLoading(false);
-  };
+  }, [toast]);
+
+  useEffect(() => {
+    fetchNotices();
+  }, [fetchNotices]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -174,7 +174,7 @@ const NoticeBoardManagement = () => {
               
               <div>
                 <label className="font-medium">Content</label>
-                <ReactQuill 
+                <LazyQuill 
                   theme="snow"
                   value={formData.content}
                   onChange={(value) => setFormData({ ...formData, content: value })}

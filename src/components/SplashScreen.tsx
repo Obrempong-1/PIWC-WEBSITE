@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import churchLogo from "@/assets/church-logo.png";
+import churchLogo from "@/assets/church-logo.webp";
+import LazyImage from "@/components/ui/LazyImage";
 
 const SplashScreen = () => {
   const [isVisible, setIsVisible] = useState(true);
@@ -15,11 +16,23 @@ const SplashScreen = () => {
   if (!isVisible) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-blue-600 animate-splash-fade">
-      <div className="text-center animate-logo-scale">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-blue-600 animate-splash-fade"
+      style={{ willChange: 'opacity' }} 
+    >
+      <div
+        className="text-center animate-logo-scale"
+        style={{ willChange: 'transform' }} 
+      >
         <div className="mb-6 flex justify-center">
           <div className="rounded-full bg-white p-8 shadow-blue">
-            <img src={churchLogo} alt="PIWC Logo" className="h-24 w-24 object-contain" />
+            <LazyImage
+              src={churchLogo}
+              alt="PIWC Logo"
+              className="h-24 w-24"
+              imageClassName="object-contain"
+              sizes="96px"
+            />
           </div>
         </div>
         <h1 className="text-4xl font-bold text-white mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>

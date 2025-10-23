@@ -1,27 +1,24 @@
-import { useEffect, useState } from "react";
+import { motion, useScroll, useSpring, Easing } from "framer-motion";
+import React from "react";
 
 const ScrollProgress = () => {
-  const [scrollProgress, setScrollProgress] = useState(0);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const totalHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-      const progress = (window.scrollY / totalHeight) * 100;
-      setScrollProgress(progress);
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
 
   return (
-    <div className="fixed top-0 left-0 w-full h-1 bg-secondary/20 z-50">
-      <div
-        className="h-full bg-gradient-to-r from-primary via-accent to-church-accent transition-all duration-150 ease-out"
-        style={{ width: `${scrollProgress}%` }}
-      />
-    </div>
+    <motion.div 
+      className="fixed top-0 left-0 right-0 h-2 bg-primary origin-[0%]" 
+      style={{ scaleX }}
+      transition={{
+        duration: 0.4,
+        ease: [0.42, 0, 0.58, 1] as Easing,
+      }}
+    />
   );
 };
 
-export default ScrollProgress;
+export default React.memo(ScrollProgress);

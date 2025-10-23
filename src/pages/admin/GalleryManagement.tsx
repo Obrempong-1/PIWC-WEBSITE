@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useFileUpload } from "@/hooks/useFileUpload";
@@ -35,11 +35,7 @@ const GalleryManagement = () => {
   const { uploadFile, uploading } = useFileUpload();
   const { toast } = useToast();
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     setLoading(true);
     const [galleriesRes, sectionsRes] = await Promise.all([
       supabase.from("galleries").select("*, gallery_sections ( name )"),
@@ -57,7 +53,11 @@ const GalleryManagement = () => {
       setSections(sectionsRes.data || []);
     }
     setLoading(false);
-  };
+  }, [toast]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   const handleFileSelect = async (files: File[]) => {
     if (files.length > 0) {

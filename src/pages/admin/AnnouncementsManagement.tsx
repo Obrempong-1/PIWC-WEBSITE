@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -8,10 +8,10 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { ArrowLeft, Save, Trash2 } from "lucide-react";
-import ReactQuill from "react-quill";
 import 'react-quill/dist/quill.snow.css';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useFileUpload } from "@/hooks/useFileUpload";
+import LazyQuill from "@/components/ui/LazyQuill";
 
 interface Announcement {
   id: string;
@@ -42,11 +42,7 @@ const AnnouncementsManagement = () => {
   const { toast } = useToast();
   const { uploadFile, uploading } = useFileUpload();
 
-  useEffect(() => {
-    fetchAnnouncements();
-  }, []);
-
-  const fetchAnnouncements = async () => {
+  const fetchAnnouncements = useCallback(async () => {
     setLoading(true);
     const { data, error } = await supabase
       .from("announcements")
@@ -63,7 +59,11 @@ const AnnouncementsManagement = () => {
       setAnnouncements(data as unknown as Announcement[]);
     }
     setLoading(false);
-  };
+  }, [toast]);
+
+  useEffect(() => {
+    fetchAnnouncements();
+  }, [fetchAnnouncements]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -199,7 +199,7 @@ const AnnouncementsManagement = () => {
 
               <div>
                 <label className="font-medium">Content</label>
-                <ReactQuill 
+                <LazyQuill 
                   theme="snow"
                   value={formData.content || ''}
                   onChange={(value) => setFormData({ ...formData, content: value })}

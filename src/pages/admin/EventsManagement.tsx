@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+
+import { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useFileUpload } from "@/hooks/useFileUpload";
@@ -10,13 +11,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { FileUpload } from "@/components/ui/FileUpload";
-import { ArrowLeft, Save, Trash2 } from "lucide-react";
+import { ArrowLeft, Save, Trash2, Calendar, Users, Heart, Book, Megaphone, ClipboardList, BookOpen, ShieldCheck, UserCheck, Cross, HandHeart, Droplets, Wind, Church, HandCoins, PlayCircle, Clock, MapPin, MoreHorizontal, GripVertical, Search, ChevronUp, ChevronDown, ChevronLeft, ChevronRight, Check, Circle, Dot, UploadCloud, File as FileIcon, CheckCircle, Loader, Edit, PanelLeft, X } from "lucide-react";
 import { Tables } from "@/integrations/supabase/types";
-import * as LucideIcons from "lucide-react";
 
 type Event = Tables<"events">;
-
-const iconNames = Object.keys(LucideIcons).filter(key => typeof LucideIcons[key] === 'object');
 
 const EventsManagement = () => {
   const [events, setEvents] = useState<Event[]>([]);
@@ -38,11 +36,7 @@ const EventsManagement = () => {
   const { uploadFile, uploading } = useFileUpload();
   const { toast } = useToast();
 
-  useEffect(() => {
-    fetchEvents();
-  }, []);
-
-  const fetchEvents = async () => {
+  const fetchEvents = useCallback(async () => {
     setLoading(true);
     const { data, error } = await supabase
       .from("events")
@@ -59,7 +53,11 @@ const EventsManagement = () => {
       setEvents(data || []);
     }
     setLoading(false);
-  };
+  }, [toast]);
+
+  useEffect(() => {
+    fetchEvents();
+  }, [fetchEvents]);
 
   const handleFileSelect = async (files: File[]) => {
     if (files.length > 0) {

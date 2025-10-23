@@ -75,7 +75,6 @@
   }
 }
 
-
 .frosted-glass {
   background: rgba(255, 255, 255, 0.75);
   backdrop-filter: blur(10px);
@@ -88,52 +87,11 @@
   backdrop-filter: blur(12px);
 }
 
-
-@keyframes gradient-animation {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
 .gradient-text {
   background: linear-gradient(90deg, #007bff, #0056d6, #002f91);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  background-clip: text;
-  text-fill-color: transparent;
 }
-
-
-
-.button-glow {
-  position: relative;
-  overflow: hidden;
-  transition: all 0.3s ease-in-out;
-}
-
-.button-glow::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 150%;
-  height: 200%;
-  background: radial-gradient(circle, rgba(0, 102, 255, 0.2) 0%, rgba(0, 102, 255, 0) 70%);
-  opacity: 0;
-  transition: opacity 0.4s ease-in-out;
-}
-
-.button-glow:hover::before {
-  opacity: 1;
-}
-
 
 @keyframes floating-animation {
   0% {
@@ -149,4 +107,17 @@
 
 .floating {
   animation: floating-animation 4s ease-in-out infinite;
+}
+
+@media (max-width: 767px) {
+  .animate-fade-up,
+  .animate-scale-in,
+  .btn-gradient-glow,
+  .floating,
+  .gradient-text,
+  .group:hover .group-hover\:translate-x-1 {
+    animation: none !important;
+    transform: none !important;
+    transition: none !important;
+  }
 }
