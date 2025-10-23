@@ -76,31 +76,34 @@ const LazyImage: React.FC<LazyImageProps> = ({
 
   const mainImageProps = generateImageProps(src);
   
+  let thumbSrc = '';
   const thumbUrl = getSupabaseRenderUrl(src);
   if (thumbUrl) {
     const url = new URL(thumbUrl);
     url.searchParams.set('width', '20');
     url.searchParams.set('quality', '20');
-    url.searchParams.set('blur', '5');
+    url.searchParams.set('blur', '10');
+    thumbSrc = url.href;
   }
 
   return (
-    <div ref={ref} className={`relative overflow-hidden ${className}`}>
+    <div ref={ref} className={`relative overflow-hidden ${className} ${placeholderClassName || 'bg-gray-200'}`}>
       
-      <img
-        src={thumbUrl ? new URL(thumbUrl).href : ''} // Use a small, blurred version as a persistent background
-        alt=""
-        aria-hidden="true"
-        className={`absolute inset-0 w-full h-full object-cover filter blur-md scale-105 ${placeholderClassName}`}
-      />
-      
+      {thumbSrc && (
+        <img
+          src={thumbSrc}
+          alt=""
+          aria-hidden="true"
+          className={`absolute inset-0 w-full h-full object-cover filter blur-md scale-105 transition-opacity duration-300 ${isLoaded ? 'opacity-0' : 'opacity-100'}`}
+        />
+      )}
       
       {(isInView || priority) && (
         <img
           {...mainImageProps}
           sizes={sizes || "100vw"}
           alt={alt}
-          className={`relative w-full h-full transition-opacity duration-700 ${isLoaded ? 'opacity-100' : 'opacity-0'} ${imageClassName}`}
+          className={`relative w-full h-full transition-opacity duration-700 ease-in-out ${isLoaded ? 'opacity-100' : 'opacity-0'} ${imageClassName}`}
           loading={priority ? 'eager' : 'lazy'}
           onLoad={() => setIsLoaded(true)}
           fetchPriority={priority ? 'high' : 'auto'}
