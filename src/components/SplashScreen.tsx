@@ -27,15 +27,15 @@ const SplashScreen = () => {
             style={{ willChange: 'transform' }} 
           >
             <div className="mb-6 flex justify-center">
-              <div className="rounded-full bg-white p-8 shadow-blue overflow-hidden">
-                <LazyImage
-                  src={churchLogo}
-                  alt="PIWC Logo"
-                  className="h-24 w-24"
-                  imageClassName="object-cover"
-                  sizes="96px"
-                />
-              </div>
+                <div className="h-32 w-32 rounded-full overflow-hidden shadow-blue">
+                  <LazyImage
+                    src={churchLogo}
+                    alt="PIWC Logo"
+                    className="h-full w-full"
+                    imageClassName="object-cover h-full w-full"
+                    sizes="128px"
+                  />
+                </div>
             </div>
             <h1 className="text-4xl font-bold text-white mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>
               PIWC Asokwa
