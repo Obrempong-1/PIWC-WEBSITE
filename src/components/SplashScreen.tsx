@@ -1,47 +1,49 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 import churchLogo from "@/assets/church-logo.webp";
-import LazyImage from "@/components/ui/LazyImage";
+import LazyImage from '@/components/ui/LazyImage';
 
 const SplashScreen = () => {
-  const [isVisible, setIsVisible] = useState(true);
+    const [isVisible, setIsVisible] = useState(true);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsVisible(false);
-    }, 2000);
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setIsVisible(false);
+        }, 2500); 
 
-    return () => clearTimeout(timer);
-  }, []);
+        return () => clearTimeout(timer);
+    }, []);
 
-  if (!isVisible) return null;
+    if (!isVisible) {
+        return null;
+    }
 
-  return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-blue-600 animate-splash-fade"
-      style={{ willChange: 'opacity' }} 
-    >
-      <div
-        className="text-center animate-logo-scale"
-        style={{ willChange: 'transform' }} 
-      >
-        <div className="mb-6 flex justify-center">
-          <div className="rounded-full bg-white p-8 shadow-blue">
-            <LazyImage
-              src={churchLogo}
-              alt="PIWC Logo"
-              className="h-24 w-24"
-              imageClassName="object-contain"
-              sizes="96px"
-            />
+    return (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-blue-600 animate-splash-fade"
+          style={{ willChange: 'opacity' }} 
+        >
+          <div
+            className="text-center animate-logo-scale"
+            style={{ willChange: 'transform' }} 
+          >
+            <div className="mb-6 flex justify-center">
+              <div className="rounded-full bg-white p-8 shadow-blue overflow-hidden">
+                <LazyImage
+                  src={churchLogo}
+                  alt="PIWC Logo"
+                  className="h-24 w-24"
+                  imageClassName="object-cover"
+                  sizes="96px"
+                />
+              </div>
+            </div>
+            <h1 className="text-4xl font-bold text-white mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>
+              PIWC Asokwa
+            </h1>
+            <p className="text-lg text-white/90">Pentecost International Worship Centre</p>
           </div>
         </div>
-        <h1 className="text-4xl font-bold text-white mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>
-          PIWC Asokwa
-        </h1>
-        <p className="text-lg text-white/90">Pentecost International Worship Centre</p>
-      </div>
-    </div>
-  );
-};
+      );
+    };
 
 export default SplashScreen;
