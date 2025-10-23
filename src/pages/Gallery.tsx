@@ -219,7 +219,6 @@ const GalleryPage = () => {
                          alt={`${item.title} image`} 
                          className="w-full h-auto"
                          imageClassName="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-110"
-                         placeholderClassName="w-full h-auto bg-.gray-300 animate-pulse rounded-xl"
                        />
                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
                        <div className="absolute bottom-0 left-0 right-0 p-4">

@@ -28,7 +28,7 @@ const LeadersManagement = () => {
     display_order: 0,
     published: false,
   });
-  const { uploadFile, uploading } = useFileUpload();
+  const { uploadFile, deleteFile, uploading } = useFileUpload();
   const { toast } = useToast();
 
   useEffect(() => {
@@ -119,25 +119,22 @@ const LeadersManagement = () => {
     });
   };
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = async (leader: Leader) => {
     if (!confirm("Are you sure you want to delete this leader?")) return;
 
-    
-    const { error: updateError } = await supabase
-      .from("leaders")
-      .update({ published: false })
-      .eq("id", id);
-
-    if (updateError) {
-      toast({
-        title: "Error unpublishing leader",
-        description: `Could not unpublish leader before deleting. ${updateError.message}`,
-        variant: "destructive",
-      });
-      return;
+    if (leader.image_url) {
+      const success = await deleteFile(leader.image_url, "images");
+      if (!success) {
+        toast({
+          title: "Error Deleting Image",
+          description: "Could not delete the leader's image from storage. Aborting deletion.",
+          variant: "destructive",
+        });
+        return;
+      }
     }
 
-    const { error } = await supabase.from("leaders").delete().eq("id", id);
+    const { error } = await supabase.from("leaders").delete().eq("id", leader.id);
 
     if (error) {
       toast({
@@ -306,7 +303,7 @@ const LeadersManagement = () => {
                     <Button
                       size="sm"
                       variant="destructive"
-                      onClick={() => handleDelete(leader.id)}
+                      onClick={() => handleDelete(leader)}
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>
