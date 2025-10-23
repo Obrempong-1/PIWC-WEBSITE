@@ -85,7 +85,7 @@ const Footer = () => {
               </li>
               <li className="flex items-center gap-3 text-sm text-white/80">
                 <Mail className="h-5 w-5 flex-shrink-0" />
-                <span>info@piwcasokwa.org</span>
+                <span>piwcasokwaac1@gmail.com</span>
               </li>
             </ul>
           </div>
@@ -98,10 +98,10 @@ const Footer = () => {
                 <span className="font-medium text-white">Sunday Service:</span> 8:00 AM
               </li>
               <li className="text-sm text-white/80">
-                <span className="font-medium text-white">Wednesday Service:</span> 6:00 PM
+                <span className="font-medium text-white">Wednesday Service:</span> 5 : 30 PM
               </li>
               <li className="text-sm text-white/80">
-                <span className="font-medium text-white">Friday Service:</span> 6:00 PM
+                <span className="font-medium text-white">Friday Service:</span> 5 : 30 PM
               </li>
             </ul>
             <div>
