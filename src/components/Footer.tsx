@@ -34,7 +34,8 @@ const Footer = () => {
               <LazyImage
                 src={churchLogo}
                 alt="PIWC Logo"
-                className="logo-icon h-14 w-14 object-contain logo-spin"
+                className="logo-icon h-14 w-14 logo-spin"
+                imageClassName="object-cover"
               />
               <div className="logo-text-container">
                 <div className="main-title-lockup">
@@ -89,6 +90,7 @@ const Footer = () => {
             </ul>
           </div>
 
+          
           <div>
             <h4 className="text-lg font-semibold mb-4">Service Times</h4>
             <ul className="space-y-2 mb-6">
@@ -204,7 +206,8 @@ const Footer = () => {
         .footer-logo-container .logo-icon {
           height: 60px;
           width: 60px;
-          object-fit: contain;
+          border-radius: 50%;
+          overflow: hidden;
           will-change: transform;
         }
         
