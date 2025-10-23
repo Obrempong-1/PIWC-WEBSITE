@@ -19,34 +19,10 @@ export const ServiceItem = ({ item, isReversed, openModal }: ServiceItemProps) =
     if (!api) return;
     setCurrent(api.selectedScrollSnap());
     api.on('select', () => {
-      if (isHovered) return;
       setCurrent(api.selectedScrollSnap());
     });
-  }, [api, isHovered]);
+  }, [api]);
 
-  useEffect(() => {
-    const startTimer = () => {
-      timerRef.current = setInterval(() => {
-        if (api) {
-          api.scrollNext();
-        }
-      }, 3000);
-    };
-
-    const stopTimer = () => {
-      if (timerRef.current) {
-        clearInterval(timerRef.current);
-      }
-    };
-
-    if (isHovered) {
-      stopTimer();
-    } else {
-      startTimer();
-    }
-
-    return () => stopTimer();
-  }, [api, isHovered]);
 
   return (
     <div

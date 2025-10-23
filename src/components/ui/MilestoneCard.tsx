@@ -32,7 +32,7 @@ const MilestoneCard = ({ milestone }: MilestoneCardProps) => {
     stopAutoRotation();
     intervalRef.current = window.setInterval(() => {
       setIsFlipped(prev => !prev);
-    }, 3000); // 3 seconds
+    }, 3000); // 3 secondsss
   }, [stopAutoRotation]);
 
   useEffect(() => {
