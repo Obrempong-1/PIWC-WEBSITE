@@ -1,10 +1,12 @@
-import { useState, useEffect } from "react";
+
+import { useState, useEffect, useCallback } from "react";
+import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+import { useFileUpload } from "@/hooks/useFileUpload";
+import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useToast } from "@/components/ui/use-toast";
-import { Link } from "react-router-dom";
 import { ArrowLeft, Edit, Trash } from "lucide-react";
 import { Database } from "@/integrations/supabase/types";
 import ReactQuill from 'react-quill';
@@ -18,19 +20,21 @@ const MilestoneManager = () => {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
+  const { uploadFile, deleteFile, uploading } = useFileUpload();
   const [editingMilestone, setEditingMilestone] = useState<Database['public']['Tables']['milestones']['Row'] | null>(null);
   const [editingDescription, setEditingDescription] = useState("");
+  const [originalImageUrl, setOriginalImageUrl] = useState<string | null>(null);
 
-  useEffect(() => {
-    fetchMilestones();
-  }, []);
-
-  const fetchMilestones = async () => {
+  const fetchMilestones = useCallback(async () => {
     const { data, error } = await supabase.from("milestones").select("*").order("created_at");
     if (data) {
       setMilestones(data);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    fetchMilestones();
+  }, [fetchMilestones]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -52,21 +56,10 @@ const MilestoneManager = () => {
     setLoading(true);
 
     try {
-      const fileExt = imageFile.name.split('.').pop();
-      const fileName = `${Math.random()}.${fileExt}`;
-      const filePath = `milestone-images/${fileName}`;
-
-      const { error: uploadError } = await supabase.storage
-        .from("images")
-        .upload(filePath, imageFile);
-
-      if (uploadError) throw uploadError;
-
-      const { data: urlData } = supabase.storage
-        .from("images")
-        .getPublicUrl(filePath);
-
-      const imageUrl = urlData.publicUrl;
+        const imageUrl = await uploadFile(imageFile, "images");
+        if (!imageUrl) {
+            throw new Error("Image upload failed.");
+        }
 
       const { data, error: insertError } = await supabase
         .from("milestones")
@@ -98,12 +91,21 @@ const MilestoneManager = () => {
     }
   };
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = async (milestone: Database['public']['Tables']['milestones']['Row']) => {
     if (window.confirm("Are you sure you want to delete this milestone?")) {
       try {
-        const { error } = await supabase.from("milestones").delete().eq("id", id);
+        if (milestone.image_url) {
+            const success = await deleteFile(milestone.image_url, "images");
+            if (!success) {
+                toast({ title: "Error", description: "Failed to delete image from storage.", variant: "destructive" });
+                return;
+            }
+        }
+
+        const { error } = await supabase.from("milestones").delete().eq("id", milestone.id);
         if (error) throw error;
-        setMilestones(milestones.filter(m => m.id !== id));
+
+        setMilestones(milestones.filter(m => m.id !== milestone.id));
         toast({ title: "Success", description: "Milestone deleted successfully!" });
       } catch (error: unknown) {
         let errorMessage = "An unknown error occurred.";
@@ -118,6 +120,7 @@ const MilestoneManager = () => {
   const handleEdit = (milestone: Database['public']['Tables']['milestones']['Row']) => {
     setEditingMilestone(milestone);
     setEditingDescription(milestone.description);
+    setOriginalImageUrl(milestone.image_url);
   };
 
   const handleUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -129,21 +132,19 @@ const MilestoneManager = () => {
     try {
       let imageUrl = editingMilestone.image_url;
       if (imageFile) {
-        const fileExt = imageFile.name.split('.').pop();
-        const fileName = `${Math.random()}.${fileExt}`;
-        const filePath = `milestone-images/${fileName}`;
-
-        const { error: uploadError } = await supabase.storage
-          .from("images")
-          .upload(filePath, imageFile);
-
-        if (uploadError) throw uploadError;
-
-        const { data: urlData } = supabase.storage
-          .from("images")
-          .getPublicUrl(filePath);
-
-        imageUrl = urlData.publicUrl;
+        if (originalImageUrl) {
+            const success = await deleteFile(originalImageUrl, "images");
+            if (!success) {
+                toast({ title: "Error", description: "Failed to delete old image.", variant: "destructive" });
+                setLoading(false);
+                return;
+            }
+        }
+        const newImageUrl = await uploadFile(imageFile, "images");
+        if (!newImageUrl) {
+            throw new Error("New image upload failed.");
+        }
+        imageUrl = newImageUrl;
       }
 
       const { data, error } = await supabase
@@ -168,6 +169,8 @@ const MilestoneManager = () => {
       setEditingMilestone(null);
       setEditingDescription("");
       setImageFile(null);
+      setOriginalImageUrl(null);
+
     } catch (error: unknown) {
       let errorMessage = "An unknown error occurred.";
       if (error instanceof Error) {
@@ -229,19 +232,19 @@ const MilestoneManager = () => {
                     onChange={setEditingDescription}
                   />
                   <div>
-                    <label htmlFor="imageFile" className="text-sm font-medium">
+                    <label htmlFor="imageFileEdit" className="text-sm font-medium">
                       Milestone Image (optional, leave blank to keep existing)
                     </label>
                     <Input
-                      id="imageFile"
+                      id="imageFileEdit"
                       type="file"
                       onChange={handleFileChange}
                       className="mt-1"
                     />
                   </div>
                   <div className="flex gap-2">
-                    <Button type="submit" disabled={loading}>
-                      {loading ? "Updating..." : "Update Milestone"}
+                    <Button type="submit" disabled={loading || uploading}>
+                      {loading || uploading ? "Updating..." : "Update Milestone"}
                     </Button>
                     <Button
                       type="button"
@@ -270,7 +273,7 @@ const MilestoneManager = () => {
                       <label htmlFor="imageFile" className="text-sm font-medium">Milestone Image</label>
                       <Input id="imageFile" type="file" onChange={handleFileChange} required className="mt-1"/>
                   </div>
-                  <Button type="submit" disabled={loading}>{loading ? "Adding..." : "Add Milestone"}</Button>
+                  <Button type="submit" disabled={loading || uploading}>{loading || uploading ? "Adding..." : "Add Milestone"}</Button>
                 </div>
               </form>
             </CardContent>
@@ -294,7 +297,7 @@ const MilestoneManager = () => {
                                 <Button variant="outline" size="icon" onClick={() => handleEdit(milestone)}>
                                     <Edit className="h-4 w-4"/>
                                 </Button>
-                                <Button variant="destructive" size="icon" onClick={() => handleDelete(milestone.id)}>
+                                <Button variant="destructive" size="icon" onClick={() => handleDelete(milestone)}>
                                     <Trash className="h-4 w-4"/>
                                 </Button>
                             </div>
