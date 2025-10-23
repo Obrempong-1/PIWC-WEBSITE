@@ -18,6 +18,7 @@ const LeadersManagement = () => {
   const [leaders, setLeaders] = useState<Leader[]>([]);
   const [loading, setLoading] = useState(true);
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [originalImageUrl, setOriginalImageUrl] = useState<string | null>(null);
   const [formData, setFormData] = useState<Omit<Leader, 'id' | 'created_at' | 'updated_at'>>({
     name: "",
     role: "",
@@ -57,6 +58,19 @@ const LeadersManagement = () => {
   const handleFileSelect = async (files: File[]) => {
     if (files.length > 0) {
       const file = files[0];
+
+      if (editingId && originalImageUrl) {
+        const success = await deleteFile(originalImageUrl, "images");
+        if (!success) {
+          toast({
+            title: "Error Deleting Old Image",
+            description: "Could not delete the old image from storage. Please try again.",
+            variant: "destructive",
+          });
+          return;
+        }
+      }
+
       const url = await uploadFile(file, "images");
       if (url) {
         setFormData(prev => ({ ...prev, image_url: url }));
@@ -107,6 +121,7 @@ const LeadersManagement = () => {
 
   const handleEdit = (leader: Leader) => {
     setEditingId(leader.id);
+    setOriginalImageUrl(leader.image_url);
     setFormData({
       name: leader.name,
       role: leader.role,
@@ -150,6 +165,7 @@ const LeadersManagement = () => {
 
   const resetForm = () => {
     setEditingId(null);
+    setOriginalImageUrl(null);
     setFormData({
       name: "",
       role: "",
