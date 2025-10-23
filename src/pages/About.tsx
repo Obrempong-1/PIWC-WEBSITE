@@ -190,14 +190,14 @@ const About = () => {
                   Our mission is to equip every believer to recognise and embrace their divine calling, and to deploy them into every sphere of life family, workplace, community, nation as transformative ambassadors of Christ. Rooted in the theme for this year, “Unleashed to Live a Life Worthy of Your Calling,” we are committed to fostering lives characterised by holiness, integrity, love and purpose, thereby making visible the values and principles of God’s Kingdom. We aim to strengthen each local assembly as a launch-pad for discipleship and impact, providing ministry, fellowship, mentorship and support so that members are not merely recipients of grace but active agents of change. Through empowering the youth, engaging in urban and rural missions, modelling servant-leadership and stewarding resources with wisdom, we seek to release the Church into the world in full measure. Ultimately, we envision a community where every follower of Christ lives boldly, works faithfully, serves sacrificially and influences ethically so that by 2025 and beyond we will see transformed lives and transformed societies, bringing honour to God and advancing His Kingdom on earth.
                 </p>
             </div>
-            <div className="fade-up order-1 lg:order-2 group relative h-96 overflow-hidden rounded-lg floating cursor-pointer" onClick={() => openModal("https://vhovhjnupqdfmdjfbtrr.supabase.co/storage/v1/object/public/images/vision.jpg", "Our Vision")}>
-                <LazyImage src="https://vhovhjnupqdfmdjfbtrr.supabase.co/storage/v1/object/public/images/vision.jpg" alt="Our Vision" className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110" disableLqip={true} />
+            <div className="fade-up order-1 lg:order-2 group relative h-96 overflow-hidden rounded-lg floating cursor-pointer" onClick={() => openModal("https://vhovhjnupqdfmdjfbtrr.supabase.co/storage/v1/object/public/images/vision.webp", "Our Vision")}>
+                <LazyImage src="https://vhovhjnupqdfmdjfbtrr.supabase.co/storage/v1/object/public/images/vision.webp" alt="Our Vision" className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110" disableLqip={true} />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </div>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto items-center mt-20">
-            <div className="fade-up group relative h-96 overflow-hidden rounded-lg floating cursor-pointer" onClick={() => openModal("https://vhovhjnupqdfmdjfbtrr.supabase.co/storage/v1/object/public/images/mission.png", "Our Mission")}>
-                <LazyImage src="https://vhovhjnupqdfmdjfbtrr.supabase.co/storage/v1/object/public/images/mission.png" alt="Our Mission" className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110" disableLqip={true} />
+            <div className="fade-up group relative h-96 overflow-hidden rounded-lg floating cursor-pointer" onClick={() => openModal("https://vhovhjnupqdfmdjfbtrr.supabase.co/storage/v1/object/public/images/mission.jpg", "Our Mission")}>
+                <LazyImage src="https://vhovhjnupqdfmdjfbtrr.supabase.co/storage/v1/object/public/images/mission.jpg" alt="Our Mission" className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110" disableLqip={true} />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </div>
             <div className="fade-up">
@@ -320,7 +320,7 @@ const About = () => {
                     ))}
                 </div>
 
-                {/* Mobile Timeline */}
+               
                 <div className="md:hidden">
                     {milestones.map((milestone) => (
                         <div className="flex gap-4 mb-12" key={milestone.id}>
@@ -347,9 +347,9 @@ const About = () => {
         <div className="container mx-auto px-4">
           <div className="text-center mb-16 fade-up">
             <h2 className="text-3xl lg:text-4xl font-bold mb-4 gradient-text" style={{ fontFamily: "'Playfair Display', serif" }}>
-              PIWC ASOKWA PRESBYTORY
+              PIWC ASOKWA PRESBITORY
             </h2>
-            <p className="text-muted-foreground">The highest decision making body of PIWC ASOKWA.</p>
+            <p className="text-muted-foreground">The highest decision making body of the church.</p>
           </div>
           {loading ? (
              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
@@ -377,7 +377,7 @@ const About = () => {
                            <LazyImage
                             src={leader.image_url}
                             alt={leader.name}
-                            className="relative w-full h-full object-contain z-10 transition-transform duration-500 group-hover:scale-110"
+                            className="relative w-full h-full object-cover z-10 transition-transform duration-500 group-hover:scale-110"
                             disableLqip={true} 
                           />
                         </>
