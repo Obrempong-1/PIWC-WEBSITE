@@ -22,14 +22,17 @@ const ProtectedRoute = ({ children, requireAdmin = false }: ProtectedRouteProps)
     return <Navigate to="/auth" state={{ from: location }} replace />;
   }
 
+  // If admin is required, but the user is not yet confirmed as an admin, continue showing the loader.
+  // This handles the case where the user session is loaded, but the admin role check is still in progress.
   if (requireAdmin && !isAdmin) {
     return (
-      <div className="min-h-screen flex items-center justify-center p-4">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold mb-2">Access Denied</h1>
-          <p className="text-muted-foreground">You need admin privileges to access this page.</p>
+        <div className="min-h-screen flex items-center justify-center p-4">
+            <div className="text-center">
+                <h1 className="text-2xl font-bold mb-2">Verifying Admin Access...</h1>
+                <p className="text-muted-foreground">Please wait while we check your privileges.</p>
+                <div className="mt-4 animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+            </div>
         </div>
-      </div>
     );
   }
 
