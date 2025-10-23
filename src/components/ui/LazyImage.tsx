@@ -8,6 +8,8 @@ interface LazyImageProps {
   placeholderClassName?: string;
   sizes?: string;
   priority?: boolean;
+  width?: number;
+  height?: number;
 }
 
 const imageWidths = [320, 480, 640, 750, 828, 1080, 1200, 1920];
@@ -49,6 +51,8 @@ const LazyImage: React.FC<LazyImageProps> = ({
   placeholderClassName,
   sizes,
   priority = false,
+  width,
+  height,
 }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isInView, setIsInView] = useState(priority);
@@ -86,9 +90,14 @@ const LazyImage: React.FC<LazyImageProps> = ({
     thumbSrc = url.href;
   }
 
+  const aspectRatio = width && height ? `${width} / ${height}` : undefined;
+
   return (
-    <div ref={ref} className={`relative overflow-hidden ${className} ${placeholderClassName || 'bg-gray-200'}`}>
-      
+    <div
+      ref={ref}
+      className={`relative overflow-hidden ${className} ${!aspectRatio && (placeholderClassName || 'bg-gray-200')}`}
+      style={{ aspectRatio }}
+    >
       {thumbSrc && (
         <img
           src={thumbSrc}
@@ -107,6 +116,8 @@ const LazyImage: React.FC<LazyImageProps> = ({
           loading={priority ? 'eager' : 'lazy'}
           onLoad={() => setIsLoaded(true)}
           fetchPriority={priority ? 'high' : 'auto'}
+          width={width}
+          height={height}
         />
       )}
     </div>
