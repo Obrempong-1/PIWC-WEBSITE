@@ -3,7 +3,6 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import Autoplay from "embla-carousel-autoplay";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import LazyImage from "@/components/ui/LazyImage";
 
 const slides = [
     {
@@ -39,7 +38,7 @@ const HeroCarousel = () => {
     <div className="relative min-h-screen overflow-hidden bg-black">
        <style>{`
         .text-shadow {
-          text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
+          text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
         }
       `}</style>
       <Carousel
@@ -52,26 +51,29 @@ const HeroCarousel = () => {
         <CarouselContent>
           {slides.map((slide, index) => (
             <CarouselItem key={slide.id}>
-              
-              <div className="relative min-h-screen transform-gpu">
-                <LazyImage
+              <div className="relative min-h-screen">
+                
+                
+                <img
                   src={slide.image_url}
                   alt={slide.title}
-                  priority={index === 0}
-                  className="absolute inset-0 w-full h-full"
-                  imageClassName="object-cover object-center lg:object-contain lg:object-top"
+                  fetchPriority={index === 0 ? "high" : "auto"}
+                  loading={index === 0 ? "eager" : "lazy"}
+                  className="absolute inset-0 w-full h-full object-cover object-center lg:object-contain lg:object-top"
+                  suppressHydrationWarning
                 />
 
-               
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent" />
+                
+                <div className="absolute inset-0 bg-black/50" />
 
+                
                 <div className="relative z-10 container mx-auto px-4 min-h-screen flex items-center">
-                  <div className="max-w-3xl animate-fade-up">
+                  <div className="max-w-3xl animate-fade-up transform-gpu">
                     
-                    <div className="p-10">
-                      <h1 className="text-5xl lg:text-7xl font-bold text-white mb-6 font-heading text-shadow">{slide.title}</h1>
+                    <div className="p-10 lg:rounded-2xl lg:shadow-lg lg:bg-black/20 lg:backdrop-blur-md">
+                      <h1 className="text-5xl lg:text-7xl font-bold text-white mb-6 font-heading text-shadow lg:[text-shadow:none]">{slide.title}</h1>
                       {slide.subtitle && (
-                        <p className="text-2xl lg:text-3xl font-semibold text-white mb-8 text-shadow">{slide.subtitle}</p>
+                        <p className="text-2xl lg:text-3xl font-semibold text-white mb-8 text-shadow lg:[text-shadow:none]">{slide.subtitle}</p>
                       )}
                       {slide.cta_text && slide.cta_link && (
                         <Button asChild size="lg" className="btn-gradient-glow">
@@ -86,8 +88,8 @@ const HeroCarousel = () => {
           ))}
         </CarouselContent>
         <div className="hidden lg:block">
-          <CarouselPrevious className="left-8 h-12 w-12 border-2 border-white/50 bg-black/20 backdrop-blur-sm hover:bg-white/20" />
-          <CarouselNext className="right-8 h-12 w-12 border-2 border-white/50 bg-black/20 backdrop-blur-sm hover:bg-white/20" />
+          <CarouselPrevious className="left-8 h-12 w-12 border-2 border-white/50 bg-white/10 backdrop-blur-sm" />
+          <CarouselNext className="right-8 h-12 w-12 border-2 border-white/50 bg-white/10 backdrop-blur-sm" />
         </div>
       </Carousel>
     </div>
