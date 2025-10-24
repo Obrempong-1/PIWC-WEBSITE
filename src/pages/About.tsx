@@ -3,7 +3,6 @@ import { Link, useLocation } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Users, BookOpen, ShieldCheck, UserCheck, Cross, HandHeart, Droplets, Wind, Church, HandCoins, Heart } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
-import ImageModal from "@/components/ImageModal";
 import MilestoneCard from "@/components/ui/MilestoneCard";
 import { Database } from "@/integrations/supabase/types";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -20,23 +19,7 @@ const About = () => {
   const [leaders, setLeaders] = useState<Leader[]>([]);
   const [milestones, setMilestones] = useState<Database['public']['Tables']['milestones']['Row'][]>([]);
   const [loading, setLoading] = useState(true);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalImageUrl, setModalImageUrl] = useState("");
-  const [modalAltText, setModalAltText] = useState("");
   const location = useLocation();
-
-  const openModal = (imageUrl: string, altText: string) => {
-    setModalImageUrl(imageUrl);
-    setModalAltText(altText);
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setModalImageUrl("");
-    setModalAltText("");
-  };
-
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -187,19 +170,19 @@ const About = () => {
                   OUR VISION
                 </h3>
                 <p className="text-muted-foreground leading-relaxed text-lg">
-                  Our mission is to equip every believer to recognise and embrace their divine calling, and to deploy them into every sphere of life family, workplace, community, nation as transformative ambassadors of Christ. Rooted in the theme for this year, “Unleashed to Live a Life Worthy of Your Calling,” we are committed to fostering lives characterised by holiness, integrity, love and purpose, thereby making visible the values and principles of God’s Kingdom. We aim to strengthen each local assembly as a launch-pad for discipleship and impact, providing ministry, fellowship, mentorship and support so that members are not merely recipients of grace but active agents of change. Through empowering the youth, engaging in urban and rural missions, modelling servant-leadership and stewarding resources with wisdom, we seek to release the Church into the world in full measure. Ultimately, we envision a community where every follower of Christ lives boldly, works faithfully, serves sacrificially and influences ethically so that by 2025 and beyond we will see transformed lives and transformed societies, bringing honour to God and advancing His Kingdom on earth.
+                  Our mission is to equip every believer to recognise and embrace their divine calling, and to deploy them into every sphere of life family, workplace, community, nation as transformative ambassadors of Christ. Rooted in the theme for this year, “Unleashed to Live a Life Worthy of Your Calling,” we are committed to fostering lives characterised by holiness, integrity, love and purpose, thereby making visible the values and principles of God’s Kingdom. We aim to strengthen each local assembly as a launch-pad for discipleship and impact, providing ministry, fellowship, mentorship and support so that members are not merely recipients of grace but active agents of change. Through empowering the youth, engaging in urban and rural missions, modelling servant-leadership and stewarding resources with wisdom, we. Ultimately, we envision a community where every follower of Christ lives boldly, works faithfully, serves sacrificially and influences ethically so that by 2025 and beyond we will see transformed lives and transformed societies, bringing honour to God and advancing His Kingdom on earth.
                 </p>
             </div>
-            <div className="fade-up order-1 lg:order-2 group relative overflow-hidden rounded-lg floating cursor-pointer" onClick={() => openModal("https://vhovhjnupqdfmdjfbtrr.supabase.co/storage/v1/object/public/images/vision.webp", "Our Vision")}>
-                <LazyImage src="https://vhovhjnupqdfmdjfbtrr.supabase.co/storage/v1/object/public/images/vision.webp" alt="Our Vision" className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110" priority={true} />
+            <Link to={`/image-viewer?src=${encodeURIComponent('https://vhovhjnupqdfmdjfbtrr.supabase.co/storage/v1/object/public/images/vision.webp')}&alt=Our%20Vision`} className="fade-up order-1 lg:order-2 group relative rounded-lg floating cursor-pointer">
+                <LazyImage src="https://vhovhjnupqdfmdjfbtrr.supabase.co/storage/v1/object/public/images/vision.webp" alt="Our Vision" className="object-contain mx-auto transition-transform duration-500" priority={true} />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            </div>
+            </Link>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto items-center mt-20">
-            <div className="fade-up group relative overflow-hidden rounded-lg floating cursor-pointer" onClick={() => openModal("https://vhovhjnupqdfmdjfbtrr.supabase.co/storage/v1/object/public/images/mission.jpg", "Our Mission")}>
-                <LazyImage src="https://vhovhjnupqdfmdjfbtrr.supabase.co/storage/v1/object/public/images/mission.jpg" alt="Our Mission" className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110" disableLqip={true} />
+            <Link to={`/image-viewer?src=${encodeURIComponent('https://vhovhjnupqdfmdjfbtrr.supabase.co/storage/v1/object/public/images/mission.jpg')}&alt=Our%20Mission`} className="fade-up group relative rounded-lg floating cursor-pointer">
+                <LazyImage src="https://vhovhjnupqdfmdjfbtrr.supabase.co/storage/v1/object/public/images/mission.jpg" alt="Our Mission" className="object-contain mx-auto transition-transform duration-500" disableLqip={true} />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              </div>
+              </Link>
             <div className="fade-up">
                 <h3 className="text-2xl font-bold mb-4 gradient-text" style={{ fontFamily: "'Playfair Display', serif" }}>
                   Our Mission
@@ -398,7 +381,6 @@ const About = () => {
           )}
         </div>
       </section>
-      <ImageModal isOpen={isModalOpen} onClose={closeModal} imageUrl={modalImageUrl} altText={modalAltText} />
     </div>
   );
 };
