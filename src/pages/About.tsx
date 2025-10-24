@@ -140,12 +140,18 @@ const About = () => {
         scriptures: "Malachi 3:10; Hebrews 7:1; Luke 6:38; Acts 20:35"
     },
     {
-        icon: Heart,
-        title: "Divine Healing",
-        description: "We believe that the healing of sickness and disease is provided for God's people in the atonement. The Church is, however, not opposed to soliciting the help of qualified medical practitioners.",
-        scriptures: "Isaiah 53:4-5; Matthew 8:7, 17; Mark 16:18; James 5:14-16; Luke 13:10-16"
-    }
-];
+      icon: Heart, 
+      title: "Divine Healing", 
+      description: "We believe that the healing of sickness and disease is provided for God's people in the atonement. The Church is, however, not opposed to soliciting the help of qualified medical practitioners.", 
+      scriptures: "Isaiah 53:4-5; Matthew 8:7, 17; Mark 16:18; James 5:14-16; Luke 13:10-16"
+    },
+    {
+      icon: Heart,
+      title: "Marriage & Family Life",
+      description: "We believe in the institution of marriage as a union established and ordained by God for the lifelong, intimate relationship between a man as husband and a woman as wife as biologically defined at birth. We believe that God instituted marriage primarily for mutual help, fellowship and comfort that one ought to have for the other and for the honourable procreation of children, and their training in love, obedience to the Lord and responsible citizenship",
+      scriptures: "Genesis 2:18, 21-25; Matthew 19:4-6; 1 Corinthians 7:1-2"
+    },
+  ];
 
   return (
     <div className="min-h-screen pt-24">
@@ -170,7 +176,7 @@ const About = () => {
                   OUR VISION
                 </h3>
                 <p className="text-muted-foreground leading-relaxed text-lg">
-                  Our mission is to equip every believer to recognise and embrace their divine calling, and to deploy them into every sphere of life family, workplace, community, nation as transformative ambassadors of Christ. Rooted in the theme for this year, “Unleashed to Live a Life Worthy of Your Calling,” we are committed to fostering lives characterised by holiness, integrity, love and purpose, thereby making visible the values and principles of God’s Kingdom. We aim to strengthen each local assembly as a launch-pad for discipleship and impact, providing ministry, fellowship, mentorship and support so that members are not merely recipients of grace but active agents of change. Through empowering the youth, engaging in urban and rural missions, modelling servant-leadership and stewarding resources with wisdom, we. Ultimately, we envision a community where every follower of Christ lives boldly, works faithfully, serves sacrificially and influences ethically so that by 2025 and beyond we will see transformed lives and transformed societies, bringing honour to God and advancing His Kingdom on earth.
+                 Vision 2028 marks the next phase of The Church of Pentecost’s divine mandate, spanning the years 2023 to 2028. Building upon the foundation of Vision 2023, which focused on equipping believers with the Word, character, and power to influence their world, this new phase emphasizes action unleashing every member into society as true agents of transformation. The vision seeks to see the entire Church actively demonstrating the values and principles of the Kingdom of God in every sphere of life family, education, governance, business, media, and beyond. It is a call for believers not only to be equipped but to live out their faith practically, transforming their world and manifesting God’s kingdom wherever they find themselves.
                 </p>
             </div>
             <Link to={`/image-viewer?src=${encodeURIComponent('https://vhovhjnupqdfmdjfbtrr.supabase.co/storage/v1/object/public/images/vision.webp')}&alt=Our%20Vision`} className="fade-up order-1 lg:order-2 group relative rounded-lg floating cursor-pointer">
