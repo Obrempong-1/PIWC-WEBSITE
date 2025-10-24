@@ -52,32 +52,46 @@ const HeroCarousel = () => {
           {slides.map((slide, index) => (
             <CarouselItem key={slide.id}>
               <div className="relative min-h-screen">
-                {/* Dynamic Blurred Background */}
-                <img
-                  src={slide.image_url}
-                  alt=""
-                  aria-hidden="true"
-                  className="absolute inset-0 w-full h-full object-cover filter blur-xl scale-110"
-                  loading="lazy"
-                />
-                
-                {/* Main Content Image (Contained on desktop, cover on mobile) */}
-                <img
-                  src={slide.image_url}
-                  alt={slide.title}
-                  fetchPriority={index === 0 ? "high" : "auto"}
-                  loading={index === 0 ? "eager" : "lazy"}
-                  className="absolute inset-0 w-full h-full object-cover object-center lg:object-contain lg:object-top"
-                  suppressHydrationWarning
-                />
+                {index === 0 ? (
+                  <>
+                    
+                    <img
+                      src={slide.image_url}
+                      alt=""
+                      aria-hidden="true"
+                      className="absolute inset-0 w-full h-full object-cover filter blur-xl scale-110"
+                      loading="lazy"
+                    />
+                    <img
+                      src={slide.image_url}
+                      alt={slide.title}
+                      fetchPriority="high"
+                      loading="eager"
+                      className="absolute inset-0 w-full h-full object-cover object-center lg:object-contain lg:object-top"
+                      suppressHydrationWarning
+                    />
+                  </>
+                ) : (
+                  <>
+                    
+                    <img
+                      src={slide.image_url}
+                      alt={slide.title}
+                      fetchPriority="auto"
+                      loading="lazy"
+                      className="absolute inset-0 w-full h-full object-cover object-center"
+                      suppressHydrationWarning
+                    />
+                  </>
+                )}
 
-                {/* Empty container for layout consistency */}
+               
                 <div className="absolute inset-0" />
 
-                {/* Text Content */}
+                
                 <div className="relative z-10 container mx-auto px-4 min-h-screen flex items-center">
                   <div className="max-w-3xl animate-fade-up">
-                    {/* Panel: Transparent on mobile, Frosted Glass on desktop */}
+                
                     <div className="p-10 lg:rounded-2xl lg:shadow-lg lg:bg-black/20 lg:backdrop-blur-md">
                       <h1 className="text-5xl lg:text-7xl font-bold text-white mb-6 font-heading text-shadow lg:[text-shadow:none]">{slide.title}</h1>
                       {slide.subtitle && (
