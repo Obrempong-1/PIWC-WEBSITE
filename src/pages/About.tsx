@@ -360,7 +360,8 @@ const About = () => {
                            <LazyImage
                             src={leader.image_url}
                             alt={leader.name}
-                            className="relative w-full h-full object-cover z-10 transition-transform duration-500 group-hover:scale-110"
+                            className="w-full h-full transition-transform duration-500 group-hover:scale-110"
+                            imageClassName="w-full h-full object-cover object-top"
                             disableLqip={true} 
                           />
                         </>
