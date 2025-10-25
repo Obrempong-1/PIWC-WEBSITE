@@ -6,6 +6,8 @@ import X from "lucide-react/dist/esm/icons/x";
 import { Button } from "@/components/ui/button";
 import LazyImage from '@/components/ui/LazyImage';
 import { ChevronDown } from 'lucide-react';
+import churchLogo from "@/assets/church-logo.webp";
+
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -94,7 +96,7 @@ const Navbar = () => {
         <div className="flex items-center justify-between">
           <NavLink to="/" className="flex items-center group">
             <LazyImage
-              src="/src/assets/church-logo.webp"
+              src={churchLogo}
               alt="PIWC Logo"
               className="logo-icon logo-spin"
               imageClassName="object-contain"
