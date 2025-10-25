@@ -43,7 +43,7 @@ const GalleryPage = () => {
     };
   }, [selectedItem]);
 
- 
+  
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -112,7 +112,7 @@ const GalleryPage = () => {
     return <GallerySkeleton />;
   }
 
-  
+ 
   const modalContent = selectedItem && (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-lg p-4 animate-fade-in"
@@ -202,7 +202,7 @@ const GalleryPage = () => {
           transform: scale(1);
         }
         .gradient-text {
-          background: -webkit-linear-gradient(45deg, #3b82f6, #8b5cf6);
+          background: -webkit-linear-gradient(45deg, #60a5fa, #2563eb);
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
         }
@@ -241,7 +241,7 @@ const GalleryPage = () => {
         return (
           <section key={section.id} className={`py-20 ${sectionIndex % 2 === 0 ? 'bg-white' : 'bg-blue-50/50'}`}>
             <div className="container mx-auto px-4">
-              <h2 className="text-4xl font-bold mb-16 text-center text-gray-800 zoom-in">{section.name}</h2>
+              <h2 className="text-4xl font-bold mb-16 text-center zoom-in gradient-text">{section.name}</h2>
 
               {isServiceSection ? (
                 <div className="max-w-6xl mx-auto space-y-28">
