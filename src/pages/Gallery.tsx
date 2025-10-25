@@ -5,7 +5,7 @@ import { X, PlayCircle } from 'lucide-react';
 import { Carousel, CarouselContent, CarouselItem, CarouselApi } from '@/components/ui/carousel';
 import { Tables } from '@/integrations/supabase/types';
 import { ServiceItem } from '@/components/ui/ServiceItem';
-import Loading from '@/components/Loading';
+import GallerySkeleton from '@/components/ui/GallerySkeleton';
 import LazyImage from '@/components/ui/LazyImage';
 
 type Gallery = Tables<'galleries'> & { gallery_sections: { name: string } };
@@ -18,14 +18,14 @@ const GalleryPage = () => {
   const [loading, setLoading] = useState(true);
   const [carouselApi, setCarouselApi] = useState<CarouselApi>();
 
- 
+  
   useEffect(() => {
     if (selectedItem && carouselApi) {
       carouselApi.scrollTo(selectedItem.initialIndex, true);
     }
   }, [selectedItem, carouselApi]);
 
-
+  
   useEffect(() => {
     const originalStyle = window.getComputedStyle(document.body).overflow;
     if (selectedItem) {
@@ -43,7 +43,7 @@ const GalleryPage = () => {
     };
   }, [selectedItem]);
 
-
+ 
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -67,7 +67,7 @@ const GalleryPage = () => {
     }
   }, [loading]);
 
- 
+  
   useEffect(() => {
     fetchData();
   }, []);
@@ -96,7 +96,7 @@ const GalleryPage = () => {
     setSelectedItem(null);
   };
 
-
+  
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
       if (!selectedItem) return;
@@ -109,10 +109,10 @@ const GalleryPage = () => {
   }, [selectedItem, carouselApi]);
 
   if (loading) {
-    return <Loading message="Loading gallery..." />;
+    return <GallerySkeleton />;
   }
 
- 
+  
   const modalContent = selectedItem && (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-lg p-4 animate-fade-in"
@@ -163,7 +163,7 @@ const GalleryPage = () => {
                 ))}
               </CarouselContent>
 
-              
+             
               <button
                 className="absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-white/20 hover:bg-white/40 p-3 rounded-full backdrop-blur-md transition"
                 onClick={(e) => {
@@ -293,8 +293,8 @@ const GalleryPage = () => {
                         <LazyImage
                           src={url}
                           alt={`${item.title} image`}
-                          className="w-full h-auto"
-                          imageClassName="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-110"
+                          className="w-full aspect-[3/4]"
+                          imageClassName="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                           sizes="(min-width: 768px) 25vw, (min-width: 640px) 33vw, 50vw"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
