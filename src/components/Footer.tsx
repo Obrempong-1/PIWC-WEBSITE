@@ -7,6 +7,8 @@ import Youtube from "lucide-react/dist/esm/icons/youtube";
 import Music2 from "lucide-react/dist/esm/icons/music-2";
 import { Link } from "react-router-dom";
 import React from "react";
+import churchLogo from "@/assets/church-logo.webp";
+
 
 const quickLinks = [
   { name: "Home", path: "/" },
@@ -30,7 +32,7 @@ const Footer = () => {
           <div className="space-y-4">
             <Link to="/" className="flex items-center group footer-logo-container">
                <img
-                src="/src/assets/church-logo.webp"
+                src={churchLogo}
                 alt="PIWC Logo"
                 width="56"
                 height="56"
