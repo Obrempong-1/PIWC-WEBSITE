@@ -90,7 +90,7 @@ const HeroCarousel = () => {
           {slides.map((slide, index) => (
             <CarouselItem key={slide.id}>
               <div className="relative min-h-screen overflow-hidden">
-                {/* ✅ First slide: blur background on desktop only */}
+                
                 {index === 0 && (
                   <div
                     className="blur-bg hidden lg:block"
@@ -100,7 +100,7 @@ const HeroCarousel = () => {
                   ></div>
                 )}
 
-                {/* ✅ Responsive image behavior */}
+                
                 <img
                   src={slide.image_url}
                   alt={slide.title}
@@ -116,10 +116,10 @@ const HeroCarousel = () => {
                   suppressHydrationWarning
                 />
 
-                {/* Overlay */}
+               
                 <div className="absolute inset-0 bg-black/30" />
 
-                {/* Text content */}
+                
                 <div className="relative z-10 container mx-auto px-4 min-h-screen flex items-center">
                   <div className="max-w-3xl animate-fade-up">
                     <div className="p-10 lg:rounded-2xl lg:shadow-lg lg:bg-black/20 lg:backdrop-blur-md">
@@ -144,7 +144,7 @@ const HeroCarousel = () => {
           ))}
         </CarouselContent>
 
-        {/* Arrows (desktop only) */}
+       
         <div className="hidden lg:block">
           <CarouselPrevious className="left-8 h-12 w-12 border-2 border-white/50 bg-white/10 backdrop-blur-sm" />
           <CarouselNext className="right-8 h-12 w-12 border-2 border-white/50 bg-white/10 backdrop-blur-sm" />
