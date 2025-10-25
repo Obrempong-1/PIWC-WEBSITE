@@ -6,8 +6,6 @@ import Instagram from "lucide-react/dist/esm/icons/instagram";
 import Youtube from "lucide-react/dist/esm/icons/youtube";
 import Music2 from "lucide-react/dist/esm/icons/music-2";
 import { Link } from "react-router-dom";
-import churchLogo from "@/assets/church-logo.webp";
-import LazyImage from "@/components/ui/LazyImage";
 import React from "react";
 
 const quickLinks = [
@@ -29,13 +27,15 @@ const Footer = () => {
     <footer className="bg-primary text-white">
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+         
           <div className="space-y-4">
             <Link to="/" className="flex items-center group footer-logo-container">
-              <LazyImage
-                src={churchLogo}
+               <img
+                src="/church-logo.webp"
                 alt="PIWC Logo"
-                className="logo-icon h-14 w-14 logo-spin"
-                imageClassName="object-cover"
+                width="56"
+                height="56"
+                className="logo-icon h-14 w-14 logo-spin object-contain"
               />
               <div className="logo-text-container">
                 <div className="main-title-lockup">
@@ -85,7 +85,7 @@ const Footer = () => {
               </li>
               <li className="flex items-center gap-3 text-sm text-white/80">
                 <Mail className="h-5 w-5 flex-shrink-0" />
-                <span>piwcasokwaac1@gmail.com</span>
+                <span>info@piwcasokwa.org</span>
               </li>
             </ul>
           </div>
@@ -98,10 +98,10 @@ const Footer = () => {
                 <span className="font-medium text-white">Sunday Service:</span> 8:00 AM
               </li>
               <li className="text-sm text-white/80">
-                <span className="font-medium text-white">Wednesday Service:</span> 5 : 30 PM
+                <span className="font-medium text-white">Wednesday Service:</span> 6:00 PM
               </li>
               <li className="text-sm text-white/80">
-                <span className="font-medium text-white">Friday Service:</span> 5 : 30 PM
+                <span className="font-medium text-white">Friday Service:</span> 6:00 PM
               </li>
             </ul>
             <div>
