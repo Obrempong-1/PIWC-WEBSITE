@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import MinistryDialog from "@/components/MinistryDialog";
 import { type LucideIcon } from "lucide-react";
 import { BookOpen, ShieldCheck, UserCheck, Cross, HandHeart, Droplets, Wind, Church, HandCoins, Heart, Users, Book, Megaphone, ClipboardList, PlayCircle, Calendar, Clock, MapPin, MoreHorizontal, GripVertical, Search, ChevronUp, ChevronDown, ChevronLeft, ChevronRight, Check, Circle, Dot, UploadCloud, File as FileIcon, CheckCircle, Loader, Edit, PanelLeft, X, Save, Trash2, ArrowLeft } from "lucide-react";
-import Loading from "@/components/Loading";
+import MinistriesSkeleton from "@/components/ui/MinistriesSkeleton";
 import { motion, Variants } from "framer-motion";
 import { EASE_CURVE, EASE_DURATION } from "@/lib/constants";
 
@@ -93,7 +93,7 @@ const Ministries = () => {
   };
 
   if (loading) {
-    return <Loading message="Loading ministries..." />;
+    return <MinistriesSkeleton />;
   }
 
   const getIconComponent = (iconName: string | null): LucideIcon => {
