@@ -30,7 +30,7 @@ const Footer = () => {
           <div className="space-y-4">
             <Link to="/" className="flex items-center group footer-logo-container">
                <img
-                src="/church-logo.webp"
+                src="/src/assets/church-logo.webp"
                 alt="PIWC Logo"
                 width="56"
                 height="56"
