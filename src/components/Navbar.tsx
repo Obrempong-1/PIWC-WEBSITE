@@ -4,12 +4,13 @@ import { NavLink, useLocation } from "react-router-dom";
 import Menu from "lucide-react/dist/esm/icons/menu";
 import X from "lucide-react/dist/esm/icons/x";
 import { Button } from "@/components/ui/button";
-import churchLogo from "@/assets/church-logo.webp";
 import LazyImage from '@/components/ui/LazyImage';
+import { ChevronDown } from 'lucide-react';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const location = useLocation();
   const isHomePage = location.pathname === '/';
 
@@ -24,12 +25,39 @@ const Navbar = () => {
   const isTransparent = isHomePage && !isScrolled && !isMobileMenuOpen;
 
   const navItems = [
-    { name: "Home", path: "/" },
-    { name: "About Us", path: "/about" },
-    { name: "Events", path: "/events" },
+    { name: "Home", path: "/", sublinks: [
+        { name: "Notice Board", path: "/#notice-board" },
+        { name: "Welcome", path: "/#welcome" },
+        { name: "Presbytery", path: "/#presbytery" },
+        { name: "Recent Events", path: "/#recent-events" },
+        { name: "Announcements", path: "/#announcements" },
+      ] 
+    },
+    {
+      name: "About Us",
+      path: "/about",
+      sublinks: [
+        { name: "Our Vision & Mission", path: "/about#our-vision-mission" },
+        { name: "Our Tenets", path: "/about#tenets" },
+        { name: "Our Journey", path: "/about#milestones" },
+        { name: "Our Leaders", path: "/about#leaders" },
+      ],
+    },
+    { name: "Events", path: "/events", sublinks: [
+        { name: "Announcements", path: "/events#announcements" },
+        { name: "All Events", path: "/events#upcoming-events" },
+    ] },
     { name: "Gallery", path: "/gallery" },
-    { name: "Ministries", path: "/ministries" },
-    { name: "Contact Us", path: "/contact", special: true },
+    { name: "Ministries", path: "/ministries", sublinks: [
+        { name: "Our Ministries", path: "/ministries#our-ministries" },
+        { name: "Find Your Place to Serve", path: "/ministries#serve" },
+    ] },
+    { name: "Contact Us", path: "/contact", special: true, sublinks: [
+        { name: "Contact Info", path: "/contact#contact-info" },
+        { name: "Send Us a Message", path: "/contact#send-message" },
+        { name: "Find Us", path: "/contact#find-us" },
+        { name: "Connect With Us", path: "/contact#connect-with-us" },
+    ] },
   ];
 
   const getLinkClassName = (isActive: boolean, isSpecial: boolean = false) => {
@@ -47,6 +75,14 @@ const Navbar = () => {
 
     return `${baseClasses} ${isActive ? activeClasses : inactiveClasses}`;
   };
+  
+  const handleMouseEnter = (itemName: string) => {
+    setOpenDropdown(itemName);
+  };
+
+  const handleMouseLeave = () => {
+    setOpenDropdown(null);
+  };
 
   return (
     <nav
@@ -58,10 +94,10 @@ const Navbar = () => {
         <div className="flex items-center justify-between">
           <NavLink to="/" className="flex items-center group">
             <LazyImage
-              src={churchLogo}
+              src="/church-logo.webp"
               alt="PIWC Logo"
               className="logo-icon logo-spin"
-              imageClassName="object-cover"
+              imageClassName="object-contain"
               sizes="96px"
             />
             <div className="logo-text-container">
@@ -79,13 +115,34 @@ const Navbar = () => {
 
           <div className="hidden lg:flex items-center gap-1">
             {navItems.map((item) => (
-              <NavLink
+              <div
                 key={item.path}
-                to={item.path}
-                className={({ isActive }) => getLinkClassName(isActive, item.special)}
+                className="relative"
+                onMouseEnter={() => item.sublinks && handleMouseEnter(item.name)}
+                onMouseLeave={handleMouseLeave}
               >
-                {item.name}
-              </NavLink>
+                <NavLink
+                  to={item.path}
+                  className={({ isActive }) => `${getLinkClassName(isActive, item.special)} flex items-center gap-1`}
+                >
+                  {item.name}
+                  {item.sublinks && <ChevronDown className="h-4 w-4" />}
+                </NavLink>
+                {item.sublinks && openDropdown === item.name && (
+                  <div className="absolute top-full left-0 mt-2 w-56 bg-white rounded-md shadow-lg py-2 z-50">
+                    {item.sublinks.map(sublink => (
+                      <NavLink
+                        key={sublink.path}
+                        to={sublink.path}
+                        onClick={() => setOpenDropdown(null)}
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      >
+                        {sublink.name}
+                      </NavLink>
+                    ))}
+                  </div>
+                )}
+              </div>
             ))}
           </div>
 
@@ -103,20 +160,41 @@ const Navbar = () => {
           <div className="lg:hidden mt-4 pb-4 border-t border-gray-200 pt-4 animate-fade-in bg-white rounded-lg shadow-xl z-50">
             <div className="flex flex-col gap-2">
               {navItems.map((item) => (
-                <NavLink
-                  key={item.path}
-                  to={item.path}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className={({ isActive }) => {
-                      const baseClasses = "px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 relative text-gray-700";
-                      const activeClasses = "text-blue-600 font-semibold";
-                      const hoverClasses = "hover:text-blue-500";
-                      const specialClasses = "font-bold contact-us-gradient";
-                      return `${baseClasses} ${isActive ? activeClasses : ""} ${hoverClasses} ${item.special ? specialClasses : ""}`;
-                  }}
-                >
-                  {item.name}
-                </NavLink>
+                <div key={item.path}>
+                  <NavLink
+                    to={item.path}
+                    onClick={() => {
+                        if (!item.sublinks) {
+                          setIsMobileMenuOpen(false);
+                        }
+                        setOpenDropdown(openDropdown === item.name ? null : item.name);
+                      }}
+                    className={({ isActive }) => {
+                        const baseClasses = "px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 relative text-gray-700 flex justify-between items-center";
+                        const activeClasses = "text-blue-600 font-semibold";
+                        const hoverClasses = "hover:text-blue-500";
+                        const specialClasses = "font-bold contact-us-gradient";
+                        return `${baseClasses} ${isActive && !item.sublinks ? activeClasses : ""} ${hoverClasses} ${item.special ? specialClasses : ""}`;
+                    }}
+                  >
+                    {item.name}
+                    {item.sublinks && <ChevronDown className={`h-4 w-4 transition-transform ${openDropdown === item.name ? 'rotate-180' : ''}`} />}
+                  </NavLink>
+                  {item.sublinks && openDropdown === item.name && (
+                     <div className="pl-4 mt-2 flex flex-col gap-1">
+                       {item.sublinks.map(sublink => (
+                         <NavLink
+                           key={sublink.path}
+                           to={sublink.path}
+                           onClick={() => setIsMobileMenuOpen(false)}
+                           className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg"
+                         >
+                           {sublink.name}
+                         </NavLink>
+                       ))}
+                     </div>
+                  )}
+                </div>
               ))}
             </div>
           </div>
@@ -173,7 +251,7 @@ const Navbar = () => {
           align-items: center;
         }
 
-      
+        /* ASOKWA capsule at mouth of C */
         .asokwa-lockup {
           display: flex;
           flex-direction: column;

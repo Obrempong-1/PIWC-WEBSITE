@@ -27,7 +27,6 @@ const Footer = () => {
     <footer className="bg-primary text-white">
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          
           <div className="space-y-4">
             <Link to="/" className="flex items-center group footer-logo-container">
                <img
@@ -71,7 +70,7 @@ const Footer = () => {
             </ul>
           </div>
 
-          
+        
           <div>
             <h4 className="text-lg font-semibold mb-4">Contact Us</h4>
             <ul className="space-y-3">
@@ -85,7 +84,7 @@ const Footer = () => {
               </li>
               <li className="flex items-center gap-3 text-sm text-white/80">
                 <Mail className="h-5 w-5 flex-shrink-0" />
-                <span>info@piwcasokwa.org</span>
+                <span>piwcasokwaac1@gmail.com</span>
               </li>
             </ul>
           </div>
@@ -98,10 +97,10 @@ const Footer = () => {
                 <span className="font-medium text-white">Sunday Service:</span> 8:00 AM
               </li>
               <li className="text-sm text-white/80">
-                <span className="font-medium text-white">Wednesday Service:</span> 6:00 PM
+                <span className="font-medium text-white">Wednesday Service:</span> 5:30 PM
               </li>
               <li className="text-sm text-white/80">
-                <span className="font-medium text-white">Friday Service:</span> 6:00 PM
+                <span className="font-medium text-white">Friday Service:</span> 5:30 PM
               </li>
             </ul>
             <div>
