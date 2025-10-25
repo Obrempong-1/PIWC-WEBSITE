@@ -94,7 +94,7 @@ const Navbar = () => {
         <div className="flex items-center justify-between">
           <NavLink to="/" className="flex items-center group">
             <LazyImage
-              src="/church-logo.webp"
+              src="/src/assets/church-logo.webp"
               alt="PIWC Logo"
               className="logo-icon logo-spin"
               imageClassName="object-contain"
