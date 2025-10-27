@@ -3,7 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import Loading from "@/components/Loading";
+import AnnouncementDetailSkeleton from "@/components/ui/AnnouncementDetailSkeleton";
 
 interface Announcement {
   id: string;
@@ -42,7 +42,7 @@ const AnnouncementDetail = () => {
   }, [id]);
 
   if (loading) {
-    return <Loading message="Loading announcement..." />;
+    return <AnnouncementDetailSkeleton />;
   }
 
   if (!announcement) {

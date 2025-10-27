@@ -37,6 +37,7 @@ const NoticeDetail = lazy(() => import("./pages/NoticeDetail"));
 const LeaderDetail = lazy(() => import("./pages/LeaderDetail"));
 const EventDetail = lazy(() => import("./pages/EventDetail"));
 const MilestoneDetail = lazy(() => import("./pages/MilestoneDetail"));
+const ImageViewer = lazy(() => import("./pages/ImageViewer"));
 
 const AppRoutes = ({ isLoadingVisible }: { isLoadingVisible: boolean }) => {
   const location = useLocation();
@@ -128,6 +129,7 @@ const AppRoutes = ({ isLoadingVisible }: { isLoadingVisible: boolean }) => {
         <Route path="/announcements/:id" element={<Layout><AnnouncementDetail /></Layout>} />
         <Route path="/leader/:id" element={<Layout><LeaderDetail /></Layout>} />
         <Route path="/milestone/:id" element={<Layout><MilestoneDetail /></Layout>} />
+        <Route path="/image-viewer" element={<ImageViewer />} />
         <Route path="*" element={<Layout><NotFound /></Layout>} />
       </Routes>
     </Suspense>

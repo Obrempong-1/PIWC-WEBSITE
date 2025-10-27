@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Database } from "@/integrations/supabase/types";
-import Loading from "@/components/Loading";
+import MilestoneDetailSkeleton from "@/components/ui/MilestoneDetailSkeleton";
 
 const MilestoneDetail = () => {
   const { id } = useParams();
@@ -31,7 +31,7 @@ const MilestoneDetail = () => {
   }, [id]);
 
   if (loading) {
-    return <Loading message="Loading milestone..." />;
+    return <MilestoneDetailSkeleton />;
   }
 
   if (!milestone) {

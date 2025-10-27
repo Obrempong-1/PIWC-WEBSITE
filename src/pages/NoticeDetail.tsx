@@ -3,7 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import Loading from "@/components/Loading";
+import NoticeDetailSkeleton from "@/components/ui/NoticeDetailSkeleton";
 
 interface Notice {
   id: string;
@@ -43,7 +43,7 @@ const NoticeDetail = () => {
   }, [fetchNotice]);
 
   if (loading) {
-    return <Loading message="Loading notice..." />;
+    return <NoticeDetailSkeleton />;
   }
 
   if (!notice) {

@@ -336,7 +336,7 @@ const About = () => {
         <div className="container mx-auto px-4">
           <div className="text-center mb-16 fade-up">
             <h2 className="text-3xl lg:text-4xl font-bold mb-4 gradient-text" style={{ fontFamily: "'Playfair Display', serif" }}>
-              PIWC ASOKWA PRESBYTORY
+              PIWC ASOKWA PRESBYTERY
             </h2>
             <p className="text-muted-foreground">The highest decision making body of PIWC ASOKWA.</p>
           </div>

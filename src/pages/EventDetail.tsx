@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { ArrowLeft, Calendar, Clock, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import EventDetailSkeleton from "@/components/ui/EventDetailSkeleton";
 
 interface Event {
   id: string;
@@ -43,7 +44,7 @@ const EventDetail = () => {
   }, [id]);
 
   if (loading) {
-    return <div className="flex justify-center items-center min-h-screen">Loading...</div>;
+    return <EventDetailSkeleton />;
   }
 
   if (!event) {
