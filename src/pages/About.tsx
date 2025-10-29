@@ -100,7 +100,7 @@ const About = () => {
     {
         icon: UserCheck,
         title: "Man's Depraved Nature",
-        description: "We believe that: \"all men have sinned and come short of the glory of God;\" are subject to eternal punishment; and need repentance and regeneration.",
+        description: "We believe that: all men have sinned and come short of the glory of God; are subject to eternal punishment; and need repentance and regeneration.",
         scriptures: "Genesis 3:1-19; Isaiah 53:6"
     },
     {
@@ -179,14 +179,14 @@ const About = () => {
                  Vision 2028 marks the next phase of The Church of Pentecost’s divine mandate, spanning the years 2023 to 2028. Building upon the foundation of Vision 2023, which focused on equipping believers with the Word, character, and power to influence their world, this new phase emphasizes action unleashing every member into society as true agents of transformation. The vision seeks to see the entire Church actively demonstrating the values and principles of the Kingdom of God in every sphere of life family, education, governance, business, media, and beyond. It is a call for believers not only to be equipped but to live out their faith practically, transforming their world and manifesting God’s kingdom wherever they find themselves.
                 </p>
             </div>
-            <Link to={`/image-viewer?src=${encodeURIComponent('https://vhovhjnupqdfmdjfbtrr.supabase.co/storage/v1/object/public/images/vision.webp')}&alt=Our%20Vision`} className="fade-up order-1 lg:order-2 group relative rounded-lg floating cursor-pointer">
-                <LazyImage src="https://vhovhjnupqdfmdjfbtrr.supabase.co/storage/v1/object/public/images/vision.webp" alt="Our Vision" className="object-contain mx-auto transition-transform duration-500" priority={true} />
+            <Link to={`/image-viewer?src=${encodeURIComponent('https://vhovhjnupqdfmdjfbtrr.supabase.co/storage/v1/object/public/images/vision.webp')}&alt=Our%20Vision&fallback=/about`} className="fade-up order-1 lg:order-2 group relative rounded-lg floating cursor-pointer">
+                <LazyImage src="https://vhovhjnupqdfmdjfbtrr.supabase.co/storage/v1/object/public/images/vision.webp" alt="Our Vision" className="w-full" imageClassName="object-contain mx-auto transition-transform duration-500" priority={true} />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </Link>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto items-center mt-20">
-            <Link to={`/image-viewer?src=${encodeURIComponent('https://vhovhjnupqdfmdjfbtrr.supabase.co/storage/v1/object/public/images/mission.jpg')}&alt=Our%20Mission`} className="fade-up group relative rounded-lg floating cursor-pointer">
-                <LazyImage src="https://vhovhjnupqdfmdjfbtrr.supabase.co/storage/v1/object/public/images/mission.jpg" alt="Our Mission" className="object-contain mx-auto transition-transform duration-500" disableLqip={true} />
+            <Link to={`/image-viewer?src=${encodeURIComponent('https://vhovhjnupqdfmdjfbtrr.supabase.co/storage/v1/object/public/images/mission.jpg')}&alt=Our%20Mission&fallback=/about`} className="fade-up group relative rounded-lg floating cursor-pointer h-full">
+                <LazyImage src="https://vhovhjnupqdfmdjfbtrr.supabase.co/storage/v1/object/public/images/mission.jpg" alt="Our Mission" className="w-full h-full" imageClassName="object-contain mx-auto transition-transform duration-500" disableLqip={true} />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </Link>
             <div className="fade-up">

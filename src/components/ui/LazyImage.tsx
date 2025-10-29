@@ -32,6 +32,7 @@ const generateImageProps = (src: string) => {
     const url = new URL(renderUrl);
     url.searchParams.set('width', `${width}`);
     url.searchParams.set('quality', '60');
+    url.searchParams.set('resize', 'contain');
     return url.href;
   };
 
