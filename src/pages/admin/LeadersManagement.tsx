@@ -10,9 +10,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { FileUpload } from "@/components/ui/FileUpload";
 import { ArrowLeft, Save, Trash2 } from "lucide-react";
-import { Tables } from "@/integrations/supabase/types";
+import { Database } from "@/types/Supabase";
 
-type Leader = Tables<"leaders">;
+type Leader = Database['public']['Tables']['leaders']['Row'];
 
 const LeadersManagement = () => {
   const [leaders, setLeaders] = useState<Leader[]>([]);

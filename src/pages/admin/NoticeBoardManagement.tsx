@@ -7,13 +7,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2, Save, Trash2 } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
-import { Tables } from "@/integrations/supabase/types";
+import { Database } from "@/types/Supabase";
 import 'react-quill/dist/quill.snow.css';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useFileUpload } from "@/hooks/useFileUpload";
 import LazyQuill from "@/components/ui/LazyQuill";
 
-type Notice = Tables<"notice_board">;
+type Notice = Database['public']['Tables']['notice_board']['Row'];
 
 const NoticeBoardManagement = () => {
   const [notices, setNotices] = useState<Notice[]>([]);

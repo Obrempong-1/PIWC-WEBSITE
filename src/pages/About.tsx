@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Users, BookOpen, ShieldCheck, UserCheck, Cross, HandHeart, Droplets, Wind, Church, HandCoins, Heart } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import MilestoneCard from "@/components/ui/MilestoneCard";
-import { Database } from "@/integrations/supabase/types";
+import { Database } from "@/types/Supabase";
 import { Skeleton } from "@/components/ui/skeleton";
 import LazyImage from "@/components/ui/LazyImage";
 

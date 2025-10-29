@@ -31,13 +31,16 @@ const GalleryManagement = lazy(() => import("./pages/admin/GalleryManagement"));
 const WelcomeSectionManagement = lazy(() => import("./pages/admin/WelcomeSectionManagement"));
 const NoticeBoardManagement = lazy(() => import("./pages/admin/NoticeBoardManagement"));
 const MilestoneManager = lazy(() => import("./pages/admin/MilestoneManager"));
+const SermonsManagement = lazy(() => import("./pages/admin/SermonsManagement"));
 const Notices = lazy(() => import("./pages/Notices"));
 const AnnouncementDetail = lazy(() => import("./pages/AnnouncementDetail"));
 const NoticeDetail = lazy(() => import("./pages/NoticeDetail"));
 const LeaderDetail = lazy(() => import("./pages/LeaderDetail"));
 const EventDetail = lazy(() => import("./pages/EventDetail"));
 const MilestoneDetail = lazy(() => import("./pages/MilestoneDetail"));
-const ImageViewer = lazy(() => import("./pages/ImageViewer"));
+const ImageViewer = lazy(() => import("./components/ui/ImageViewer"));
+const Sermons = lazy(() => import("./pages/Sermons"));
+const SermonDetail = lazy(() => import("./pages/SermonDetail"));
 
 const AppRoutes = ({ isLoadingVisible }: { isLoadingVisible: boolean }) => {
   const location = useLocation();
@@ -117,6 +120,14 @@ const AppRoutes = ({ isLoadingVisible }: { isLoadingVisible: boolean }) => {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/admin/sermons"
+          element={
+            <ProtectedRoute requireAdmin>
+              <SermonsManagement />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/" element={<Layout><Index /></Layout>} />
         <Route path="/about" element={<Layout><About /></Layout>} />
         <Route path="/events" element={<Layout><Events /></Layout>} />
@@ -130,6 +141,8 @@ const AppRoutes = ({ isLoadingVisible }: { isLoadingVisible: boolean }) => {
         <Route path="/leader/:id" element={<Layout><LeaderDetail /></Layout>} />
         <Route path="/milestone/:id" element={<Layout><MilestoneDetail /></Layout>} />
         <Route path="/image-viewer" element={<ImageViewer />} />
+        <Route path="/sermons" element={<Layout><Sermons /></Layout>} />
+        <Route path="/sermons/:id" element={<Layout><SermonDetail /></Layout>} />
         <Route path="*" element={<Layout><NotFound /></Layout>} />
       </Routes>
     </Suspense>

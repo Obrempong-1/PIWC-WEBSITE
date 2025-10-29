@@ -11,10 +11,10 @@ import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { FileUpload } from "@/components/ui/FileUpload";
 import { ArrowLeft, Save, Trash2, Edit } from "lucide-react";
-import { Tables } from "@/integrations/supabase/types";
+import { Database } from "@/types/Supabase";
 
-type Gallery = Tables<"galleries"> & { gallery_sections: { name: string } };
-type GallerySection = Tables<"gallery_sections">;
+type Gallery = Database['public']['Tables']['galleries']['Row'] & { gallery_sections: { name: string } };
+type GallerySection = Database['public']['Tables']['gallery_sections']['Row'];
 
 const GalleryManagement = () => {
   const [galleries, setGalleries] = useState<Gallery[]>([]);
@@ -22,7 +22,7 @@ const GalleryManagement = () => {
   const [editingSection, setEditingSection] = useState<GallerySection | null>(null);
   const [loading, setLoading] = useState(true);
   const [editingId, setEditingId] = useState<string | null>(null);
-  const [formData, setFormData] = useState<Omit<Tables<"galleries">, 'id' | 'created_at' | 'updated_at'>>({
+  const [formData, setFormData] = useState<Omit<Database['public']['Tables']['galleries']['Row'], 'id' | 'created_at' | 'updated_at'>>({
     title: "",
     description: "",
     image_urls: [],

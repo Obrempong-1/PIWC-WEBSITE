@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowLeft, Edit, Trash } from "lucide-react";
-import { Database } from "@/integrations/supabase/types";
+import { Database } from "@/types/Supabase";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 

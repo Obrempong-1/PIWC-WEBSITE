@@ -67,6 +67,12 @@ const Dashboard = () => {
       icon: Milestone,
       href: "/admin/milestones",
     },
+    {
+      title: "Sermons",
+      description: "Manage sermon recordings and notes",
+      icon: BookOpen,
+      href: "/admin/sermons",
+    },
   ];
 
   return (

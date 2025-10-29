@@ -54,6 +54,7 @@ const Navbar = () => {
         { name: "Our Ministries", path: "/ministries#our-ministries" },
         { name: "Find Your Place to Serve", path: "/ministries#serve" },
     ] },
+    { name: "Sermons", path: "/sermons" },
     { name: "Contact Us", path: "/contact", special: true, sublinks: [
         { name: "Contact Info", path: "/contact#contact-info" },
         { name: "Send Us a Message", path: "/contact#send-message" },

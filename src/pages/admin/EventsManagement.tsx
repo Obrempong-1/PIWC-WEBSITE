@@ -12,9 +12,9 @@ import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { FileUpload } from "@/components/ui/FileUpload";
 import { ArrowLeft, Save, Trash2 } from "lucide-react";
-import { Tables } from "@/integrations/supabase/types";
+import { Database } from "@/types/Supabase";
 
-type Event = Tables<"events">;
+type Event = Database['public']['Tables']['events']['Row'];
 
 const EventsManagement = () => {
   const [events, setEvents] = useState<Event[]>([]);
