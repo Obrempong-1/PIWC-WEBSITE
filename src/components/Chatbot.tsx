@@ -104,7 +104,7 @@ const Chatbot: React.FC = () => {
 
         <SheetContent className="w-[400px] sm:w-[540px] flex flex-col chatbot-enter">
           <SheetHeader>
-            <SheetTitle>CoPi</SheetTitle>
+            <SheetTitle>Apostle</SheetTitle>
           </SheetHeader>
 
           <div className="flex-grow overflow-y-auto p-4 space-y-4">

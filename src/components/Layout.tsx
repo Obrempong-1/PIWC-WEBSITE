@@ -5,7 +5,7 @@ import Navbar from "./Navbar";
 import Footer from "./Footer";
 import ScrollProgress from "./ScrollProgress";
 import ScrollToTop from "./ScrollToTop";
-// import Chatbot from "./Chatbot"; 
+import Chatbot from "./Chatbot"; 
 
 interface LayoutProps {
   children: ReactNode;
@@ -23,7 +23,7 @@ const Layout = ({ children }: LayoutProps) => {
         {children}
       </main>
       <Footer />
-      {/* <Chatbot />  */}
+      <Chatbot /> 
     </div>
   );
 };

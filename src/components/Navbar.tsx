@@ -98,7 +98,7 @@ const Navbar = () => {
             <LazyImage
               src={churchLogo}
               alt="PIWC Logo"
-              className="logo-icon logo-spin"
+              className="logo-icon logo-spin-reversed"
               imageClassName="object-contain"
               sizes="96px"
             />
@@ -288,7 +288,7 @@ const Navbar = () => {
         }
 
         .subtitle-text {
-          font-size: 0.81rem;
+          font-size: 0.80rem;
           font-weight: 600;
           text-transform: uppercase;
           letter-spacing: 0.5px;
@@ -316,18 +316,18 @@ const Navbar = () => {
             color: transparent;
         }
 
-        @keyframes logo-spin {
+        @keyframes logo-spin-reversed {
           from {
-            transform: rotate(0deg);
+            transform: rotate(360deg);
           }
           to {
-            transform: rotate(360deg);
+            transform: rotate(0deg);
           }
         }
 
         @media (prefers-reduced-motion: no-preference) {
-          .logo-spin {
-            animation: logo-spin infinite 20s linear;
+          .logo-spin-reversed {
+            animation: logo-spin-reversed infinite 20s linear;
           }
         }
       `}</style>

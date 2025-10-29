@@ -36,7 +36,7 @@ const Footer = () => {
                 alt="PIWC Logo"
                 width="56"
                 height="56"
-                className="logo-icon h-14 w-14 logo-spin object-contain"
+                className="logo-icon h-14 w-14 logo-spin-reversed object-contain"
               />
               <div className="logo-text-container">
                 <div className="main-title-lockup">
@@ -212,14 +212,14 @@ const Footer = () => {
           will-change: transform;
         }
         
-        @keyframes logo-spin {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
+        @keyframes logo-spin-reversed {
+          from { transform: rotate(360deg); }
+          to { transform: rotate(0deg); }
         }
 
         @media (prefers-reduced-motion: no-preference) {
-          .footer-logo-container .logo-spin {
-            animation: logo-spin infinite 20s linear;
+          .footer-logo-container .logo-spin-reversed {
+            animation: logo-spin-reversed infinite 20s linear;
           }
         }
       `}</style>
