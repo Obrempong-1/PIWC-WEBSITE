@@ -31,7 +31,6 @@ const GalleryManagement = lazy(() => import("./pages/admin/GalleryManagement"));
 const WelcomeSectionManagement = lazy(() => import("./pages/admin/WelcomeSectionManagement"));
 const NoticeBoardManagement = lazy(() => import("./pages/admin/NoticeBoardManagement"));
 const MilestoneManager = lazy(() => import("./pages/admin/MilestoneManager"));
-const SermonsManagement = lazy(() => import("./pages/admin/SermonsManagement"));
 const Notices = lazy(() => import("./pages/Notices"));
 const AnnouncementDetail = lazy(() => import("./pages/AnnouncementDetail"));
 const NoticeDetail = lazy(() => import("./pages/NoticeDetail"));
@@ -117,14 +116,6 @@ const AppRoutes = ({ isLoadingVisible }: { isLoadingVisible: boolean }) => {
           element={
             <ProtectedRoute requireAdmin>
               <MilestoneManager />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin/sermons"
-          element={
-            <ProtectedRoute requireAdmin>
-              <SermonsManagement />
             </ProtectedRoute>
           }
         />

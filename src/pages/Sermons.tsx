@@ -1,29 +1,85 @@
+
 import { Card, CardContent } from "@/components/ui/card";
-import { supabase } from "@/integrations/supabase/client";
-import { Database } from "@/types/Supabase";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
+type Sermon = {
+  guid: string;
+  title: string;
+  description: string;
+  pubDate: string;
+  enclosure: {
+    url: string;
+  };
+  itunes?: {
+    image?: string;
+  };
+  'podcast:transcript'?: {
+    $: {
+      url: string;
+    }
+  }
+};
+
 const Sermons = () => {
-  const [sermons, setSermons] = useState<Database['public']['Tables']['sermons']['Row'][]>([]);
+  const [sermons, setSermons] = useState<Sermon[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    const fetchSermons = async () => {
+      try {
+        const feedUrl = 'https://anchor.fm/s/10b0a2fec/podcast/rss';
+        const proxyUrl = 'https://cors.eu.org/';
+        const response = await fetch(`${proxyUrl}${feedUrl}`);
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const text = await response.text();
+        const parser = new DOMParser();
+        const xml = parser.parseFromString(text, "application/xml");
+
+        const items = Array.from(xml.querySelectorAll("item")).map((item, index) => {
+          const enclosure = item.querySelector("enclosure");
+          const itunesImage = item.getElementsByTagName('itunes:image')[0];
+          const podcastTranscript = item.getElementsByTagName('podcast:transcript')[0];
+          const guid = item.querySelector("guid")?.textContent || enclosure?.getAttribute("url") || String(index);
+
+          return {
+            guid,
+            title: item.querySelector("title")?.textContent || "",
+            description: item.querySelector("description")?.textContent || "",
+            pubDate: item.querySelector("pubDate")?.textContent || "",
+            enclosure: {
+              url: enclosure?.getAttribute("url") || "",
+            },
+            itunes: {
+              image: itunesImage?.getAttribute("href") || undefined,
+            },
+            'podcast:transcript': podcastTranscript
+              ? {
+                  $: {
+                    url: podcastTranscript.getAttribute("url") || "",
+                  },
+                }
+              : undefined,
+          } as Sermon;
+        });
+
+        setSermons(items);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (e: any) {
+        console.error("Failed to fetch or parse sermons:", e);
+        setError(`Failed to load sermons. Error: ${e.message}`);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchSermons();
   }, []);
-
-  const fetchSermons = async () => {
-    const { data, error } = await supabase
-      .from("sermons")
-      .select("*")
-      .order("date", { ascending: false });
-
-    if (!error && data) {
-      console.log("Sermon data:", data);
-      setSermons(data);
-    }
-    setLoading(false);
-  };
 
   return (
     <div className="min-h-screen pt-24">
@@ -54,20 +110,26 @@ const Sermons = () => {
                 </Card>
               ))}
             </div>
+          ) : error ? (
+            <div className="text-center text-red-500">{error}</div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {sermons.map((sermon) => (
-                <Link to={`/sermons/${sermon.id}`} key={sermon.id}>
-                  <Card className="frosted-glass hover:bg-primary/10 transition-colors h-full flex flex-col">
-                    {sermon.snapshot_url && (
+                <Link to={`/sermons/${encodeURIComponent(sermon.guid)}`} state={{sermon}} key={sermon.guid}>
+                  <Card className="frosted-glass hover:bg-primary/10 transition-colors h-full flex flex-col border-2 border-yellow-400">
+                    {sermon.itunes?.image ? (
                         <div className="aspect-video overflow-hidden rounded-t-lg">
-                            <img src={sermon.snapshot_url} alt={sermon.title} className="w-full h-full object-cover" />
+                            <img src={sermon.itunes.image} alt={sermon.title} className="w-full h-full object-cover" />
                         </div>
+                    ) : (
+                      <div className="aspect-video bg-gray-200 dark:bg-gray-800 rounded-t-lg flex items-center justify-center">
+                        <p className="text-gray-500">No Image</p>
+                      </div>
                     )}
                     <CardContent className="pt-6 flex-grow">
                       <div>
                         <h3 className="text-lg font-semibold text-primary">{sermon.title}</h3>
-                        <p className="text-sm text-muted-foreground">{sermon.preacher} - {sermon.date ? new Date(sermon.date).toLocaleDateString() : 'Date not available'}</p>
+                        <p className="text-sm text-muted-foreground">{new Date(sermon.pubDate).toLocaleDateString()}</p>
                       </div>
                     </CardContent>
                   </Card>

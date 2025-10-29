@@ -218,8 +218,8 @@ const About = () => {
                     >
                         <CardContent className="pt-8">
                             <div className="flex items-start gap-6">
-                                <div className="bg-primary/10 p-4 rounded-full">
-                                    <tenet.icon className="h-8 w-8 gradient-text" />
+                                <div className="bg-green-500/20 p-4 rounded-full">
+                                  <tenet.icon className="h-8 w-8 gradient-text" />
                                 </div>
                                 <div className="flex-1">
                                     <h3 className="text-xl font-semibold text-primary mb-3">{tenet.title}</h3>
@@ -275,7 +275,8 @@ const About = () => {
               <>
                 
                 <div className="max-w-5xl mx-auto relative hidden md:block">
-                    <div className="absolute left-1/2 -translate-x-1/2 h-full w-1 bg-primary/10 rounded-full"></div>
+                    <div className="absolute left-1/2 -translate-x-1/2 h-full w-1 rounded-full"
+                    style={{ background: "linear-gradient(to bottom, #10b981, #6ee7b7 80%, transparent)" }}></div>
                     {milestones.map((milestone, index) => (
                         <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-x-8 mb-12" key={milestone.id}>
                             {index % 2 === 0 ? (
