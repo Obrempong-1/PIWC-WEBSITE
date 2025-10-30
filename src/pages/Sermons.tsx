@@ -80,6 +80,7 @@ const Sermons = () => {
             setSermons(items);
         }
 
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (e: any) {
         console.error("Failed to fetch or parse sermons:", e);
         setError(`Failed to load sermons. Error: ${e.message}`);
