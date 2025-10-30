@@ -1,19 +1,22 @@
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import AudioPlayer from '@/components/ui/AudioPlayer';
+import { supabase } from '@/integrations/supabase/client';
+import { Button } from '@/components/ui/button';
 
 const SermonDetail = () => {
   const location = useLocation();
   const { sermon } = location.state;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [transcript, setTranscript] = useState<any | undefined>(undefined);
+  const [powerpointUrl, setPowerpointUrl] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const transcriptUrl = sermon['podcast:transcript']?.$?.url;
     if (transcriptUrl) {
-      const proxyUrl = 'https://cors.eu.org/';
-      fetch(`${proxyUrl}${transcriptUrl}`)
+      const proxyUrl = 'https://corsproxy.io/?';
+      fetch(`${proxyUrl}${encodeURIComponent(transcriptUrl)}`)
         .then((res) => {
           if (!res.ok) {
             throw new Error(`Failed to fetch transcript: ${res.statusText}`);
@@ -27,6 +30,22 @@ const SermonDetail = () => {
           setError(`Failed to load transcript. Error: ${e.message}`);
         });
     }
+
+    const fetchPowerpoint = async () => {
+      const { data, error } = await supabase
+        .from('sermon_powerpoints')
+        .select('powerpoint_url')
+        .eq('sermon_guid', sermon.guid)
+        .single();
+
+      if (error) {
+        console.error('Error fetching powerpoint:', error);
+      } else if (data) {
+        setPowerpointUrl(data.powerpoint_url);
+      }
+    };
+
+    fetchPowerpoint();
   }, [sermon]);
 
   return (
@@ -60,6 +79,13 @@ const SermonDetail = () => {
               <div className="text-center text-red-500">{error}</div>
             ) : (
               <AudioPlayer audioUrl={sermon.enclosure.url} transcript={{ json: transcript }} />
+            )}
+            {powerpointUrl && (
+              <div className="mt-8 text-center">
+                <a href={powerpointUrl} download target="_blank" rel="noopener noreferrer">
+                  <Button>Download PowerPoint</Button>
+                </a>
+              </div>
             )}
             <div className="mt-8" dangerouslySetInnerHTML={{ __html: sermon.description }} />
           </div>
