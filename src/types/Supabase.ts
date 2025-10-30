@@ -383,6 +383,27 @@ export type Database = {
         }
         Relationships: []
       }
+      sermon_powerpoints: {
+        Row: {
+          id: string
+          sermon_guid: string
+          powerpoint_url: string
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          sermon_guid: string
+          powerpoint_url: string
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          sermon_guid?: string
+          powerpoint_url?: string
+          created_at?: string
+        }
+        Relationships: []
+      }
       sermons: {
         Row: {
           audio_url: string | null

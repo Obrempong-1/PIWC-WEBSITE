@@ -12,7 +12,8 @@ import {
   LogOut,
   Megaphone,
   FileText,
-  Milestone
+  Milestone,
+  Presentation
 } from "lucide-react";
 
 const Dashboard = () => {
@@ -68,10 +69,10 @@ const Dashboard = () => {
       href: "/admin/milestones",
     },
     {
-      title: "Sermons",
-      description: "Manage sermon recordings and notes",
-      icon: BookOpen,
-      href: "/admin/sermons",
+      title: "Sermon Powerpoints",
+      description: "Manage sermon powerpoints",
+      icon: Presentation,
+      href: "/admin/sermon-powerpoints",
     },
   ];
 

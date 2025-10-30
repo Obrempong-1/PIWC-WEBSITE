@@ -29,9 +29,9 @@ const Sermons = () => {
   useEffect(() => {
     const fetchSermons = async () => {
       try {
-        const feedUrl = 'https://anchor.fm/s/10b0a2fec/podcast/rss';
-        const proxyUrl = 'https://cors.eu.org/';
-        const response = await fetch(`${proxyUrl}${feedUrl}`);
+        const feedUrl = `https://anchor.fm/s/10b0a2fec/podcast/rss?t=${new Date().getTime()}`;
+        const proxyUrl = 'https://corsproxy.io/?';
+        const response = await fetch(`${proxyUrl}${encodeURIComponent(feedUrl)}`);
         
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -40,6 +40,12 @@ const Sermons = () => {
         const text = await response.text();
         const parser = new DOMParser();
         const xml = parser.parseFromString(text, "application/xml");
+        
+        const parserError = xml.querySelector("parsererror");
+        if (parserError) {
+          console.error("XML Parsing Error:", parserError.textContent);
+          throw new Error("Failed to parse the sermon feed. The format may be incorrect.");
+        }
 
         const items = Array.from(xml.querySelectorAll("item")).map((item, index) => {
           const enclosure = item.querySelector("enclosure");
@@ -68,8 +74,12 @@ const Sermons = () => {
           } as Sermon;
         });
 
-        setSermons(items);
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        if (items.length === 0) {
+            setError("Sermon feed fetched successfully, but it contains no sermons.");
+        } else {
+            setSermons(items);
+        }
+
       } catch (e: any) {
         console.error("Failed to fetch or parse sermons:", e);
         setError(`Failed to load sermons. Error: ${e.message}`);
