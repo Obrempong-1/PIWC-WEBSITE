@@ -40,6 +40,7 @@ const MilestoneDetail = lazy(() => import("./pages/MilestoneDetail"));
 const ImageViewer = lazy(() => import("./components/ui/ImageViewer"));
 const Sermons = lazy(() => import("./pages/Sermons"));
 const SermonDetail = lazy(() => import("./pages/SermonDetail"));
+const SermonPowerpoints = lazy(() => import("./pages/admin/SermonPowerpoints"));
 
 const AppRoutes = ({ isLoadingVisible }: { isLoadingVisible: boolean }) => {
   const location = useLocation();
@@ -116,6 +117,14 @@ const AppRoutes = ({ isLoadingVisible }: { isLoadingVisible: boolean }) => {
           element={
             <ProtectedRoute requireAdmin>
               <MilestoneManager />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/sermon-powerpoints"
+          element={
+            <ProtectedRoute requireAdmin>
+              <SermonPowerpoints />
             </ProtectedRoute>
           }
         />
